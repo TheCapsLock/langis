@@ -1,3 +1,18 @@
+diff --git a/AndroidManifest.xml b/AndroidManifest.xml
+index 796b4ef6..05f58b14 100644
+--- a/AndroidManifest.xml
++++ b/AndroidManifest.xml
+@@ -84,8 +84,8 @@
+     <uses-permission android:name="android.permission.WRITE_CALL_LOG"/>
+     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"/>
+
+-    <permission android:name="org.thoughtcrime.securesms.permission.C2D_MESSAGE"
+-                android:protectionLevel="signature" />
++<!--    <permission android:name="org.thoughtcrime.securesms.permission.C2D_MESSAGE"
++                android:protectionLevel="signature" />-->
+     <uses-permission android:name="org.thoughtcrime.securesms.permission.C2D_MESSAGE" />
+
+     <application android:name=".ApplicationContext"
 diff --git a/src/org/thoughtcrime/securesms/RegistrationActivity.java b/src/org/thoughtcrime/securesms/RegistrationActivity.java
 index b30bafee..3cbd777f 100644
 --- a/src/org/thoughtcrime/securesms/RegistrationActivity.java
