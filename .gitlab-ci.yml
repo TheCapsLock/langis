@@ -14,9 +14,9 @@ job1:
     - "export ANDROID_HOME=\"/sdk-tools-linux\"" # set ANDROID_HOME env var
     - "git clone https://github.com/WhisperSystems/Signal-Android.git && cd Signal-Android && git checkout v4.16.4" # get signal sources
     - "./gradlew clean" # cleanup
-    - "rm /Signal-Android/test/unitTest/java/org/thoughtcrime/securesms/jobs/AttachmentDownloadJobTest.java -f" # because of https://github.com/signalapp/Signal-Android/issues/7458
-    - "rm /Signal-Android/test/unitTest/java/org/thoughtcrime/securesms/crypto/MasterCipherTest.java -f" # because of https://github.com/signalapp/Signal-Android/issues/7458
-    - "git apply ../destroy-gcm-support.patch" # apply our patch
+    - "rm $CI_PROJECT_DIR/Signal-Android/test/unitTest/java/org/thoughtcrime/securesms/jobs/AttachmentDownloadJobTest.java -f" # because of https://github.com/signalapp/Signal-Android/issues/7458
+    - "rm $CI_PROJECT_DIR/Signal-Android/test/unitTest/java/org/thoughtcrime/securesms/crypto/MasterCipherTest.java -f" # because of https://github.com/signalapp/Signal-Android/issues/7458
+    - "git apply $CI_PROJECT_DIR/destroy-gcm-support.patch" # apply our patch
     - "./gradlew build"
   artifacts:
     paths:
