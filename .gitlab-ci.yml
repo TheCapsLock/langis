@@ -19,7 +19,8 @@ job1:
     - "git apply ../destroy-gcm-support.patch" # apply our patch
     - "./gradlew build"
   artifacts:
-    paths: "build/outputs/apk/**/*.apk"
+    paths:
+      - "build/outputs/apk/**/*.apk"
   only:
     - master
     
