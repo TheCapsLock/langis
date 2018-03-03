@@ -4,8 +4,8 @@ job1:
   stage: build
   script:
     - "apt update && apt install -y git"
-    - "apt install default-jdk"
-    - "apt install lib32stdc++6 unzip wget"
+    - "apt install -y default-jdk"
+    - "apt install -y lib32stdc++6 unzip wget"
     - "wget https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip" # download android sdk
     - "unzip sdk-tools-linux-3859397.zip -d sdk-tools-linux" # unzip android sdk
     - "yes | sdk-tools-linux/tools/bin/sdkmanager --licenses" # to accept licenses
