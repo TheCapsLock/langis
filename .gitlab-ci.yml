@@ -1,0 +1,30 @@
+stages:
+  - build
+job1:
+  stage: build
+  script:
+    - "apt update && apt install -y git"
+    - "git clone https://github.com/WhisperSystems/Signal-Android.git && git checkout v4.16.4"
+    - "cd Signal-Android && git apply ../destroy-gcm-support.patch"
+    
+    
+# export ANDROID_HOME="/home/jenkins/android-sdk-tools-linux-3859397"
+
+# to accept licenses
+# /home/jenkins/android-sdk-tools-linux-3859397/tools/bin/sdkmanager --licenses
+
+# cleaning up
+#./gradlew clean
+#export ANDROID_HOME="/home/jenkins/android-sdk-tools-linux-3859397"
+#export JAVA_OPTS="-Xmx4608M"
+#./gradlew build
+# If you see "BUILD SUCCESSFUL" then fetch and install your apk /work/Signal-Android/build/outputs/apk/Signal-Android-debug-unaligned.apk
+
+
+# artifacts: build/outputs/apk/**/*.apk
+  only:
+    - master
+    
+    
+    
+    
