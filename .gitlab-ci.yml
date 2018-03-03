@@ -4,13 +4,30 @@ job1:
   stage: build
   script:
     - "apt update && apt install -y git"
-    - "git clone https://github.com/WhisperSystems/Signal-Android.git && git checkout v4.16.4"
-    - "cd Signal-Android && git apply ../destroy-gcm-support.patch"
+    - "apt install default-jdk"
+    - "apt install lib32stdc++6 unzip wget"
+    - "wget https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip" # download android sdk
+    - "unzip sdk-tools-linux-3859397.zip -d sdk-tools-linux" # unzip android sdk
+    - "yes | sdk-tools-linux/tools/bin/sdkmanager --licenses" # to accept licenses
+    - "export JAVA_OPTS=\"-Xmx3096M\""
+    - "export GRADLE_OPTS=\"-Dorg.gradle.jvmargs=-Xmx4608M\""
+    - "export ANDROID_HOME=\"/sdk-tools-linux\"" # set ANDROID_HOME env var
+    - "git clone https://github.com/WhisperSystems/Signal-Android.git && cd Signal-Android && git checkout v4.16.4" # get signal sources
+    - "./gradlew clean" # cleanup
+    - "rm /Signal-Android/test/unitTest/java/org/thoughtcrime/securesms/jobs/AttachmentDownloadJobTest.java -f" # because of https://github.com/signalapp/Signal-Android/issues/7458
+    - "rm /Signal-Android/test/unitTest/java/org/thoughtcrime/securesms/crypto/MasterCipherTest.java -f" # because of https://github.com/signalapp/Signal-Android/issues/7458
+    - "git apply ../destroy-gcm-support.patch" # apply our patch
+    - "./gradlew build"
+  artifacts:
+    paths: "build/outputs/apk/**/*.apk"
     
-    
+
+
+
+#export ANDROID_HOME=/usr/lib/android-sdk
 # export ANDROID_HOME="/home/jenkins/android-sdk-tools-linux-3859397"
 
-# to accept licenses
+
 # /home/jenkins/android-sdk-tools-linux-3859397/tools/bin/sdkmanager --licenses
 
 # cleaning up
