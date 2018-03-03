@@ -7,8 +7,8 @@ job1:
     - "apt install -y default-jdk"
     - "apt install -y lib32stdc++6 unzip wget"
     - "wget https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip" # download android sdk
-    - "unzip sdk-tools-linux-3859397.zip -d sdk-tools-linux" # unzip android sdk
-    - "yes | sdk-tools-linux/tools/bin/sdkmanager --licenses || true" # to accept licenses
+    - "unzip sdk-tools-linux-3859397.zip -d /sdk-tools-linux" # unzip android sdk
+    - "yes | /sdk-tools-linux/tools/bin/sdkmanager --licenses || true" # to accept licenses
     - "export JAVA_OPTS=\"-Xmx3096M\""
     - "export GRADLE_OPTS=\"-Dorg.gradle.jvmargs=-Xmx4608M\""
     - "export ANDROID_HOME=\"/sdk-tools-linux\"" # set ANDROID_HOME env var
