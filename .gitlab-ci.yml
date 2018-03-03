@@ -20,25 +20,6 @@ job1:
     - "./gradlew build"
   artifacts:
     paths: "build/outputs/apk/**/*.apk"
-    
-
-
-
-#export ANDROID_HOME=/usr/lib/android-sdk
-# export ANDROID_HOME="/home/jenkins/android-sdk-tools-linux-3859397"
-
-
-# /home/jenkins/android-sdk-tools-linux-3859397/tools/bin/sdkmanager --licenses
-
-# cleaning up
-#./gradlew clean
-#export ANDROID_HOME="/home/jenkins/android-sdk-tools-linux-3859397"
-#export JAVA_OPTS="-Xmx4608M"
-#./gradlew build
-# If you see "BUILD SUCCESSFUL" then fetch and install your apk /work/Signal-Android/build/outputs/apk/Signal-Android-debug-unaligned.apk
-
-
-# artifacts: build/outputs/apk/**/*.apk
   only:
     - master
     
