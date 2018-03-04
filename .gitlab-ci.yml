@@ -1,3 +1,4 @@
+image: "debian:latest"
 stages:
   - build
 patch_and_build_signal:
