@@ -1,6 +1,6 @@
 stages:
   - build
-job1:
+patch_and_build_signal:
   stage: build
   script:
     - "apt update && apt install -y git"
