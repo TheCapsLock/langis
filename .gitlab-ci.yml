@@ -20,7 +20,7 @@ job1:
     - "./gradlew build"
   artifacts:
     paths:
-      - "build/outputs/apk/**/*.apk"
+      - "$CI_PROJECT_DIR/Signal-Android/build/outputs/apk/**/*.apk"
   only:
     - master
     
