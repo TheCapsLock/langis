@@ -25,6 +25,10 @@ patch_and_build_signal:
     - "find $CI_PROJECT_DIR/Signal-Android/build/outputs -name *.apk"
     - "mv $(find $CI_PROJECT_DIR/Signal-Android/build/outputs -name *.apk) $CI_PROJECT_DIR/artifacts"
     - "ls -lh $CI_PROJECT_DIR/artifacts"
+    #
+    # https://stackoverflow.com/a/40064149
+    # keytool -genkey -v -keystore my.keystore -keyalg RSA -keysize 2048 -validity 10000 -alias app
+    # jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore /my.keystore Signal-website-release-unsigned-4.19.3.apk app
   artifacts:
     paths:
       - "$CI_PROJECT_DIR/artifacts/*.apk"
