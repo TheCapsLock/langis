@@ -14,7 +14,7 @@ patch_and_build_signal:
     - "export JAVA_OPTS=\"-Xmx3096M\""
     - "export GRADLE_OPTS=\"-Dorg.gradle.jvmargs=-Xmx4608M\""
     - "export ANDROID_HOME=\"/sdk-tools-linux\"" # set ANDROID_HOME env var
-    - "git clone https://github.com/WhisperSystems/Signal-Android.git && cd Signal-Android && git checkout v4.19.1" # get signal sources
+    - "git clone https://github.com/WhisperSystems/Signal-Android.git && cd Signal-Android && git checkout v4.19.3" # get signal sources
     - "./gradlew clean" # cleanup
     #- "rm $CI_PROJECT_DIR/Signal-Android/test/unitTest/java/org/thoughtcrime/securesms/jobs/AttachmentDownloadJobTest.java -f" # because of https://github.com/signalapp/Signal-Android/issues/7458
     #- "rm $CI_PROJECT_DIR/Signal-Android/test/unitTest/java/org/thoughtcrime/securesms/crypto/MasterCipherTest.java -f" # because of https://github.com/signalapp/Signal-Android/issues/7458
