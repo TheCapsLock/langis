@@ -17,7 +17,7 @@ patch_and_build_signal:
     - "git clone https://github.com/WhisperSystems/Signal-Android.git && cd Signal-Android && git checkout v4.19.3" # get signal sources
     - "./gradlew clean" # cleanup
     - "git apply $CI_PROJECT_DIR/destroy-gcm-support.patch" # apply our patch
-    - "./gradlew assembleWebsiteRelease assembleWebsiteDebug"
+    - "./gradlew assembleWebsiteRelease" #assembleWebsiteDebug
     - "mkdir -p $CI_PROJECT_DIR/artifacts"
     - "find $CI_PROJECT_DIR/Signal-Android/build/outputs -name *.apk"
     - "mv $(find $CI_PROJECT_DIR/Signal-Android/build/outputs -name *.apk) $CI_PROJECT_DIR/artifacts"
@@ -30,6 +30,7 @@ patch_and_build_signal:
     # then we provide that base64 encoded file to the CI ; you'll get it back to its original format write after this command is run:
     - "echo \"$KEYSTORE_CRT\" |base64 -d > /keystore.keystore"
     - "for f in $CI_PROJECT_DIR/artifacts/*unsigned*.apk; do SIGNED_FNAME=\"$(echo $f |sed 's/unsigned/signed/g')\"; echo \"Signing $f\"; jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore /keystore.keystore -storepass \"$KEYSTORE_PASSPHR\" $f -signedjar \"$SIGNED_FNAME\" app ;done"
+    - "rm $CI_PROJECT_DIR/artifacts/*unsigned*.apk"
     - "ls -lh $CI_PROJECT_DIR/artifacts"
   artifacts:
     paths:
