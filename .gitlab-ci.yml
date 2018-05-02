@@ -16,16 +16,16 @@ patch_and_build_signal:
     - "export ANDROID_HOME=\"/sdk-tools-linux\"" # set ANDROID_HOME env var
     - "git clone https://github.com/WhisperSystems/Signal-Android.git && cd Signal-Android && git checkout v4.19.3" # get signal sources
     - "./gradlew clean" # cleanup
-    #- "rm $CI_PROJECT_DIR/Signal-Android/test/unitTest/java/org/thoughtcrime/securesms/jobs/AttachmentDownloadJobTest.java -f" # because of https://github.com/signalapp/Signal-Android/issues/7458
-    #- "rm $CI_PROJECT_DIR/Signal-Android/test/unitTest/java/org/thoughtcrime/securesms/crypto/MasterCipherTest.java -f" # because of https://github.com/signalapp/Signal-Android/issues/7458
     - "git apply $CI_PROJECT_DIR/destroy-gcm-support.patch" # apply our patch
     - "./gradlew assembleWebsiteRelease assembleWebsiteDebug"
-    # assembleRelease assembleDebug"
     - "mkdir -p $CI_PROJECT_DIR/artifacts"
     - "find $CI_PROJECT_DIR/Signal-Android/build/outputs -name *.apk"
     - "mv $(find $CI_PROJECT_DIR/Signal-Android/build/outputs -name *.apk) $CI_PROJECT_DIR/artifacts"
     - "ls -lh $CI_PROJECT_DIR/artifacts"
-    #
+    - "echo \"$KEYSTORE_CRT\" > /keystore.rfc"
+    - "keytool -importcert -alias app -file /keystore.rfc -noprompt -storepass \"$KEYSTORE_PASSPHR\" -keystore /keystore.keystore"
+    - "for f in $CI_PROJECT_DIR/artifacts/*unsigned*.apk; do SIGNED_FNAME=\"$(echo $f |sed 's/unsigned/signed/g')\"; echo \"Signing $f\"; jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore signal-gcm-less.keystore -storepass \"$KEYSTORE_PASSPHR\" $f -signedjar \"$SIGNED_FNAME\" app ;done"
+    - "ls -lh $CI_PROJECT_DIR/artifacts"
     # https://stackoverflow.com/a/40064149
     # keytool -genkey -v -keystore my.keystore -keyalg RSA -keysize 2048 -validity 10000 -alias app
     # jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore /my.keystore Signal-website-release-unsigned-4.19.3.apk app
