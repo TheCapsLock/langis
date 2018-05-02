@@ -22,8 +22,7 @@ patch_and_build_signal:
     - "find $CI_PROJECT_DIR/Signal-Android/build/outputs -name *.apk"
     - "mv $(find $CI_PROJECT_DIR/Signal-Android/build/outputs -name *.apk) $CI_PROJECT_DIR/artifacts"
     - "ls -lh $CI_PROJECT_DIR/artifacts"
-    - "echo \"$KEYSTORE_CRT\" > /keystore.rfc"
-    - "keytool -importcert -alias app -file /keystore.rfc -noprompt -storepass \"$KEYSTORE_PASSPHR\" -keystore /keystore.keystore"
+    - "cat \"$KEYSTORE_CRT\" |base64 -d > /keystore.keystore"
     - "for f in $CI_PROJECT_DIR/artifacts/*unsigned*.apk; do SIGNED_FNAME=\"$(echo $f |sed 's/unsigned/signed/g')\"; echo \"Signing $f\"; jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore /keystore.keystore -storepass \"$KEYSTORE_PASSPHR\" $f -signedjar \"$SIGNED_FNAME\" app ;done"
     - "ls -lh $CI_PROJECT_DIR/artifacts"
     # https://stackoverflow.com/a/40064149
