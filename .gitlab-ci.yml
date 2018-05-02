@@ -22,12 +22,15 @@ patch_and_build_signal:
     - "find $CI_PROJECT_DIR/Signal-Android/build/outputs -name *.apk"
     - "mv $(find $CI_PROJECT_DIR/Signal-Android/build/outputs -name *.apk) $CI_PROJECT_DIR/artifacts"
     - "ls -lh $CI_PROJECT_DIR/artifacts"
+    # To sign packages ; you'll need a keystore with your certificate
+    # signing packages is important, it also allows application update without removing previous installed version of the app
+    # To build the keystore used here, we use:
+    #   keytool -genkey -v -keystore keystore.keystore -keyalg RSA -keysize 2048 -validity 10000 -alias app
+    #   cat keystore.keystore | base64 > keystore.base64
+    # then we provide that base64 encoded file to the CI ; you'll get it back to its original format write after this command is run:
     - "echo \"$KEYSTORE_CRT\" |base64 -d > /keystore.keystore"
     - "for f in $CI_PROJECT_DIR/artifacts/*unsigned*.apk; do SIGNED_FNAME=\"$(echo $f |sed 's/unsigned/signed/g')\"; echo \"Signing $f\"; jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore /keystore.keystore -storepass \"$KEYSTORE_PASSPHR\" $f -signedjar \"$SIGNED_FNAME\" app ;done"
     - "ls -lh $CI_PROJECT_DIR/artifacts"
-    # https://stackoverflow.com/a/40064149
-    # keytool -genkey -v -keystore my.keystore -keyalg RSA -keysize 2048 -validity 10000 -alias app
-    # jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore /my.keystore Signal-website-release-unsigned-4.19.3.apk app
   artifacts:
     paths:
       - "$CI_PROJECT_DIR/artifacts/*.apk"
