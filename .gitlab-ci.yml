@@ -36,8 +36,6 @@ patch_and_build_signal:
   artifacts:
     paths:
       - "$CI_PROJECT_DIR/artifacts/*.apk"
-  only:
-    - master
     
     
     
