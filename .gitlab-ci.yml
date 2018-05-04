@@ -15,6 +15,7 @@ patch_and_build_signal:
     - "export GRADLE_OPTS=\"-Dorg.gradle.jvmargs=-Xmx4608M\""
     - "export ANDROID_HOME=\"/sdk-tools-linux\"" # set ANDROID_HOME env var
     - "git clone https://github.com/WhisperSystems/Signal-Android.git && cd Signal-Android && git checkout v4.19.3" # get signal sources
+    - "for f in res/values*/strings.xml; do sed -i 's/<string.*name=\"app_name\".*>.*<\\/string>/<string name=\"app_name\">Langis<\\/string>/g' \"$f\"; done" # app rename
     - "./gradlew clean" # cleanup
     - "git apply $CI_PROJECT_DIR/destroy-gcm-support.patch" # apply our patch
     - "./gradlew assembleWebsiteRelease" #assembleWebsiteDebug
@@ -31,12 +32,11 @@ patch_and_build_signal:
     - "echo \"$KEYSTORE_CRT\" |base64 -d > /keystore.keystore"
     - "for f in $CI_PROJECT_DIR/artifacts/*unsigned*.apk; do SIGNED_FNAME=\"$(echo $f |sed 's/unsigned/signed/g')\"; echo \"Signing $f\"; jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore /keystore.keystore -storepass \"$KEYSTORE_PASSPHR\" $f -signedjar \"$SIGNED_FNAME\" app ;done"
     - "rm $CI_PROJECT_DIR/artifacts/*unsigned*.apk"
+    - "cd $CI_PROJECT_DIR/artifacts/ && for f in $(find . -iname \"*signal*.apk\"); do mv \"$f\" \"$(echo $f|sed \"s/[Ss][Ii][Gg][Nn][Aa][Ll]/langis/\")\"; done"
     - "ls -lh $CI_PROJECT_DIR/artifacts"
   artifacts:
     paths:
       - "$CI_PROJECT_DIR/artifacts/*.apk"
-  only:
-    - master
     
     
     
