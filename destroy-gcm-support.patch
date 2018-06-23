@@ -1,8 +1,8 @@
 diff --git a/AndroidManifest.xml b/AndroidManifest.xml
-index e7aac6f..436312d 100644
+index 7478ebc6..8b0d55ae 100644
 --- a/AndroidManifest.xml
 +++ b/AndroidManifest.xml
-@@ -87,9 +87,9 @@
+@@ -88,9 +88,9 @@
      <uses-permission android:name="android.permission.RAISED_THREAD_PRIORITY" />
      <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"/>
  
@@ -13,7 +13,7 @@ index e7aac6f..436312d 100644
 +    <uses-permission android:name="org.thoughtcrime.securesms.permission.C2D_MESSAGE" /-->
  
      <application android:name=".ApplicationContext"
-                  android:icon="@drawable/icon"
+                  android:icon="@mipmap/ic_launcher"
 diff --git a/src/org/thoughtcrime/securesms/RegistrationActivity.java b/src/org/thoughtcrime/securesms/RegistrationActivity.java
 index 282714f..08ed168 100644
 --- a/src/org/thoughtcrime/securesms/RegistrationActivity.java
