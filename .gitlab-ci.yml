@@ -14,7 +14,7 @@ patch_and_build_signal:
     - "export JAVA_OPTS=\"-Xmx3096M\""
     - "export GRADLE_OPTS=\"-Dorg.gradle.jvmargs=-Xmx4608M\""
     - "export ANDROID_HOME=\"/sdk-tools-linux\"" # set ANDROID_HOME env var
-    - "git clone https://github.com/WhisperSystems/Signal-Android.git && cd Signal-Android && git checkout v4.25.10" # get signal sources
+    - "git clone https://github.com/WhisperSystems/Signal-Android.git && cd Signal-Android && git checkout v4.26.2" # get signal sources
     - "for f in res/values*/strings.xml; do sed -i 's/<string.*name=\"app_name\".*>.*<\\/string>/<string name=\"app_name\">Langis<\\/string>/g' \"$f\"; done" # app rename
     - "./gradlew clean" # cleanup
     - "git apply $CI_PROJECT_DIR/destroy-gcm-support.patch" # apply our patch
