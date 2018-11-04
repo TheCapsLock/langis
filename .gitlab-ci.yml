@@ -6,19 +6,20 @@ patch_and_build_signal:
   script:
     - "apt update && apt install -y git"
     - "apt install -y default-jdk"
-    - "apt install -y lib32stdc++6 unzip wget"
-    - "wget https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip" # download android sdk
-    - "echo '444e22ce8ca0f67353bda4b85175ed3731cae3ffa695ca18119cbacef1c1bea0  sdk-tools-linux-3859397.zip' |sha256sum -c"
-    - "unzip sdk-tools-linux-3859397.zip -d /sdk-tools-linux" # unzip android sdk
+    - "apt install -y lib32stdc++6 unzip wget opensc"
+    - "wget https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip" # download android sdk
+    - "echo '92ffee5a1d98d856634e8b71132e8a95d96c83a63fde1099be3d86df3106def9  sdk-tools-linux-4333796.zip' |sha256sum -c"
+    - "unzip sdk-tools-linux-4333796.zip -d /sdk-tools-linux" # unzip android sdk
     - "yes | /sdk-tools-linux/tools/bin/sdkmanager --licenses || true" # to accept licenses
     - "export JAVA_OPTS=\"-Xmx3096M\""
     - "export GRADLE_OPTS=\"-Dorg.gradle.jvmargs=-Xmx4608M\""
     - "export ANDROID_HOME=\"/sdk-tools-linux\"" # set ANDROID_HOME env var
-    - "git clone https://github.com/WhisperSystems/Signal-Android.git && cd Signal-Android && git checkout v4.29.0" # get signal sources
+    - "git clone https://github.com/WhisperSystems/Signal-Android.git && cd Signal-Android && git checkout v4.30.2" # get signal sources
     - "for f in res/values*/strings.xml; do sed -i 's/<string.*name=\"app_name\".*>.*<\\/string>/<string name=\"app_name\">Langis<\\/string>/g' \"$f\"; done" # app rename
     - "./gradlew clean" # cleanup
     - "git apply $CI_PROJECT_DIR/destroy-gcm-support.patch" # apply our patch
-    - "./gradlew assembleWebsiteRelease" #assembleWebsiteDebug
+    - "git apply $CI_PROJECT_DIR/fix-build-regretion-on-v4.30.2.patch"
+    - "./gradlew --stacktrace assembleWebsiteRelease" #assembleWebsiteDebug
     - "mkdir -p $CI_PROJECT_DIR/artifacts"
     - "find $CI_PROJECT_DIR/Signal-Android/build/outputs -name *.apk"
     - "mv $(find $CI_PROJECT_DIR/Signal-Android/build/outputs -name *.apk) $CI_PROJECT_DIR/artifacts"
