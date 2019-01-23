@@ -1,4 +1,6 @@
 image: "debian:latest"
+variables:
+  signal_version: "v4.32.8"
 stages:
   - build
 patch_and_build_signal:
@@ -10,21 +12,20 @@ patch_and_build_signal:
     - "wget https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip" # download android sdk
     - "echo '92ffee5a1d98d856634e8b71132e8a95d96c83a63fde1099be3d86df3106def9  sdk-tools-linux-4333796.zip' |sha256sum -c"
     - "unzip sdk-tools-linux-4333796.zip -d /sdk-tools-linux" # unzip android sdk
+    - "/sdk-tools-linux/tools/bin/sdkmanager --update"
     
     - "export JAVA_OPTS=\"-Xmx3096M\""
     - "export GRADLE_OPTS=\"-Dorg.gradle.jvmargs=-Xmx4608M\""
     - "export ANDROID_HOME=\"/sdk-tools-linux\"" # set ANDROID_HOME env var
-    
-    - "mkdir -p $ANDROID_HOME/licenses/"
-    # sdkmanager --list
-    # sdkmanager --install "build-tools;27.0.3" ...
-    # hashes are available at ~/Android/Sdk/licenses/android-sdk-license
+
     - "echo $ANDROID_HOME"
+    - "mkdir -p $ANDROID_HOME/licenses"
     - "echo d56f5187479451eabf01fb78af6dfcb131a6481e > $ANDROID_HOME/licenses/android-sdk-license"
     - "echo 8933bad161af4178b1185d1a37fbf41ea5269c55 >> $ANDROID_HOME/licenses/android-sdk-license"
     - "yes | /sdk-tools-linux/tools/bin/sdkmanager --licenses || true" # to accept licenses
-    - "yes | sdkmanager 'build-tools;27.0.3' 'platforms;android-28' 'platform-tools'||true"
-    - "git clone https://github.com/WhisperSystems/Signal-Android.git && cd Signal-Android && git checkout v4.31.6" # get signal sources
+    - "yes | /sdk-tools-linux/tools/bin/sdkmanager 'build-tools;27.0.3' 'platforms;android-28' 'platform-tools' > /dev/null ||true"
+
+    - "git clone https://github.com/WhisperSystems/Signal-Android.git && cd Signal-Android && git checkout $signal_version" # get signal sources
     - "for f in res/values*/strings.xml; do sed -i 's/<string.*name=\"app_name\".*>.*<\\/string>/<string name=\"app_name\">Langis<\\/string>/g' \"$f\"; done" # app rename
     - "./gradlew clean" # cleanup
     - "git apply $CI_PROJECT_DIR/destroy-gcm-support.patch" # apply our patch
