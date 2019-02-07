@@ -1,40 +1,46 @@
 diff --git a/AndroidManifest.xml b/AndroidManifest.xml
-index 937986b06..ce403d6bc 100644
+index 6ae85a346..3bbcf44db 100644
 --- a/AndroidManifest.xml
 +++ b/AndroidManifest.xml
-@@ -87,9 +87,9 @@
-     <uses-permission android:name="android.permission.RAISED_THREAD_PRIORITY" />
-     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"/>
+@@ -473,11 +473,11 @@
  
--    <permission android:name="org.thoughtcrime.securesms.permission.C2D_MESSAGE"
-+    <!--<permission android:name="org.thoughtcrime.securesms.permission.C2D_MESSAGE"
-                 android:protectionLevel="signature" />
--    <uses-permission android:name="org.thoughtcrime.securesms.permission.C2D_MESSAGE" />
-+    <uses-permission android:name="org.thoughtcrime.securesms.permission.C2D_MESSAGE" /-->
+     <service android:name=".service.GenericForegroundService"/>
  
-     <application android:name=".ApplicationContext"
-                  android:icon="@mipmap/ic_launcher"
+-    <service android:name=".gcm.FcmService">
+-        <intent-filter>
+-            <action android:name="com.google.firebase.MESSAGING_EVENT" />
+-        </intent-filter>
+-    </service>
++    <!--<service android:name=".gcm.FcmService">-->
++        <!--<intent-filter>-->
++            <!--<action android:name="com.google.firebase.MESSAGING_EVENT" />-->
++        <!--</intent-filter>-->
++    <!--</service>-->
+ 
+     <receiver android:name=".service.SmsListener"
+               android:permission="android.permission.BROADCAST_SMS"
 diff --git a/src/org/thoughtcrime/securesms/RegistrationActivity.java b/src/org/thoughtcrime/securesms/RegistrationActivity.java
-index 7dae4c66f..c8365cd9f 100644
+index d951fb8b6..3e02e123b 100644
 --- a/src/org/thoughtcrime/securesms/RegistrationActivity.java
 +++ b/src/org/thoughtcrime/securesms/RegistrationActivity.java
-@@ -461,18 +461,7 @@ public class RegistrationActivity extends BaseActionBarActivity implements Verif
+@@ -460,18 +460,8 @@ public class RegistrationActivity extends BaseActionBarActivity implements Verif
        return;
-     }
+     }   
  
 -    PlayServicesStatus gcmStatus = PlayServicesUtil.getPlayServicesStatus(this);
--
+ 
 -    if (gcmStatus == PlayServicesStatus.SUCCESS) {
 -      handleRequestVerification(e164number, true);
 -    } else if (gcmStatus == PlayServicesStatus.MISSING) {
--      handlePromptForNoPlayServices(e164number);
+       handlePromptForNoPlayServices(e164number);
 -    } else if (gcmStatus == PlayServicesStatus.NEEDS_UPDATE) {
 -      GoogleApiAvailability.getInstance().getErrorDialog(this, ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED, 0).show();
 -    } else {
 -      Dialogs.showAlertDialog(this, getString(R.string.RegistrationActivity_play_services_error),
 -                              getString(R.string.RegistrationActivity_google_play_services_is_updating_or_unavailable));
 -    }
-+    handlePromptForNoPlayServices(e164number);
-   }
+   }   
  
    private void handleRequestVerification(@NonNull String e164number, boolean gcmSupported) {
+-- 
+2.18.1
