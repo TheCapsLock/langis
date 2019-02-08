@@ -42,5 +42,3 @@ index d951fb8b6..3e02e123b 100644
    }   
  
    private void handleRequestVerification(@NonNull String e164number, boolean gcmSupported) {
--- 
-2.18.1
