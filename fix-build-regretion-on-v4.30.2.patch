@@ -1,24 +1,24 @@
 diff --git a/build.gradle b/build.gradle
-index 110d9c56f..be231337e 100644
+index 2fbb54dc4..c2ebcb012 100644
 --- a/build.gradle
 +++ b/build.gradle
-@@ -457,13 +457,13 @@ tasks.whenTaskAdded { task ->
-         task.enabled = false
-     }
+@@ -495,13 +495,13 @@ task signProductionWebsiteRelease {
+ }
  
+ tasks.whenTaskAdded { task ->
 -    if (task.name.equals("assemblePlayRelease")) {
 -        task.finalizedBy signProductionPlayRelease
 -    }
-+ //   if (task.name.equals("assemblePlayRelease")) {
-+ //       task.finalizedBy signProductionPlayRelease
-+ //   }
++//    if (task.name.equals("assemblePlayRelease")) {
++//        task.finalizedBy signProductionPlayRelease
++//    }
  
 -    if (task.name.equals("assembleWebsiteRelease")) {
 -        task.finalizedBy signProductionWebsiteRelease
 -    }
-+ //   if (task.name.equals("assembleWebsiteRelease")) {
-+ //       task.finalizedBy signProductionWebsiteRelease
-+ //   }
++//    if (task.name.equals("assembleWebsiteRelease")) {
++//        task.finalizedBy signProductionWebsiteRelease
++//    }
  }
  
  def getLastCommitTimestamp() {
