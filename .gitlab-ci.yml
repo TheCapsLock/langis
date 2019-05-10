@@ -1,6 +1,6 @@
 image: "debian:latest"
 variables:
-  signal_version: "v4.40.0"
+  signal_version: "v4.40.1"
 stages:
   - build
 patch_and_build_signal:
