@@ -1,11 +1,13 @@
 image: "debian:latest"
-variables:
-  signal_version: "v4.42.0"
+#variables:
+#  signal_version: "v4.42.0"
 stages:
   - build
 patch_and_build_signal:
   stage: build
   script:
+    - "export LATEST_SIGNAL_TAG=$(git ls-remote --tags https://github.com/signalapp/Signal-Android | sed 's|.*/\(.*\)$|\1|' | grep -v '\^' | sort -t. -k1,1nr -k2,2nr -k3,3nr|grep -e '^v.*' | head -n 1)"
+    - echo "Latest git version is $LATEST_SIGNAL_TAG"
     - "apt update && apt install -y git"
     - "apt install -y default-jdk"
     - "apt install -y lib32stdc++6 unzip wget opensc"
@@ -25,7 +27,7 @@ patch_and_build_signal:
     - "yes | /sdk-tools-linux/tools/bin/sdkmanager --licenses || true" # to accept licenses
     - "yes | /sdk-tools-linux/tools/bin/sdkmanager 'build-tools;27.0.3' 'platforms;android-28' 'platform-tools' > /dev/null ||true"
 
-    - "git clone https://github.com/WhisperSystems/Signal-Android.git && cd Signal-Android && git checkout $signal_version" # get signal sources
+    - "git clone https://github.com/WhisperSystems/Signal-Android.git && cd Signal-Android && git checkout $LATEST_SIGNAL_TAG" # get signal sources
     - "for f in res/values*/strings.xml; do sed -i 's/<string.*name=\"app_name\".*>.*<\\/string>/<string name=\"app_name\">Langis<\\/string>/g' \"$f\"; done" # app rename
     - "./gradlew clean" # cleanup
     - "git apply $CI_PROJECT_DIR/destroy-gcm-support.patch" # apply our patch
