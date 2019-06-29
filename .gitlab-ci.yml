@@ -6,6 +6,7 @@ stages:
 patch_and_build_signal:
   stage: build
   before_script:
+    - "apt update && apt install -y curl"
     - "curl $NOTIFICATION_URL/?pipeline_url=CI_PIPELINE_URL"
   script:
     - "apt update && apt install -y git"
