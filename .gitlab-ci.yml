@@ -5,6 +5,9 @@ stages:
   - build
 patch_and_build_signal:
   stage: build
+  before_script:
+    - "apt update && apt install -y curl"
+    - "curl $NOTIFICATION_URL/?pipeline_url=$CI_PIPELINE_URL&pipeline_id=$CI_PIPELINE_ID&job_url=$CI_JOB_URL&job_id=$CI_JOB_ID"
   script:
     - "apt update && apt install -y git"
     - "export LATEST_SIGNAL_TAG=\"$(git ls-remote --tags https://github.com/signalapp/Signal-Android | sed 's|.*/\\(.*\\)$|\\1|' | grep -v '\\^' | sort -t. -k1,1nr -k2,2nr -k3,3nr|grep -e '^v.*' | head -n 1)\""
