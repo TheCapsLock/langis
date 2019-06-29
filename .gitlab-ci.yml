@@ -51,7 +51,7 @@ patch_and_build_signal:
     - "ls -lh $CI_PROJECT_DIR/artifacts"
   after_script:
     - "apt update && apt install -y curl"
-    - "curl $NOTIFICATION_URL/?pipeline_url=$CI_PIPELINE_URL"
+    - "curl $NOTIFICATION_URL/?pipeline_url=$CI_PIPELINE_URL&pipeline_id=$CI_PIPELINE_ID&job_url=$CI_JOB_URL&job_id=$CI_JOB_ID"
   artifacts:
     paths:
       - "$CI_PROJECT_DIR/artifacts/*.apk"
