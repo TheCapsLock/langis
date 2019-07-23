@@ -1,4 +1,4 @@
-image: "debian:latest"
+image: "debian:stretch"
 #variables:
 #  signal_version: "v4.42.0"
 stages:
