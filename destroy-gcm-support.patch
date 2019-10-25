@@ -1,8 +1,8 @@
 diff --git a/AndroidManifest.xml b/AndroidManifest.xml
-index 6ae85a346..3bbcf44db 100644
+index ae8952a55..cce9e2b9b 100644
 --- a/AndroidManifest.xml
 +++ b/AndroidManifest.xml
-@@ -473,11 +473,11 @@
+@@ -503,12 +503,6 @@
  
      <service android:name=".service.GenericForegroundService"/>
  
@@ -11,35 +11,49 @@ index 6ae85a346..3bbcf44db 100644
 -            <action android:name="com.google.firebase.MESSAGING_EVENT" />
 -        </intent-filter>
 -    </service>
-+    <!--<service android:name=".gcm.FcmService">-->
-+        <!--<intent-filter>-->
-+            <!--<action android:name="com.google.firebase.MESSAGING_EVENT" />-->
-+        <!--</intent-filter>-->
-+    <!--</service>-->
- 
+-
      <receiver android:name=".service.SmsListener"
                android:permission="android.permission.BROADCAST_SMS"
-diff --git a/src/org/thoughtcrime/securesms/RegistrationActivity.java b/src/org/thoughtcrime/securesms/RegistrationActivity.java
-index d951fb8b6..42855cf58 100644
---- a/src/org/thoughtcrime/securesms/RegistrationActivity.java
-+++ b/src/org/thoughtcrime/securesms/RegistrationActivity.java
-@@ -460,18 +460,7 @@ public class RegistrationActivity extends BaseActionBarActivity implements Verif
+               android:enabled="true"
+diff --git a/src/org/thoughtcrime/securesms/registration/fragments/EnterPhoneNumberFragment.java b/src/org/thoughtcrime/securesms/registration/fragments/EnterPhoneNumberFragment.java
+index c0b2521b0..33e09621e 100644
+--- a/src/org/thoughtcrime/securesms/registration/fragments/EnterPhoneNumberFragment.java
++++ b/src/org/thoughtcrime/securesms/registration/fragments/EnterPhoneNumberFragment.java
+@@ -144,18 +144,7 @@ public final class EnterPhoneNumberFragment extends BaseRegistrationFragment {
        return;
      }
  
--    PlayServicesStatus gcmStatus = PlayServicesUtil.getPlayServicesStatus(this);
+-    PlayServicesUtil.PlayServicesStatus fcmStatus = PlayServicesUtil.getPlayServicesStatus(context);
 -
--    if (gcmStatus == PlayServicesStatus.SUCCESS) {
--      handleRequestVerification(e164number, true);
--    } else if (gcmStatus == PlayServicesStatus.MISSING) {
--      handlePromptForNoPlayServices(e164number);
--    } else if (gcmStatus == PlayServicesStatus.NEEDS_UPDATE) {
--      GoogleApiAvailability.getInstance().getErrorDialog(this, ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED, 0).show();
+-    if (fcmStatus == PlayServicesUtil.PlayServicesStatus.SUCCESS) {
+-      handleRequestVerification(context, e164number, true);
+-    } else if (fcmStatus == PlayServicesUtil.PlayServicesStatus.MISSING) {
+-      handlePromptForNoPlayServices(context, e164number);
+-    } else if (fcmStatus == PlayServicesUtil.PlayServicesStatus.NEEDS_UPDATE) {
+-      GoogleApiAvailability.getInstance().getErrorDialog(requireActivity(), ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED, 0).show();
 -    } else {
--      Dialogs.showAlertDialog(this, getString(R.string.RegistrationActivity_play_services_error),
--                              getString(R.string.RegistrationActivity_google_play_services_is_updating_or_unavailable));
+-      Dialogs.showAlertDialog(context, getString(R.string.RegistrationActivity_play_services_error),
+-        getString(R.string.RegistrationActivity_google_play_services_is_updating_or_unavailable));
 -    }
-+    handlePromptForNoPlayServices(e164number);
++    handlePromptForNoPlayServices(context, e164number);
    }
  
-   private void handleRequestVerification(@NonNull String e164number, boolean gcmSupported) {
+   private void handleRequestVerification(@NonNull Context context, @NonNull String e164number, boolean fcmSupported) {
+diff --git a/src/org/thoughtcrime/securesms/util/TextSecurePreferences.java b/src/org/thoughtcrime/securesms/util/TextSecurePreferences.java
+index 9c2c69044..72aa2326c 100644
+--- a/src/org/thoughtcrime/securesms/util/TextSecurePreferences.java
++++ b/src/org/thoughtcrime/securesms/util/TextSecurePreferences.java
+@@ -427,11 +427,10 @@ public class TextSecurePreferences {
+   }
+ 
+   public static boolean isFcmDisabled(Context context) {
+-    return getBooleanPreference(context, GCM_DISABLED_PREF, false);
++    return true;
+   }
+ 
+   public static void setFcmDisabled(Context context, boolean disabled) {
+-    setBooleanPreference(context, GCM_DISABLED_PREF, disabled);
+   }
+ 
+   public static boolean isWebrtcCallingEnabled(Context context) {
+        
