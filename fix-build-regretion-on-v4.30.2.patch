@@ -1,7 +1,7 @@
-diff --git a/build.gradle b/build.gradle
+diff --git a/app/build.gradle b/app/build.gradle
 index 2fbb54dc4..c2ebcb012 100644
---- a/build.gradle
-+++ b/build.gradle
+--- a/app/build.gradle
++++ b/app/build.gradle
 @@ -495,13 +495,13 @@ task signProductionWebsiteRelease {
  }
  
