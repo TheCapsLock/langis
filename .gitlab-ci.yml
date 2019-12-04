@@ -38,8 +38,8 @@ patch_and_build_signal:
     - "git apply $CI_PROJECT_DIR/fix-build-regretion-on-v4.30.2.patch"
     - "./gradlew --stacktrace assembleWebsiteRelease" #assembleWebsiteDebug
     - "mkdir -p $CI_PROJECT_DIR/artifacts"
-    - "find $CI_PROJECT_DIR/Signal-Android/build/outputs -name *.apk"
-    - "mv $(find $CI_PROJECT_DIR/Signal-Android/build/outputs -name *.apk) $CI_PROJECT_DIR/artifacts"
+    - "find $CI_PROJECT_DIR/Signal-Android/app/build/outputs -name *.apk"
+    - "mv $(find $CI_PROJECT_DIR/Signal-Android/app/build/outputs -name *.apk) $CI_PROJECT_DIR/artifacts"
     - "ls -lh $CI_PROJECT_DIR/artifacts"
     # To sign packages ; you'll need a keystore with your certificate
     # signing packages is important, it also allows application update without removing previous installed version of the app
