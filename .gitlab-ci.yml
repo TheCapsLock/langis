@@ -57,6 +57,7 @@ patch_and_build_signal:
  #   - "apt update && apt install -y curl"
  #   - "curl $NOTIFICATION_URL/?pipeline_id=$CI_PIPELINE_ID&job_id=$CI_JOB_ID"
   artifacts:
+    expire_in: 2 mos
     paths:
       - "$CI_PROJECT_DIR/artifacts/*.apk"
 
