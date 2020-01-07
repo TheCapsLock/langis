@@ -1,7 +1,7 @@
-diff --git a/AndroidManifest.xml b/AndroidManifest.xml
+diff --git a/app/src/main/AndroidManifest.xml b/app/src/main/AndroidManifest.xml
 index ae8952a55..cce9e2b9b 100644
---- a/AndroidManifest.xml
-+++ b/AndroidManifest.xml
+--- a/app/src/main/AndroidManifest.xml
++++ b/app/src/main/AndroidManifest.xml
 @@ -503,12 +503,6 @@
  
      <service android:name=".service.GenericForegroundService"/>
@@ -15,10 +15,10 @@ index ae8952a55..cce9e2b9b 100644
      <receiver android:name=".service.SmsListener"
                android:permission="android.permission.BROADCAST_SMS"
                android:enabled="true"
-diff --git a/src/org/thoughtcrime/securesms/registration/fragments/EnterPhoneNumberFragment.java b/src/org/thoughtcrime/securesms/registration/fragments/EnterPhoneNumberFragment.java
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/registration/fragments/EnterPhoneNumberFragment.java b/app/src/main/java/org/thoughtcrime/securesms/registration/fragments/EnterPhoneNumberFragment.java
 index c0b2521b0..33e09621e 100644
---- a/src/org/thoughtcrime/securesms/registration/fragments/EnterPhoneNumberFragment.java
-+++ b/src/org/thoughtcrime/securesms/registration/fragments/EnterPhoneNumberFragment.java
+--- a/app/src/main/java/org/thoughtcrime/securesms/registration/fragments/EnterPhoneNumberFragment.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/registration/fragments/EnterPhoneNumberFragment.java
 @@ -144,18 +144,7 @@ public final class EnterPhoneNumberFragment extends BaseRegistrationFragment {
        return;
      }
@@ -39,10 +39,10 @@ index c0b2521b0..33e09621e 100644
    }
  
    private void handleRequestVerification(@NonNull Context context, @NonNull String e164number, boolean fcmSupported) {
-diff --git a/src/org/thoughtcrime/securesms/util/TextSecurePreferences.java b/src/org/thoughtcrime/securesms/util/TextSecurePreferences.java
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/util/TextSecurePreferences.java b/app/src/main/java/org/thoughtcrime/securesms/util/TextSecurePreferences.java
 index 9c2c69044..72aa2326c 100644
---- a/src/org/thoughtcrime/securesms/util/TextSecurePreferences.java
-+++ b/src/org/thoughtcrime/securesms/util/TextSecurePreferences.java
+--- a/app/src/main/java/org/thoughtcrime/securesms/util/TextSecurePreferences.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/util/TextSecurePreferences.java
 @@ -427,11 +427,10 @@ public class TextSecurePreferences {
    }
  
