@@ -32,7 +32,8 @@ patch_and_build_signal:
     - "yes | /sdk-tools-linux/tools/bin/sdkmanager 'build-tools;27.0.3' 'platforms;android-28' 'platform-tools' > /dev/null ||true"
 
     - "git clone https://github.com/WhisperSystems/Signal-Android.git && cd Signal-Android && git checkout $LATEST_SIGNAL_TAG" # get signal sources
-    - "for f in res/values*/strings.xml; do sed -i 's/<string.*name=\"app_name\".*>.*<\\/string>/<string name=\"app_name\">Langis<\\/string>/g' \"$f\"; done" # app rename
+    - "for f in app/src/main/res/values*/strings.xml; do sed -i 's/<string.*name=\"app_name\".*>.*<\\/string>/<string name=\"app_name\">Langis<\\/string>/g' \"$f\"; done" # app rename
+    
     - "./gradlew clean" # cleanup
     - "git apply $CI_PROJECT_DIR/destroy-gcm-support.patch" # apply our patch
     - "git apply $CI_PROJECT_DIR/fix-build-regretion-on-v4.30.2.patch"
