@@ -1,59 +1,81 @@
 diff --git a/app/src/main/AndroidManifest.xml b/app/src/main/AndroidManifest.xml
-index ae8952a55..cce9e2b9b 100644
+index ab96f79f4..794c11888 100644
 --- a/app/src/main/AndroidManifest.xml
 +++ b/app/src/main/AndroidManifest.xml
-@@ -503,12 +503,6 @@
+@@ -537,13 +537,13 @@
  
      <service android:name=".service.GenericForegroundService"/>
  
--    <service android:name=".gcm.FcmService">
--        <intent-filter>
--            <action android:name="com.google.firebase.MESSAGING_EVENT" />
--        </intent-filter>
+-    <service android:name=".gcm.FcmFetchService" />
++    <!-- <service android:name=".gcm.FcmFetchService" />
+ 
+     <service android:name=".gcm.FcmReceiveService">
+         <intent-filter>
+             <action android:name="com.google.firebase.MESSAGING_EVENT" />
+         </intent-filter>
 -    </service>
--
++    </service> -->
+ 
      <receiver android:name=".service.SmsListener"
                android:permission="android.permission.BROADCAST_SMS"
-               android:enabled="true"
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/registration/fragments/EnterPhoneNumberFragment.java b/app/src/main/java/org/thoughtcrime/securesms/registration/fragments/EnterPhoneNumberFragment.java
-index c0b2521b0..33e09621e 100644
+index 20a61e7a4..bc15a1bcf 100644
 --- a/app/src/main/java/org/thoughtcrime/securesms/registration/fragments/EnterPhoneNumberFragment.java
 +++ b/app/src/main/java/org/thoughtcrime/securesms/registration/fragments/EnterPhoneNumberFragment.java
-@@ -144,18 +144,7 @@ public final class EnterPhoneNumberFragment extends BaseRegistrationFragment {
+@@ -40,7 +40,7 @@ import org.thoughtcrime.securesms.registration.service.RegistrationService;
+ import org.thoughtcrime.securesms.registration.viewmodel.NumberViewState;
+ import org.thoughtcrime.securesms.registration.viewmodel.RegistrationViewModel;
+ import org.thoughtcrime.securesms.util.Dialogs;
+-import org.thoughtcrime.securesms.util.PlayServicesUtil;
++// import org.thoughtcrime.securesms.util.PlayServicesUtil;
+ 
+ public final class EnterPhoneNumberFragment extends BaseRegistrationFragment {
+ 
+@@ -144,18 +144,18 @@ public final class EnterPhoneNumberFragment extends BaseRegistrationFragment {
        return;
      }
  
 -    PlayServicesUtil.PlayServicesStatus fcmStatus = PlayServicesUtil.getPlayServicesStatus(context);
--
++    // PlayServicesUtil.PlayServicesStatus fcmStatus = PlayServicesUtil.getPlayServicesStatus(context);
+ 
 -    if (fcmStatus == PlayServicesUtil.PlayServicesStatus.SUCCESS) {
 -      handleRequestVerification(context, e164number, true);
 -    } else if (fcmStatus == PlayServicesUtil.PlayServicesStatus.MISSING) {
--      handlePromptForNoPlayServices(context, e164number);
++    // if (fcmStatus == PlayServicesUtil.PlayServicesStatus.SUCCESS) {
++    //   handleRequestVerification(context, e164number, true);
++    // } else if (fcmStatus == PlayServicesUtil.PlayServicesStatus.MISSING) {
+       handlePromptForNoPlayServices(context, e164number);
 -    } else if (fcmStatus == PlayServicesUtil.PlayServicesStatus.NEEDS_UPDATE) {
 -      GoogleApiAvailability.getInstance().getErrorDialog(requireActivity(), ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED, 0).show();
 -    } else {
 -      Dialogs.showAlertDialog(context, getString(R.string.RegistrationActivity_play_services_error),
 -        getString(R.string.RegistrationActivity_google_play_services_is_updating_or_unavailable));
 -    }
-+    handlePromptForNoPlayServices(context, e164number);
++    // } else if (fcmStatus == PlayServicesUtil.PlayServicesStatus.NEEDS_UPDATE) {
++    //   GoogleApiAvailability.getInstance().getErrorDialog(requireActivity(), ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED, 0).show();
++    // } else {
++    //   Dialogs.showAlertDialog(context, getString(R.string.RegistrationActivity_play_services_error),
++    //     getString(R.string.RegistrationActivity_google_play_services_is_updating_or_unavailable));
++    // }
    }
  
    private void handleRequestVerification(@NonNull Context context, @NonNull String e164number, boolean fcmSupported) {
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/util/TextSecurePreferences.java b/app/src/main/java/org/thoughtcrime/securesms/util/TextSecurePreferences.java
-index 9c2c69044..72aa2326c 100644
+index 969f146b6..5d8bbbc0e 100644
 --- a/app/src/main/java/org/thoughtcrime/securesms/util/TextSecurePreferences.java
 +++ b/app/src/main/java/org/thoughtcrime/securesms/util/TextSecurePreferences.java
-@@ -427,11 +427,10 @@ public class TextSecurePreferences {
+@@ -448,11 +448,12 @@ public class TextSecurePreferences {
    }
  
    public static boolean isFcmDisabled(Context context) {
 -    return getBooleanPreference(context, GCM_DISABLED_PREF, false);
-+    return true;
++    return false;
++    // return getBooleanPreference(context, GCM_DISABLED_PREF, false);
    }
  
    public static void setFcmDisabled(Context context, boolean disabled) {
 -    setBooleanPreference(context, GCM_DISABLED_PREF, disabled);
++    // setBooleanPreference(context, GCM_DISABLED_PREF, disabled);
    }
  
    public static boolean isWebrtcCallingEnabled(Context context) {
-        
