@@ -1,5 +1,5 @@
 diff --git a/app/src/main/AndroidManifest.xml b/app/src/main/AndroidManifest.xml
-index ab96f79f4..794c11888 100644
+index ab96f79f4..7c3e9cfc6 100644
 --- a/app/src/main/AndroidManifest.xml
 +++ b/app/src/main/AndroidManifest.xml
 @@ -537,13 +537,13 @@
@@ -7,9 +7,10 @@ index ab96f79f4..794c11888 100644
      <service android:name=".service.GenericForegroundService"/>
  
 -    <service android:name=".gcm.FcmFetchService" />
-+    <!-- <service android:name=".gcm.FcmFetchService" />
++    <!-- <service android:name=".gcm.FcmFetchService" /> -->
  
-     <service android:name=".gcm.FcmReceiveService">
+-    <service android:name=".gcm.FcmReceiveService">
++    <!-- <service android:name=".gcm.FcmReceiveService">
          <intent-filter>
              <action android:name="com.google.firebase.MESSAGING_EVENT" />
          </intent-filter>
@@ -19,24 +20,12 @@ index ab96f79f4..794c11888 100644
      <receiver android:name=".service.SmsListener"
                android:permission="android.permission.BROADCAST_SMS"
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/registration/fragments/EnterPhoneNumberFragment.java b/app/src/main/java/org/thoughtcrime/securesms/registration/fragments/EnterPhoneNumberFragment.java
-index 20a61e7a4..bc15a1bcf 100644
+index 20a61e7a4..702d1d370 100644
 --- a/app/src/main/java/org/thoughtcrime/securesms/registration/fragments/EnterPhoneNumberFragment.java
 +++ b/app/src/main/java/org/thoughtcrime/securesms/registration/fragments/EnterPhoneNumberFragment.java
-@@ -40,7 +40,7 @@ import org.thoughtcrime.securesms.registration.service.RegistrationService;
- import org.thoughtcrime.securesms.registration.viewmodel.NumberViewState;
- import org.thoughtcrime.securesms.registration.viewmodel.RegistrationViewModel;
- import org.thoughtcrime.securesms.util.Dialogs;
--import org.thoughtcrime.securesms.util.PlayServicesUtil;
-+// import org.thoughtcrime.securesms.util.PlayServicesUtil;
+@@ -146,16 +146,16 @@ public final class EnterPhoneNumberFragment extends BaseRegistrationFragment {
  
- public final class EnterPhoneNumberFragment extends BaseRegistrationFragment {
- 
-@@ -144,18 +144,18 @@ public final class EnterPhoneNumberFragment extends BaseRegistrationFragment {
-       return;
-     }
- 
--    PlayServicesUtil.PlayServicesStatus fcmStatus = PlayServicesUtil.getPlayServicesStatus(context);
-+    // PlayServicesUtil.PlayServicesStatus fcmStatus = PlayServicesUtil.getPlayServicesStatus(context);
+     PlayServicesUtil.PlayServicesStatus fcmStatus = PlayServicesUtil.getPlayServicesStatus(context);
  
 -    if (fcmStatus == PlayServicesUtil.PlayServicesStatus.SUCCESS) {
 -      handleRequestVerification(context, e164number, true);
@@ -60,22 +49,53 @@ index 20a61e7a4..bc15a1bcf 100644
    }
  
    private void handleRequestVerification(@NonNull Context context, @NonNull String e164number, boolean fcmSupported) {
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/registration/service/CodeVerificationRequest.java b/app/src/main/java/org/thoughtcrime/securesms/registration/service/CodeVerificationRequest.java
+index b6bd280e8..000b9fc7b 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/registration/service/CodeVerificationRequest.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/registration/service/CodeVerificationRequest.java
+@@ -208,7 +208,9 @@ public final class CodeVerificationRequest {
+     KbsPinData                  kbsData            = isV2RegistrationLock ? PinState.restoreMasterKey(pin, kbsStorageCredentials, kbsTokenResponse) : null;
+     String                      registrationLockV2 = kbsData != null ? kbsData.getMasterKey().deriveRegistrationLock() : null;
+     String                      registrationLockV1 = isV2RegistrationLock ? null : pin;
++
+     boolean                     hasFcm             = fcmToken != null;
++    hasFcm = false
+ 
+     Log.i(TAG, "Calling verifyAccountWithCode(): reglockV1? " + !TextUtils.isEmpty(registrationLockV1) + ", reglockV2? " + !TextUtils.isEmpty(registrationLockV2));
+ 
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/util/PlayServicesUtil.java b/app/src/main/java/org/thoughtcrime/securesms/util/PlayServicesUtil.java
+index fe629ba90..5da583c0f 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/util/PlayServicesUtil.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/util/PlayServicesUtil.java
+@@ -23,12 +23,12 @@ public class PlayServicesUtil {
+   public static PlayServicesStatus getPlayServicesStatus(Context context) {
+     int gcmStatus = 0;
+ 
+-    try {
+-      gcmStatus = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context);
+-    } catch (Throwable t) {
+-      Log.w(TAG, t);
++    // try {
++    //   gcmStatus = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context);
++    // } catch (Throwable t) {
++    //   Log.w(TAG, t);
+       return PlayServicesStatus.MISSING;
+-    }
++    // }
+ 
+     Log.i(TAG, "Play Services: " + gcmStatus);
+ 
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/util/TextSecurePreferences.java b/app/src/main/java/org/thoughtcrime/securesms/util/TextSecurePreferences.java
-index 969f146b6..5d8bbbc0e 100644
+index 969f146b6..a49fd2337 100644
 --- a/app/src/main/java/org/thoughtcrime/securesms/util/TextSecurePreferences.java
 +++ b/app/src/main/java/org/thoughtcrime/securesms/util/TextSecurePreferences.java
-@@ -448,11 +448,12 @@ public class TextSecurePreferences {
+@@ -448,7 +448,8 @@ public class TextSecurePreferences {
    }
  
    public static boolean isFcmDisabled(Context context) {
 -    return getBooleanPreference(context, GCM_DISABLED_PREF, false);
-+    return false;
++    return true
 +    // return getBooleanPreference(context, GCM_DISABLED_PREF, false);
    }
  
    public static void setFcmDisabled(Context context, boolean disabled) {
--    setBooleanPreference(context, GCM_DISABLED_PREF, disabled);
-+    // setBooleanPreference(context, GCM_DISABLED_PREF, disabled);
-   }
- 
-   public static boolean isWebrtcCallingEnabled(Context context) {
