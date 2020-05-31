@@ -94,7 +94,7 @@ index 969f146b6..a49fd2337 100644
  
    public static boolean isFcmDisabled(Context context) {
 -    return getBooleanPreference(context, GCM_DISABLED_PREF, false);
-+    return true
++    return true;
 +    // return getBooleanPreference(context, GCM_DISABLED_PREF, false);
    }
  
