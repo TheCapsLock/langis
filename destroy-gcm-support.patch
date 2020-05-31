@@ -50,7 +50,7 @@ index 20a61e7a4..702d1d370 100644
  
    private void handleRequestVerification(@NonNull Context context, @NonNull String e164number, boolean fcmSupported) {
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/registration/service/CodeVerificationRequest.java b/app/src/main/java/org/thoughtcrime/securesms/registration/service/CodeVerificationRequest.java
-index b6bd280e8..000b9fc7b 100644
+index b6bd280e8..92a75dfdc 100644
 --- a/app/src/main/java/org/thoughtcrime/securesms/registration/service/CodeVerificationRequest.java
 +++ b/app/src/main/java/org/thoughtcrime/securesms/registration/service/CodeVerificationRequest.java
 @@ -208,7 +208,9 @@ public final class CodeVerificationRequest {
@@ -64,10 +64,10 @@ index b6bd280e8..000b9fc7b 100644
      Log.i(TAG, "Calling verifyAccountWithCode(): reglockV1? " + !TextUtils.isEmpty(registrationLockV1) + ", reglockV2? " + !TextUtils.isEmpty(registrationLockV2));
  
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/util/PlayServicesUtil.java b/app/src/main/java/org/thoughtcrime/securesms/util/PlayServicesUtil.java
-index fe629ba90..5da583c0f 100644
+index fe629ba90..fc8258d4c 100644
 --- a/app/src/main/java/org/thoughtcrime/securesms/util/PlayServicesUtil.java
 +++ b/app/src/main/java/org/thoughtcrime/securesms/util/PlayServicesUtil.java
-@@ -23,12 +23,12 @@ public class PlayServicesUtil {
+@@ -23,39 +23,39 @@ public class PlayServicesUtil {
    public static PlayServicesStatus getPlayServicesStatus(Context context) {
      int gcmStatus = 0;
  
@@ -81,12 +81,66 @@ index fe629ba90..5da583c0f 100644
 +    //   Log.w(TAG, t);
        return PlayServicesStatus.MISSING;
 -    }
-+    // }
+-
+-    Log.i(TAG, "Play Services: " + gcmStatus);
+-
+-    switch (gcmStatus) {
+-      case ConnectionResult.SUCCESS:
+-        return PlayServicesStatus.SUCCESS;
+-      case ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED:
+-        try {
+-          ApplicationInfo applicationInfo = context.getPackageManager().getApplicationInfo("com.google.android.gms", 0);
+-
+-          if (applicationInfo != null && !applicationInfo.enabled) {
+-            return PlayServicesStatus.MISSING;
+-          }
+-        } catch (PackageManager.NameNotFoundException e) {
+-          Log.w(TAG, e);
+-        }
+-
+-        return PlayServicesStatus.NEEDS_UPDATE;
+-      case ConnectionResult.SERVICE_DISABLED:
+-      case ConnectionResult.SERVICE_MISSING:
+-      case ConnectionResult.SERVICE_INVALID:
+-      case ConnectionResult.API_UNAVAILABLE:
+-      case ConnectionResult.SERVICE_MISSING_PERMISSION:
+-        return PlayServicesStatus.MISSING;
+-      default:
+-        return PlayServicesStatus.TRANSIENT_ERROR;
+-    }
++//    // }
++//
++//    Log.i(TAG, "Play Services: " + gcmStatus);
++//
++//    switch (gcmStatus) {
++//      case ConnectionResult.SUCCESS:
++//        return PlayServicesStatus.SUCCESS;
++//      case ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED:
++//        try {
++//          ApplicationInfo applicationInfo = context.getPackageManager().getApplicationInfo("com.google.android.gms", 0);
++//
++//          if (applicationInfo != null && !applicationInfo.enabled) {
++//            return PlayServicesStatus.MISSING;
++//          }
++//        } catch (PackageManager.NameNotFoundException e) {
++//          Log.w(TAG, e);
++//        }
++//
++//        return PlayServicesStatus.NEEDS_UPDATE;
++//      case ConnectionResult.SERVICE_DISABLED:
++//      case ConnectionResult.SERVICE_MISSING:
++//      case ConnectionResult.SERVICE_INVALID:
++//      case ConnectionResult.API_UNAVAILABLE:
++//      case ConnectionResult.SERVICE_MISSING_PERMISSION:
++//        return PlayServicesStatus.MISSING;
++//      default:
++//        return PlayServicesStatus.TRANSIENT_ERROR;
++//    }
+   }
  
-     Log.i(TAG, "Play Services: " + gcmStatus);
- 
+ }
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/util/TextSecurePreferences.java b/app/src/main/java/org/thoughtcrime/securesms/util/TextSecurePreferences.java
-index 969f146b6..a49fd2337 100644
+index 969f146b6..1feb23cff 100644
 --- a/app/src/main/java/org/thoughtcrime/securesms/util/TextSecurePreferences.java
 +++ b/app/src/main/java/org/thoughtcrime/securesms/util/TextSecurePreferences.java
 @@ -448,7 +448,8 @@ public class TextSecurePreferences {
