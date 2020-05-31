@@ -59,7 +59,7 @@ index b6bd280e8..000b9fc7b 100644
      String                      registrationLockV1 = isV2RegistrationLock ? null : pin;
 +
      boolean                     hasFcm             = fcmToken != null;
-+    hasFcm = false
++    hasFcm = false;
  
      Log.i(TAG, "Calling verifyAccountWithCode(): reglockV1? " + !TextUtils.isEmpty(registrationLockV1) + ", reglockV2? " + !TextUtils.isEmpty(registrationLockV2));
  
