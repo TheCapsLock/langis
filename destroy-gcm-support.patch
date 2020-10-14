@@ -1,26 +1,29 @@
 diff --git a/app/src/main/AndroidManifest.xml b/app/src/main/AndroidManifest.xml
-index ab96f79f4..7c3e9cfc6 100644
+index 1221f99d4..c1a332c86 100644
 --- a/app/src/main/AndroidManifest.xml
 +++ b/app/src/main/AndroidManifest.xml
-@@ -537,13 +537,13 @@
+@@ -578,13 +578,13 @@
  
      <service android:name=".service.GenericForegroundService"/>
  
 -    <service android:name=".gcm.FcmFetchService" />
-+    <!-- <service android:name=".gcm.FcmFetchService" /> -->
++<!--    <service android:name=".gcm.FcmFetchService" />-->
  
 -    <service android:name=".gcm.FcmReceiveService">
-+    <!-- <service android:name=".gcm.FcmReceiveService">
-         <intent-filter>
-             <action android:name="com.google.firebase.MESSAGING_EVENT" />
-         </intent-filter>
+-        <intent-filter>
+-            <action android:name="com.google.firebase.MESSAGING_EVENT" />
+-        </intent-filter>
 -    </service>
-+    </service> -->
++<!--    <service android:name=".gcm.FcmReceiveService">-->
++<!--        <intent-filter>-->
++<!--            <action android:name="com.google.firebase.MESSAGING_EVENT" />-->
++<!--        </intent-filter>-->
++<!--    </service>-->
  
      <receiver android:name=".service.SmsListener"
                android:permission="android.permission.BROADCAST_SMS"
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/registration/fragments/EnterPhoneNumberFragment.java b/app/src/main/java/org/thoughtcrime/securesms/registration/fragments/EnterPhoneNumberFragment.java
-index 20a61e7a4..702d1d370 100644
+index 84dad4f3f..7b8610852 100644
 --- a/app/src/main/java/org/thoughtcrime/securesms/registration/fragments/EnterPhoneNumberFragment.java
 +++ b/app/src/main/java/org/thoughtcrime/securesms/registration/fragments/EnterPhoneNumberFragment.java
 @@ -146,16 +146,16 @@ public final class EnterPhoneNumberFragment extends BaseRegistrationFragment {
@@ -30,9 +33,9 @@ index 20a61e7a4..702d1d370 100644
 -    if (fcmStatus == PlayServicesUtil.PlayServicesStatus.SUCCESS) {
 -      handleRequestVerification(context, e164number, true);
 -    } else if (fcmStatus == PlayServicesUtil.PlayServicesStatus.MISSING) {
-+    // if (fcmStatus == PlayServicesUtil.PlayServicesStatus.SUCCESS) {
-+    //   handleRequestVerification(context, e164number, true);
-+    // } else if (fcmStatus == PlayServicesUtil.PlayServicesStatus.MISSING) {
++//    if (fcmStatus == PlayServicesUtil.PlayServicesStatus.SUCCESS) {
++//      handleRequestVerification(context, e164number, true);
++//    } else if (fcmStatus == PlayServicesUtil.PlayServicesStatus.MISSING) {
        handlePromptForNoPlayServices(context, e164number);
 -    } else if (fcmStatus == PlayServicesUtil.PlayServicesStatus.NEEDS_UPDATE) {
 -      GoogleApiAvailability.getInstance().getErrorDialog(requireActivity(), ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED, 0).show();
@@ -40,45 +43,45 @@ index 20a61e7a4..702d1d370 100644
 -      Dialogs.showAlertDialog(context, getString(R.string.RegistrationActivity_play_services_error),
 -        getString(R.string.RegistrationActivity_google_play_services_is_updating_or_unavailable));
 -    }
-+    // } else if (fcmStatus == PlayServicesUtil.PlayServicesStatus.NEEDS_UPDATE) {
-+    //   GoogleApiAvailability.getInstance().getErrorDialog(requireActivity(), ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED, 0).show();
-+    // } else {
-+    //   Dialogs.showAlertDialog(context, getString(R.string.RegistrationActivity_play_services_error),
-+    //     getString(R.string.RegistrationActivity_google_play_services_is_updating_or_unavailable));
-+    // }
++//    } else if (fcmStatus == PlayServicesUtil.PlayServicesStatus.NEEDS_UPDATE) {
++//      GoogleApiAvailability.getInstance().getErrorDialog(requireActivity(), ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED, 0).show();
++//    } else {
++//      Dialogs.showAlertDialog(context, getString(R.string.RegistrationActivity_play_services_error),
++//        getString(R.string.RegistrationActivity_google_play_services_is_updating_or_unavailable));
++//    }
    }
  
    private void handleRequestVerification(@NonNull Context context, @NonNull String e164number, boolean fcmSupported) {
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/registration/service/CodeVerificationRequest.java b/app/src/main/java/org/thoughtcrime/securesms/registration/service/CodeVerificationRequest.java
-index b6bd280e8..92a75dfdc 100644
+index 2bebb0a1e..c8623ea16 100644
 --- a/app/src/main/java/org/thoughtcrime/securesms/registration/service/CodeVerificationRequest.java
 +++ b/app/src/main/java/org/thoughtcrime/securesms/registration/service/CodeVerificationRequest.java
-@@ -208,7 +208,9 @@ public final class CodeVerificationRequest {
-     KbsPinData                  kbsData            = isV2RegistrationLock ? PinState.restoreMasterKey(pin, kbsStorageCredentials, kbsTokenResponse) : null;
+@@ -210,6 +210,7 @@ public final class CodeVerificationRequest {
      String                      registrationLockV2 = kbsData != null ? kbsData.getMasterKey().deriveRegistrationLock() : null;
      String                      registrationLockV1 = isV2RegistrationLock ? null : pin;
-+
      boolean                     hasFcm             = fcmToken != null;
 +    hasFcm = false;
  
      Log.i(TAG, "Calling verifyAccountWithCode(): reglockV1? " + !TextUtils.isEmpty(registrationLockV1) + ", reglockV2? " + !TextUtils.isEmpty(registrationLockV2));
  
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/util/PlayServicesUtil.java b/app/src/main/java/org/thoughtcrime/securesms/util/PlayServicesUtil.java
-index fe629ba90..fc8258d4c 100644
+index fe629ba90..c7b3d94d1 100644
 --- a/app/src/main/java/org/thoughtcrime/securesms/util/PlayServicesUtil.java
 +++ b/app/src/main/java/org/thoughtcrime/securesms/util/PlayServicesUtil.java
-@@ -23,39 +23,39 @@ public class PlayServicesUtil {
+@@ -22,40 +22,40 @@ public class PlayServicesUtil {
+ 
    public static PlayServicesStatus getPlayServicesStatus(Context context) {
      int gcmStatus = 0;
- 
+-
 -    try {
 -      gcmStatus = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context);
 -    } catch (Throwable t) {
 -      Log.w(TAG, t);
-+    // try {
-+    //   gcmStatus = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context);
-+    // } catch (Throwable t) {
-+    //   Log.w(TAG, t);
++//
++//    try {
++//      gcmStatus = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context);
++//    } catch (Throwable t) {
++//      Log.w(TAG, t);
        return PlayServicesStatus.MISSING;
 -    }
 -
@@ -108,24 +111,24 @@ index fe629ba90..fc8258d4c 100644
 -      default:
 -        return PlayServicesStatus.TRANSIENT_ERROR;
 -    }
-+//    // }
-+//
++//    }
++
 +//    Log.i(TAG, "Play Services: " + gcmStatus);
-+//
++
 +//    switch (gcmStatus) {
 +//      case ConnectionResult.SUCCESS:
 +//        return PlayServicesStatus.SUCCESS;
 +//      case ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED:
 +//        try {
 +//          ApplicationInfo applicationInfo = context.getPackageManager().getApplicationInfo("com.google.android.gms", 0);
-+//
++
 +//          if (applicationInfo != null && !applicationInfo.enabled) {
 +//            return PlayServicesStatus.MISSING;
 +//          }
 +//        } catch (PackageManager.NameNotFoundException e) {
 +//          Log.w(TAG, e);
 +//        }
-+//
++
 +//        return PlayServicesStatus.NEEDS_UPDATE;
 +//      case ConnectionResult.SERVICE_DISABLED:
 +//      case ConnectionResult.SERVICE_MISSING:
@@ -140,16 +143,17 @@ index fe629ba90..fc8258d4c 100644
  
  }
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/util/TextSecurePreferences.java b/app/src/main/java/org/thoughtcrime/securesms/util/TextSecurePreferences.java
-index 969f146b6..1feb23cff 100644
+index 8c388ec07..c48dd1c88 100644
 --- a/app/src/main/java/org/thoughtcrime/securesms/util/TextSecurePreferences.java
 +++ b/app/src/main/java/org/thoughtcrime/securesms/util/TextSecurePreferences.java
-@@ -448,7 +448,8 @@ public class TextSecurePreferences {
+@@ -445,7 +445,8 @@ public class TextSecurePreferences {
    }
  
    public static boolean isFcmDisabled(Context context) {
 -    return getBooleanPreference(context, GCM_DISABLED_PREF, false);
++//    return getBooleanPreference(context, GCM_DISABLED_PREF, false);
 +    return true;
-+    // return getBooleanPreference(context, GCM_DISABLED_PREF, false);
    }
  
    public static void setFcmDisabled(Context context, boolean disabled) {
+   
