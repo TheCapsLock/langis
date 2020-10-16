@@ -36,7 +36,7 @@ patch_and_build_signal:
     
     - "./gradlew clean" # cleanup
     - "git apply $CI_PROJECT_DIR/destroy-gcm-support.patch" # apply our patch
-    - "git apply $CI_PROJECT_DIR/fix-build-regretion-on-v4.30.2.patch"
+    #- "git apply $CI_PROJECT_DIR/fix-build-regretion-on-v4.30.2.patch"
     - "./gradlew --stacktrace assembleWebsiteRelease" #assembleWebsiteDebug
     - "mkdir -p $CI_PROJECT_DIR/artifacts"
     - "find $CI_PROJECT_DIR/Signal-Android/app/build/outputs -name *.apk"
