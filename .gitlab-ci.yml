@@ -16,7 +16,7 @@ patch_and_build_signal:
   script:
     - apk add git curl jq
     - apk add openjdk11-jdk # (jarsigner)
-    - "export LATEST_SIGNAL_TAG=\"$(curl https://api.github.com/repos/signalapp/Signal-Android/tags | jq -r '.[] .name' | sort -nr | head -n1)\""
+    - "export LATEST_SIGNAL_TAG=\"$(curl https://api.github.com/repos/signalapp/Signal-Android/tags | jq -r '.[] .name' | sed '/-/!{s/$/_/}' | sort -V | sed 's/_$//'|tail -n1)\""
     #- "export LATEST_SIGNAL_TAG=\"$(git ls-remote --tags https://github.com/signalapp/Signal-Android | sed 's|.*/\\(.*\\)$|\\1|' | grep -v '\\^' | sort -t. -k1,1nr -k2,2nr -k3,3nr|grep -e '^v.*' | head -n 1)\""
     - "if [[ -z \"$LATEST_SIGNAL_TAG\" ]]; then exit 2; fi"
     - "echo \"Latest git version is $LATEST_SIGNAL_TAG\""
