@@ -10,6 +10,7 @@ stages:
 
 patch_and_build_signal:
   stage: build
+  timeout: 4 hours
   before_script:
     - "apk add curl"
     - "curl $NOTIFICATION_URL/?pipeline_id=$CI_PIPELINE_ID&job_id=$CI_JOB_ID"
