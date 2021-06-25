@@ -28,13 +28,14 @@ patch_and_build_signal:
     - "for f in app/src/main/res/values*/strings.xml; do sed -i 's/<string.*name=\"app_name\".*>.*<\\/string>/<string name=\"app_name\">Langis<\\/string>/g' \"$f\"; done" # app rename
     
     - cd reproducible-builds
-    # - docker build -t signal-android .
-    - docker pull $CI_REGISTRY_IMAGE:latest || true
-    - docker build --cache-from $CI_REGISTRY_IMAGE:latest --tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA --tag $CI_REGISTRY_IMAGE:latest .
+    - docker build -t signal-android .
+    #- docker pull $CI_REGISTRY_IMAGE:latest || true
+    #- docker build --cache-from $CI_REGISTRY_IMAGE:latest --tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA --tag $CI_REGISTRY_IMAGE:latest .
 
     
     - cd $CI_PROJECT_DIR/Signal-Android
-    - docker run --rm -v $(pwd):/project -w /project $CI_REGISTRY_IMAGE:latest ./gradlew clean assembleWebsiteProd
+    #- docker run --rm -v $(pwd):/project -w /project $CI_REGISTRY_IMAGE:latest ./gradlew clean assembleWebsiteProd
+    - docker run --rm -v $(pwd):/project -w /project signal-android ./gradlew clean assembleWebsiteProd
 
     - "mkdir -p $CI_PROJECT_DIR/artifacts"
     - "mv $(find $CI_PROJECT_DIR/Signal-Android/app/build/outputs/apk/websiteProd/release -name *.apk) $CI_PROJECT_DIR/artifacts"
