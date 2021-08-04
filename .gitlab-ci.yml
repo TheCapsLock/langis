@@ -46,8 +46,14 @@ patch_and_build_signal:
     #   keytool -genkey -v -keystore keystore.keystore -keyalg RSA -keysize 2048 -validity 10000 -alias app
     #   cat keystore.keystore | base64 > keystore.base64
     # then we provide that base64 encoded file to the CI ; you'll get it back to its original format write after this command is run:
-    - "echo \"$KEYSTORE_CRT\" |base64 -d > /keystore.keystore"
-    - "for f in $CI_PROJECT_DIR/artifacts/*unsigned*.apk; do SIGNED_FNAME=\"$(echo $f |sed 's/unsigned/signed/g')\"; echo \"Signing $f\"; /usr/lib/jvm/java-11-openjdk/bin/jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore /keystore.keystore -storepass \"$KEYSTORE_PASSPHR\" $f -signedjar \"$SIGNED_FNAME\" app ;done"
+    #- mkdir /ks
+    #- "echo \"$KEYSTORE_CRT\" |base64 -d > /ks/keystore.keystore"
+    #- "for f in $CI_PROJECT_DIR/artifacts/*unsigned*.apk; do SIGNED_FNAME=\"$(echo $f |sed 's/unsigned/signed/g')\"; echo \"Signing $f\"; /usr/lib/jvm/java-11-openjdk/bin/jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore /keystore.keystore -storepass \"$KEYSTORE_PASSPHR\" $f -signedjar \"$SIGNED_FNAME\" app ;done"
+    #- "for f in $CI_PROJECT_DIR/artifacts/*unsigned*.apk; do SIGNED_FNAME=\"$(basename $f |sed 's/unsigned/signed/g').apk\"; docker run --rm -v $CI_PROJECT_DIR/artifacts/:/apks -v /ks:/ks signal-android /usr/local/android-sdk-linux/build-tools/30.0.2/apksigner sign --ks /ks/keystore.keystore --ks-pass pass:$KEYSTORE_PASSPHR --out \"/apks/$SIGNED_FNAME\" \"/apks/$f\" ; done"
+    
+    - cp $CI_PROJECT_DIR/sign.sh $CI_PROJECT_DIR/artifacts/
+    - docker run --rm -v $CI_PROJECT_DIR/artifacts/:/apks -e KEYSTORE_PASSPHR="$KEYSTORE_PASSPHR" -e KEYSTORE_CRT="$KEYSTORE_CRT" signal-android /bin/bash -c "chmod +x /apks/sign.sh && /apks/sign.sh"
+
     - "rm $CI_PROJECT_DIR/artifacts/*unsigned*.apk"
     - "cd $CI_PROJECT_DIR/artifacts/ && for f in $(find . -iname \"*signal*.apk\"); do mv \"$f\" \"$(echo $f|sed \"s/[Ss][Ii][Gg][Nn][Aa][Ll]/langis/\")\"; done"
     - "ls -lh $CI_PROJECT_DIR/artifacts"
