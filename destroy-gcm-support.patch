@@ -1,85 +1,75 @@
 diff --git a/app/src/main/AndroidManifest.xml b/app/src/main/AndroidManifest.xml
-index 7606e5809..f3e976cd1 100644
+index 89e5aefcf..7fa0ef311 100644
 --- a/app/src/main/AndroidManifest.xml
 +++ b/app/src/main/AndroidManifest.xml
-@@ -589,13 +589,13 @@
+@@ -671,13 +671,13 @@
  
      <service android:name=".service.GenericForegroundService"/>
  
 -    <service android:name=".gcm.FcmFetchService" />
-+    <!-- <service android:name=".gcm.FcmFetchService" /> -->
++<!--    <service android:name=".gcm.FcmFetchService" />-->
  
 -    <service android:name=".gcm.FcmReceiveService">
-+    <!-- <service android:name=".gcm.FcmReceiveService">
-         <intent-filter>
-             <action android:name="com.google.firebase.MESSAGING_EVENT" />
-         </intent-filter>
+-        <intent-filter>
+-            <action android:name="com.google.firebase.MESSAGING_EVENT" />
+-        </intent-filter>
 -    </service>
-+    </service> -->
++<!--    <service android:name=".gcm.FcmReceiveService">-->
++<!--        <intent-filter>-->
++<!--            <action android:name="com.google.firebase.MESSAGING_EVENT" />-->
++<!--        </intent-filter>-->
++<!--    </service>-->
  
      <receiver android:name=".service.SmsListener"
                android:permission="android.permission.BROADCAST_SMS"
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/registration/fragments/EnterPhoneNumberFragment.java b/app/src/main/java/org/thoughtcrime/securesms/registration/fragments/EnterPhoneNumberFragment.java
-index 679575419..f4beccd6f 100644
+index c2a767b73..d2b2ce87c 100644
 --- a/app/src/main/java/org/thoughtcrime/securesms/registration/fragments/EnterPhoneNumberFragment.java
 +++ b/app/src/main/java/org/thoughtcrime/securesms/registration/fragments/EnterPhoneNumberFragment.java
-@@ -146,16 +146,16 @@ public final class EnterPhoneNumberFragment extends BaseRegistrationFragment {
+@@ -160,17 +160,17 @@ public final class EnterPhoneNumberFragment extends LoggingFragment implements R
  
      PlayServicesUtil.PlayServicesStatus fcmStatus = PlayServicesUtil.getPlayServicesStatus(context);
  
 -    if (fcmStatus == PlayServicesUtil.PlayServicesStatus.SUCCESS) {
--      confirmNumberPrompt(context, e164number, () -> handleRequestVerification(context, e164number, true));
+-      confirmNumberPrompt(context, e164number, () -> handleRequestVerification(context, true));
 -    } else if (fcmStatus == PlayServicesUtil.PlayServicesStatus.MISSING) {
-+    // if (fcmStatus == PlayServicesUtil.PlayServicesStatus.SUCCESS) {
-+    //   confirmNumberPrompt(context, e164number, () -> handleRequestVerification(context, e164number, true));
-+    // } else if (fcmStatus == PlayServicesUtil.PlayServicesStatus.MISSING) {
-       confirmNumberPrompt(context, e164number, () -> handlePromptForNoPlayServices(context, e164number));
++//    if (fcmStatus == PlayServicesUtil.PlayServicesStatus.SUCCESS) {
++//      confirmNumberPrompt(context, e164number, () -> handleRequestVerification(context, true));
++//    } else if (fcmStatus == PlayServicesUtil.PlayServicesStatus.MISSING) {
+       confirmNumberPrompt(context, e164number, () -> handlePromptForNoPlayServices(context));
 -    } else if (fcmStatus == PlayServicesUtil.PlayServicesStatus.NEEDS_UPDATE) {
 -      GoogleApiAvailability.getInstance().getErrorDialog(requireActivity(), ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED, 0).show();
 -    } else {
--      Dialogs.showAlertDialog(context, getString(R.string.RegistrationActivity_play_services_error),
--        getString(R.string.RegistrationActivity_google_play_services_is_updating_or_unavailable));
+-      Dialogs.showAlertDialog(context,
+-                              getString(R.string.RegistrationActivity_play_services_error),
+-                              getString(R.string.RegistrationActivity_google_play_services_is_updating_or_unavailable));
 -    }
-+    // } else if (fcmStatus == PlayServicesUtil.PlayServicesStatus.NEEDS_UPDATE) {
-+    //   GoogleApiAvailability.getInstance().getErrorDialog(requireActivity(), ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED, 0).show();
-+    // } else {
-+    //   Dialogs.showAlertDialog(context, getString(R.string.RegistrationActivity_play_services_error),
-+    //     getString(R.string.RegistrationActivity_google_play_services_is_updating_or_unavailable));
-+    // }
++//    } else if (fcmStatus == PlayServicesUtil.PlayServicesStatus.NEEDS_UPDATE) {
++//      GoogleApiAvailability.getInstance().getErrorDialog(requireActivity(), ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED, 0).show();
++//    } else {
++//      Dialogs.showAlertDialog(context,
++//                              getString(R.string.RegistrationActivity_play_services_error),
++//                              getString(R.string.RegistrationActivity_google_play_services_is_updating_or_unavailable));
++//    }
    }
  
-   private void handleRequestVerification(@NonNull Context context, @NonNull String e164number, boolean fcmSupported) {
-diff --git a/app/src/main/java/org/thoughtcrime/securesms/registration/service/CodeVerificationRequest.java b/app/src/main/java/org/thoughtcrime/securesms/registration/service/CodeVerificationRequest.java
-index 9c0ccf56c..b851cab54 100644
---- a/app/src/main/java/org/thoughtcrime/securesms/registration/service/CodeVerificationRequest.java
-+++ b/app/src/main/java/org/thoughtcrime/securesms/registration/service/CodeVerificationRequest.java
-@@ -209,6 +209,7 @@ public final class CodeVerificationRequest {
-     String                      registrationLockV2 = kbsData != null ? kbsData.getMasterKey().deriveRegistrationLock() : null;
-     String                      registrationLockV1 = isV2RegistrationLock ? null : pin;
-     boolean                     hasFcm             = fcmToken != null;
-+    hasFcm = false;
- 
-     Log.i(TAG, "Calling verifyAccountWithCode(): reglockV1? " + !TextUtils.isEmpty(registrationLockV1) + ", reglockV2? " + !TextUtils.isEmpty(registrationLockV2));
- 
+   private void handleRequestVerification(@NonNull Context context, boolean fcmSupported) {
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/util/PlayServicesUtil.java b/app/src/main/java/org/thoughtcrime/securesms/util/PlayServicesUtil.java
-index 07928f3da..30f81a4bf 100644
+index 60143358b..90936d1b7 100644
 --- a/app/src/main/java/org/thoughtcrime/securesms/util/PlayServicesUtil.java
 +++ b/app/src/main/java/org/thoughtcrime/securesms/util/PlayServicesUtil.java
-@@ -22,41 +22,41 @@ public class PlayServicesUtil {
-   }
- 
+@@ -24,39 +24,39 @@ public class PlayServicesUtil {
    public static PlayServicesStatus getPlayServicesStatus(Context context) {
--    int gcmStatus = 0;
-+    // int gcmStatus = 0;
+     int gcmStatus = 0;
  
 -    try {
 -      gcmStatus = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context);
 -    } catch (Throwable t) {
 -      Log.w(TAG, t);
-+    // try {
-+    //   gcmStatus = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context);
-+    // } catch (Throwable t) {
-+    //   Log.w(TAG, t);
++//    try {
++//      gcmStatus = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context);
++//    } catch (Throwable t) {
++//      Log.w(TAG, t);
        return PlayServicesStatus.MISSING;
 -    }
 -
@@ -109,50 +99,54 @@ index 07928f3da..30f81a4bf 100644
 -      default:
 -        return PlayServicesStatus.TRANSIENT_ERROR;
 -    }
-+    // }
++//    }
 +
-+    // Log.i(TAG, "Play Services: " + gcmStatus);
-+
-+    // switch (gcmStatus) {
-+    //   case ConnectionResult.SUCCESS:
-+    //     return PlayServicesStatus.SUCCESS;
-+    //   case ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED:
-+    //     try {
-+    //       ApplicationInfo applicationInfo = context.getPackageManager().getApplicationInfo("com.google.android.gms", 0);
-+
-+    //       if (applicationInfo != null && !applicationInfo.enabled) {
-+    //         return PlayServicesStatus.MISSING;
-+    //       }
-+    //     } catch (PackageManager.NameNotFoundException e) {
-+    //       Log.w(TAG, e);
-+    //     }
-+
-+    //     return PlayServicesStatus.NEEDS_UPDATE;
-+    //   case ConnectionResult.SERVICE_DISABLED:
-+    //   case ConnectionResult.SERVICE_MISSING:
-+    //   case ConnectionResult.SERVICE_INVALID:
-+    //   case ConnectionResult.API_UNAVAILABLE:
-+    //   case ConnectionResult.SERVICE_MISSING_PERMISSION:
-+    //     return PlayServicesStatus.MISSING;
-+    //   default:
-+    //     return PlayServicesStatus.TRANSIENT_ERROR;
-+    // }
++//    Log.i(TAG, "Play Services: " + gcmStatus);
++//
++//    switch (gcmStatus) {
++//      case ConnectionResult.SUCCESS:
++//        return PlayServicesStatus.SUCCESS;
++//      case ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED:
++//        try {
++//          ApplicationInfo applicationInfo = context.getPackageManager().getApplicationInfo("com.google.android.gms", 0);
++//
++//          if (applicationInfo != null && !applicationInfo.enabled) {
++//            return PlayServicesStatus.MISSING;
++//          }
++//        } catch (PackageManager.NameNotFoundException e) {
++//          Log.w(TAG, e);
++//        }
++//
++//        return PlayServicesStatus.NEEDS_UPDATE;
++//      case ConnectionResult.SERVICE_DISABLED:
++//      case ConnectionResult.SERVICE_MISSING:
++//      case ConnectionResult.SERVICE_INVALID:
++//      case ConnectionResult.API_UNAVAILABLE:
++//      case ConnectionResult.SERVICE_MISSING_PERMISSION:
++//        return PlayServicesStatus.MISSING;
++//      default:
++//        return PlayServicesStatus.TRANSIENT_ERROR;
++//    }
    }
  
  }
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/util/TextSecurePreferences.java b/app/src/main/java/org/thoughtcrime/securesms/util/TextSecurePreferences.java
-index 6d8325d02..7ac27044e 100644
+index 95a1ad33b..5a4982bd2 100644
 --- a/app/src/main/java/org/thoughtcrime/securesms/util/TextSecurePreferences.java
 +++ b/app/src/main/java/org/thoughtcrime/securesms/util/TextSecurePreferences.java
-@@ -443,7 +443,8 @@ public class TextSecurePreferences {
+@@ -527,10 +527,12 @@ public class TextSecurePreferences {
    }
  
    public static boolean isFcmDisabled(Context context) {
 -    return getBooleanPreference(context, GCM_DISABLED_PREF, false);
-+    // return getBooleanPreference(context, GCM_DISABLED_PREF, false);
++//    return getBooleanPreference(context, GCM_DISABLED_PREF, false);
 +    return true;
    }
  
    public static void setFcmDisabled(Context context, boolean disabled) {
++    disabled = true;
+     setBooleanPreference(context, GCM_DISABLED_PREF, disabled);
+   }
+ 
 -- 
-2.25.4
+2.30.2
