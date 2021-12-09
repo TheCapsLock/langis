@@ -1,0 +1,15 @@
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/keyvalue/AccountValues.kt b/app/src/main/java/org/thoughtcrime/securesms/keyvalue/AccountValues.kt
+index 5b1e6df4f..0f1a7d1eb 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/keyvalue/AccountValues.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/keyvalue/AccountValues.kt
+@@ -82,8 +82,8 @@ internal class AccountValues internal constructor(store: KeyValueStore) : Signal
+   /** Indicates whether the user has the ability to receive FCM messages. Largely coupled to whether they have Play Service. */
+   var fcmEnabled: Boolean
+     @JvmName("isFcmEnabled")
+-    get() = getBoolean(KEY_FCM_ENABLED, false)
+-    set(value) = putBoolean(KEY_FCM_ENABLED, value)
++    get() = getBoolean(false, false)
++    set(value) = putBoolean(KEY_FCM_ENABLED, false)
+ 
+   /** The FCM token, which allows the server to send us FCM messages. */
+   var fcmToken: String?

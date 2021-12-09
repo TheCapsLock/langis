@@ -22,7 +22,13 @@ patch_and_build_signal:
 
     - git clone https://github.com/WhisperSystems/Signal-Android.git && cd Signal-Android && git checkout $LATEST_SIGNAL_TAG
     
-    - "git apply $CI_PROJECT_DIR/destroy-gcm-support.patch" # apply our patch
+    - "git apply $CI_PROJECT_DIR/0000-accountvalues.patch" # apply our patch
+    - "git apply $CI_PROJECT_DIR/0000-androidmanifest.patch" # apply our patch
+    - "git apply $CI_PROJECT_DIR/0000-applicationcontext.patch" # apply our patch
+    - "git apply $CI_PROJECT_DIR/0000-enterphonenumberfragment.patch" # apply our patch
+    - "git apply $CI_PROJECT_DIR/0000-playservicesutil.patch" # apply our patch
+    - "git apply $CI_PROJECT_DIR/0000-registrationdata.patch" # apply our patch
+    
     - "for f in app/src/main/res/values*/strings.xml; do sed -i 's/<string.*name=\"app_name\".*>.*<\\/string>/<string name=\"app_name\">Langis<\\/string>/g' \"$f\"; done" # app rename
     
     - cd reproducible-builds

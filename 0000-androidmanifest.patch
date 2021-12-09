@@ -1,0 +1,21 @@
+diff --git a/app/src/main/AndroidManifest.xml b/app/src/main/AndroidManifest.xml
+index 3bf92947d..85b892ad7 100644
+--- a/app/src/main/AndroidManifest.xml
++++ b/app/src/main/AndroidManifest.xml
+@@ -679,13 +679,13 @@
+ 
+     <service android:name=".service.GenericForegroundService"/>
+ 
+-    <service android:name=".gcm.FcmFetchService" />
++    <!-- <service android:name=".gcm.FcmFetchService" /> -->
+ 
+-    <service android:name=".gcm.FcmReceiveService">
++    <!-- <service android:name=".gcm.FcmReceiveService">
+         <intent-filter>
+             <action android:name="com.google.firebase.MESSAGING_EVENT" />
+         </intent-filter>
+-    </service>
++    </service> -->
+ 
+     <receiver android:name=".service.SmsListener"
+               android:permission="android.permission.BROADCAST_SMS"

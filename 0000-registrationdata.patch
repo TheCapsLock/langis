@@ -1,0 +1,13 @@
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/registration/RegistrationData.kt b/app/src/main/java/org/thoughtcrime/securesms/registration/RegistrationData.kt
+index 313c6330e..cb6e55e9e 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/registration/RegistrationData.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/registration/RegistrationData.kt
+@@ -10,6 +10,6 @@ data class RegistrationData(
+   val profileKey: ProfileKey,
+   val fcmToken: String?
+ ) {
+-  val isFcm: Boolean = fcmToken != null
+-  val isNotFcm: Boolean = fcmToken == null
++  val isFcm: Boolean = false
++  val isNotFcm: Boolean = true
+ }

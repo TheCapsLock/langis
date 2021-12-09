@@ -1,0 +1,13 @@
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/ApplicationContext.java b/app/src/main/java/org/thoughtcrime/securesms/ApplicationContext.java
+index 5ddb4ecbb..af7ade80d 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/ApplicationContext.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/ApplicationContext.java
+@@ -386,7 +386,7 @@ public class ApplicationContext extends MultiDexApplication implements AppForegr
+     if (TextSecurePreferences.getNeedsMessagePull(this)) {
+       Log.i(TAG, "Scheduling a message fetch.");
+       if (Build.VERSION.SDK_INT >= 26) {
+-        FcmJobService.schedule(this);
++        // FcmJobService.schedule(this);
+       } else {
+         ApplicationDependencies.getJobManager().add(new PushNotificationReceiveJob());
+       }

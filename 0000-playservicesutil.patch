@@ -1,0 +1,81 @@
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/util/PlayServicesUtil.java b/app/src/main/java/org/thoughtcrime/securesms/util/PlayServicesUtil.java
+index 60143358b..461b238b7 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/util/PlayServicesUtil.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/util/PlayServicesUtil.java
+@@ -22,41 +22,41 @@ public class PlayServicesUtil {
+   }
+ 
+   public static PlayServicesStatus getPlayServicesStatus(Context context) {
+-    int gcmStatus = 0;
+-
+-    try {
+-      gcmStatus = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context);
+-    } catch (Throwable t) {
+-      Log.w(TAG, t);
+-      return PlayServicesStatus.MISSING;
+-    }
+-
+-    Log.i(TAG, "Play Services: " + gcmStatus);
+-
+-    switch (gcmStatus) {
+-      case ConnectionResult.SUCCESS:
+-        return PlayServicesStatus.SUCCESS;
+-      case ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED:
+-        try {
+-          ApplicationInfo applicationInfo = context.getPackageManager().getApplicationInfo("com.google.android.gms", 0);
+-
+-          if (applicationInfo != null && !applicationInfo.enabled) {
+-            return PlayServicesStatus.MISSING;
+-          }
+-        } catch (PackageManager.NameNotFoundException e) {
+-          Log.w(TAG, e);
+-        }
+-
+-        return PlayServicesStatus.NEEDS_UPDATE;
+-      case ConnectionResult.SERVICE_DISABLED:
+-      case ConnectionResult.SERVICE_MISSING:
+-      case ConnectionResult.SERVICE_INVALID:
+-      case ConnectionResult.API_UNAVAILABLE:
+-      case ConnectionResult.SERVICE_MISSING_PERMISSION:
++    // int gcmStatus = 0;
++
++    // try {
++    //   gcmStatus = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context);
++    // } catch (Throwable t) {
++    //   Log.w(TAG, t);
++    //   return PlayServicesStatus.MISSING;
++    // }
++
++    // Log.i(TAG, "Play Services: " + gcmStatus);
++
++    // switch (gcmStatus) {
++    //   case ConnectionResult.SUCCESS:
++    //     return PlayServicesStatus.SUCCESS;
++    //   case ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED:
++    //     try {
++    //       ApplicationInfo applicationInfo = context.getPackageManager().getApplicationInfo("com.google.android.gms", 0);
++
++    //       if (applicationInfo != null && !applicationInfo.enabled) {
++    //         return PlayServicesStatus.MISSING;
++    //       }
++    //     } catch (PackageManager.NameNotFoundException e) {
++    //       Log.w(TAG, e);
++    //     }
++
++    //     return PlayServicesStatus.NEEDS_UPDATE;
++    //   case ConnectionResult.SERVICE_DISABLED:
++    //   case ConnectionResult.SERVICE_MISSING:
++    //   case ConnectionResult.SERVICE_INVALID:
++    //   case ConnectionResult.API_UNAVAILABLE:
++    //   case ConnectionResult.SERVICE_MISSING_PERMISSION:
+         return PlayServicesStatus.MISSING;
+-      default:
+-        return PlayServicesStatus.TRANSIENT_ERROR;
+-    }
++    //   default:
++    //     return PlayServicesStatus.TRANSIENT_ERROR;
++    // }
+   }
+ 
+ }
+ 
