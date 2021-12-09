@@ -8,7 +8,7 @@ index 5b1e6df4f..0f1a7d1eb 100644
      @JvmName("isFcmEnabled")
 -    get() = getBoolean(KEY_FCM_ENABLED, false)
 -    set(value) = putBoolean(KEY_FCM_ENABLED, value)
-+    get() = getBoolean(false, false)
++    get() = getBoolean(KEY_FCM_ENABLED, false)
 +    set(value) = putBoolean(KEY_FCM_ENABLED, false)
  
    /** The FCM token, which allows the server to send us FCM messages. */
