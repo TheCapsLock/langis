@@ -1,7 +1,7 @@
 image: docker:20.10
 variables:
   DOCKER_TLS_CERTDIR: "/certs"
-  DOCKER_HOST: "/var/run/docker.sock"
+  DOCKER_HOST: "file:///var/run/docker.sock"
 services:
   - docker:20.10-dind
 
