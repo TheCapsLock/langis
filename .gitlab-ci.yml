@@ -26,8 +26,8 @@ patch_and_build_signal:
     #- "export LATEST_SIGNAL_TAG=\"$(git ls-remote --tags https://github.com/signalapp/Signal-Android | sed 's|.*/\\(.*\\)$|\\1|' | grep -v '\\^' | sort -t. -k1,1nr -k2,2nr -k3,3nr|grep -e '^v.*' | head -n 1)\""
     - "if [[ -z \"$LATEST_SIGNAL_TAG\" ]]; then exit 2; fi"
     - "echo \"Latest git version is $LATEST_SIGNAL_TAG\""
-
-    - git clone https://github.com/WhisperSystems/Signal-Android.git && cd Signal-Android && git checkout $LATEST_SIGNAL_TAG
+    
+    - git clone --depth 1 -b $LATEST_SIGNAL_TAG https://github.com/WhisperSystems/Signal-Android
     
     - "for f in $CI_PROJECT_DIR/0000-*.patch; do echo \"$f\"; git apply \"$f\"; done" # apply our patchs
     
