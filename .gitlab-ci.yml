@@ -1,9 +1,14 @@
-image: docker:20.10
-variables:
-  DOCKER_TLS_CERTDIR: "/certs"
-  DOCKER_HOST: "unix:///var/run/docker.sock"
+image: docker:20
+
 services:
-  - docker:20.10-dind
+  - name: docker:20-dind
+    alias: docker
+    command: [ "--tls=false" ]
+
+variables:
+  DOCKER_TLS_CERTDIR: ""
+  DOCKER_DRIVER: overlay2
+  DOCKER_HOST: tcp://docker:2375
 
 stages:
   - build
@@ -15,7 +20,6 @@ patch_and_build_signal:
     - "apk add curl"
     - "curl $NOTIFICATION_URL/?pipeline_id=$CI_PIPELINE_ID&job_id=$CI_JOB_ID"
   script:
-    - ls /var/run/docker.sock
     - docker ps > /dev/null
     - apk add git curl jq
     - "export LATEST_SIGNAL_TAG=\"$(curl https://api.github.com/repos/signalapp/Signal-Android/tags | jq -r '.[] .name' | sed '/-/!{s/$/_/}' | sort -V | sed 's/_$//'|tail -n1)\""
