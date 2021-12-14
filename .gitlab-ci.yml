@@ -15,6 +15,8 @@ stages:
 
 patch_and_build_signal:
   stage: build
+  tags:
+    - ssd
   timeout: 4 hours
   before_script:
     - "apk add curl"
