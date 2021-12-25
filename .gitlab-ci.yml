@@ -12,6 +12,7 @@ variables:
 
 stages:
   - build
+  - checks
 
 patch_and_build_signal:
   stage: build
@@ -72,7 +73,18 @@ patch_and_build_signal:
     paths:
       - "$CI_PROJECT_DIR/artifacts/*.apk"
 
-    
-    
-    
-    
+poc_upload_vt:
+  stage: checks
+  tags:
+    - ssd
+  timeout: 4 hours
+  script:
+    - UPLOADS=$(ls -1 $CI_PROJECT_DIR/artifacts/langis*prod*universal*.apk)
+    - if [ "$(echo $UPLOADS|wc -l)" != "1" ]; then echo "Too many files matched."; exit 2 ; fi
+    - apk add curl jq bash
+    - "chmod +x $CI_PROJECT_DIR/upload-to-vt.sh"
+    - "$CI_PROJECT_DIR/upload-to-vt.sh $VT_API_KEY $UPLOADS"
+  artifacts:
+    expire_in: 1 mos
+    paths:
+      - "$CI_PROJECT_DIR/artifacts/*.apk"
