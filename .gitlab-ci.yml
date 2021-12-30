@@ -73,7 +73,7 @@ patch_and_build_signal:
     paths:
       - "$CI_PROJECT_DIR/artifacts/*.apk"
 
-poc_upload_vt:
+upload_vt:
   stage: checks
   tags:
     - ssd
