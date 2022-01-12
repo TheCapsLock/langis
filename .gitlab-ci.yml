@@ -36,6 +36,10 @@ patch_and_build_signal:
     - "for f in $CI_PROJECT_DIR/0000-*.patch; do echo \"$f\"; git apply \"$f\"; done" # apply our patchs
     
     - "for f in app/src/main/res/values*/strings.xml; do sed -i 's/<string.*name=\"app_name\".*>.*<\\/string>/<string name=\"app_name\">Langis<\\/string>/g' \"$f\"; done" # app rename
+
+    # reverts https://github.com/signalapp/Signal-Android/commit/c98fd1a4523a8ef73dd14597206ada38698a46b3#diff-3d103fc7c312a3e136f88e81cef592424b8af2464c468116545c4d22d6edcf19R1
+    # We have not enough RAM, sorry
+    - "sed -i 's/org.gradle.jvmargs=-Xmx.*/org.gradle.jvmargs=-Xmx3072m/' gradle.properties"
     
     - cd reproducible-builds
     - docker build -t signal-android .
@@ -80,7 +84,7 @@ upload_vt:
   timeout: 4 hours
   script:
     - UPLOADS=$(ls -1 $CI_PROJECT_DIR/artifacts/langis*prod*universal*.apk)
-    - if [ "$(echo $UPLOADS|wc -l)" != "1" ]; then echo "Too many files matched."; exit 2 ; fi
+    - if [ "$(echo $UPLOADS|wc -l)" != "1" ]; then echo "No or too many files matched."; exit 2 ; fi
     - apk add curl jq bash
     - "chmod +x $CI_PROJECT_DIR/upload-to-vt.sh"
     - "$CI_PROJECT_DIR/upload-to-vt.sh $VT_API_KEY $UPLOADS"
