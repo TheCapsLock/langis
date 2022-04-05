@@ -4,7 +4,7 @@ set -u
 set -e
 
 WORKDIR="/apks"
-APKSIGNER_PATH="/usr/local/android-sdk-linux/build-tools/30.0.2/apksigner"
+APKSIGNER_PATH="$(find / ~+ -type f -name apksigner|head -n1)"
 
 function handle_error {
     status=$?
