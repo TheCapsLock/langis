@@ -1,13 +1,16 @@
 diff --git a/app/src/main/AndroidManifest.xml b/app/src/main/AndroidManifest.xml
-index 3bf92947d..85b892ad7 100644
+index 38ad11c..e77ac05 100644
 --- a/app/src/main/AndroidManifest.xml
 +++ b/app/src/main/AndroidManifest.xml
-@@ -679,13 +679,13 @@
+@@ -735,15 +735,15 @@
  
      <service android:name=".service.GenericForegroundService"/>
  
--    <service android:name=".gcm.FcmFetchService" />
-+    <!-- <service android:name=".gcm.FcmFetchService" /> -->
+-    <service android:name=".gcm.FcmFetchBackgroundService" />
++    <!-- <service android:name=".gcm.FcmFetchBackgroundService" /> -->
+ 
+-    <service android:name=".gcm.FcmFetchForegroundService" />
++    <!-- <service android:name=".gcm.FcmFetchForegroundService" /> -->
  
 -    <service android:name=".gcm.FcmReceiveService">
 +    <!-- <service android:name=".gcm.FcmReceiveService">
@@ -19,3 +22,17 @@ index 3bf92947d..85b892ad7 100644
  
      <receiver android:name=".service.SmsListener"
                android:permission="android.permission.BROADCAST_SMS"
+@@ -896,11 +896,11 @@
+         </intent-filter>
+     </receiver>
+ 
+-    <service
++    <!-- <service
+         android:name=".gcm.FcmJobService"
+         android:permission="android.permission.BIND_JOB_SERVICE"
+         android:enabled="@bool/enable_job_service"
+-        tools:targetApi="26" />
++        tools:targetApi="26" /> -->
+ 
+     <service
+         android:name=".jobmanager.JobSchedulerScheduler$SystemService"
