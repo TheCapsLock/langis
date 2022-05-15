@@ -3,7 +3,8 @@ image: docker:20
 services:
   - name: docker:20-dind
     alias: docker
-    command: [ "--tls=false" ]
+    #command: [ "--tls=false" ]
+    entrypoint: ["dockerd-entrypoint.sh", "--tls=false"]
 
 variables:
   DOCKER_TLS_CERTDIR: ""
