@@ -14,6 +14,7 @@ variables:
 stages:
   - build
   - checks
+  - failure
 
 patch_and_build_signal:
   stage: build
@@ -22,7 +23,6 @@ patch_and_build_signal:
   timeout: 4 hours
   before_script:
     - "apk add curl"
-    - "curl $NOTIFICATION_URL/?pipeline_id=$CI_PIPELINE_ID&job_id=$CI_JOB_ID"
   script:
     - docker ps > /dev/null
     - apk add git curl jq
@@ -40,6 +40,7 @@ patch_and_build_signal:
     #- "export LATEST_SIGNAL_TAG=\"$(git ls-remote --tags https://github.com/signalapp/Signal-Android | sed 's|.*/\\(.*\\)$|\\1|' | grep -v '\\^' | sort -t. -k1,1nr -k2,2nr -k3,3nr|grep -e '^v.*' | head -n 1)\""
     - "if [[ -z \"$LATEST_SIGNAL_TAG\" ]]; then exit 2; fi"
     - "echo \"Latest git version is $LATEST_SIGNAL_TAG\""
+    - 'curl -s -d "{ \"topic\": \"perso-langis-ci-alerts\", \"message\": \"version $LATEST_SIGNAL_TAG\", \"title\": \"Langis build started\"}" $NOTIFY_URL > /dev/null'
     
     - git clone --depth 1 -b $LATEST_SIGNAL_TAG https://github.com/WhisperSystems/Signal-Android
     - cd Signal-Android
@@ -82,7 +83,7 @@ patch_and_build_signal:
     - "rm $CI_PROJECT_DIR/artifacts/*unsigned*.apk"
     - "cd $CI_PROJECT_DIR/artifacts/ && for f in $(find . -iname \"*signal*.apk\"); do mv \"$f\" \"$(echo $f|sed \"s/[Ss][Ii][Gg][Nn][Aa][Ll]/langis/\")\"; done"
     - "ls -lh $CI_PROJECT_DIR/artifacts"
-    - "curl $NOTIFICATION_URL/?pipeline_id=$CI_PIPELINE_ID&job_id=$CI_JOB_ID"
+    # - "curl $NOTIFICATION_URL/?pipeline_id=$CI_PIPELINE_ID&job_id=$CI_JOB_ID"
   artifacts:
     expire_in: 1 mos
     paths:
@@ -100,8 +101,17 @@ upload_vt:
     - apk add curl jq bash
     - "chmod +x $CI_PROJECT_DIR/upload-to-vt.sh"
     - "$CI_PROJECT_DIR/upload-to-vt.sh $VT_API_KEY $UPLOADS"
+    - 'curl -s -d "{ \"topic\": \"perso-langis-ci-alerts\", \"title\": \"Langis build finished\"}" $NOTIFY_URL >/dev/null'
   artifacts:
     expire_in: 1 mos
     paths:
       - "$CI_PROJECT_DIR/artifacts/*.apk"
       - "$CI_PROJECT_DIR/sources/"
+
+failure:
+  stage: failure
+  before_script:
+    - "apk add curl"
+  script:
+    - 'curl -s -d "{ \"topic\": \"perso-langis-ci-alerts\", \"title\": \"Langis build failed\", \"tags\": [\"warning\"]}" $NOTIFY_URL>/dev/null'
+  when: on_failure
