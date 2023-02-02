@@ -1,0 +1,61 @@
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/jobs/FcmRefreshJob.java b/app/src/main/java/org/thoughtcrime/securesms/jobs/FcmRefreshJob.java
+index f076e11..6260164 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/jobs/FcmRefreshJob.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/jobs/FcmRefreshJob.java
+@@ -81,31 +81,31 @@ public class FcmRefreshJob extends BaseJob {
+   public void onRun() throws Exception {
+     if (!SignalStore.account().isFcmEnabled()) return;
+ 
+-    Log.i(TAG, "Reregistering FCM...");
+-
+-    int result = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context);
+-
+-    if (result != ConnectionResult.SUCCESS) {
+-      notifyFcmFailure();
+-    } else {
+-      Optional<String> token = FcmUtil.getToken(context);
+-
+-      if (token.isPresent()) {
+-        String oldToken = SignalStore.account().getFcmToken();
+-
+-        if (!token.get().equals(oldToken)) {
+-          int oldLength = oldToken != null ? oldToken.length() : -1;
+-          Log.i(TAG, "Token changed. oldLength: " + oldLength + "  newLength: " + token.get().length());
+-        } else {
+-          Log.i(TAG, "Token didn't change.");
+-        }
+-
+-        ApplicationDependencies.getSignalServiceAccountManager().setGcmId(token);
+-        SignalStore.account().setFcmToken(token.get());
+-      } else {
+-        throw new RetryLaterException(new IOException("Failed to retrieve a token."));
+-      }
+-    }
++//    Log.i(TAG, "Reregistering FCM...");
++//
++//    int result = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context);
++//
++//    if (result != ConnectionResult.SUCCESS) {
++//      notifyFcmFailure();
++//    } else {
++//      Optional<String> token = FcmUtil.getToken(context);
++//
++//      if (token.isPresent()) {
++//        String oldToken = SignalStore.account().getFcmToken();
++//
++//        if (!token.get().equals(oldToken)) {
++//          int oldLength = oldToken != null ? oldToken.length() : -1;
++//          Log.i(TAG, "Token changed. oldLength: " + oldLength + "  newLength: " + token.get().length());
++//        } else {
++//          Log.i(TAG, "Token didn't change.");
++//        }
++//
++//        ApplicationDependencies.getSignalServiceAccountManager().setGcmId(token);
++//        SignalStore.account().setFcmToken(token.get());
++//      } else {
++//        throw new RetryLaterException(new IOException("Failed to retrieve a token."));
++//      }
++//    }
+   }
+ 
+   @Override

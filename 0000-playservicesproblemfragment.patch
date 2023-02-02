@@ -1,0 +1,29 @@
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/PlayServicesProblemFragment.java b/app/src/main/java/org/thoughtcrime/securesms/PlayServicesProblemFragment.java
+index 9864872..1020344 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/PlayServicesProblemFragment.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/PlayServicesProblemFragment.java
+@@ -33,17 +33,17 @@ public class PlayServicesProblemFragment extends DialogFragment {
+ 
+   @Override
+   public @NonNull Dialog onCreateDialog(@Nullable Bundle bundle) {
+-    int    code   = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(getActivity());
+-    Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(getActivity(), code, 9111);
+-
+-    if (dialog == null) {
++//    int    code   = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(getActivity());
++//    Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(getActivity(), code, 9111);
++//
++//    if (dialog == null) {
+       return new AlertDialog.Builder(requireActivity())
+               .setNegativeButton(android.R.string.ok, null)
+               .setMessage(R.string.PlayServicesProblemFragment_the_version_of_google_play_services_you_have_installed_is_not_functioning)
+               .create();
+-    } else {
+-      return dialog;
+-    }
++//    } else {
++//      return dialog;
++//    }
+   }
+ 
+   @Override
