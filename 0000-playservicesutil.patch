@@ -1,5 +1,5 @@
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/util/PlayServicesUtil.java b/app/src/main/java/org/thoughtcrime/securesms/util/PlayServicesUtil.java
-index 60143358b..461b238b7 100644
+index 6014335..461b238 100644
 --- a/app/src/main/java/org/thoughtcrime/securesms/util/PlayServicesUtil.java
 +++ b/app/src/main/java/org/thoughtcrime/securesms/util/PlayServicesUtil.java
 @@ -22,41 +22,41 @@ public class PlayServicesUtil {
@@ -78,4 +78,3 @@ index 60143358b..461b238b7 100644
    }
  
  }
- 
