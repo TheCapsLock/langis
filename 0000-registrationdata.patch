@@ -1,13 +1,15 @@
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/registration/RegistrationData.kt b/app/src/main/java/org/thoughtcrime/securesms/registration/RegistrationData.kt
-index 8ae0110..e3c702f 100644
+index a310b90..66124f5 100644
 --- a/app/src/main/java/org/thoughtcrime/securesms/registration/RegistrationData.kt
 +++ b/app/src/main/java/org/thoughtcrime/securesms/registration/RegistrationData.kt
-@@ -11,6 +11,6 @@ data class RegistrationData(
-   val fcmToken: String?,
-   val pniRegistrationId: Int
+@@ -12,6 +12,6 @@ data class RegistrationData(
+   val pniRegistrationId: Int,
+   val recoveryPassword: String?
  ) {
 -  val isFcm: Boolean = fcmToken != null
 -  val isNotFcm: Boolean = fcmToken == null
 +  val isFcm: Boolean = false
-+  val isNotFcm: Boolean = true
++  val isNotFcm: Boolean = false
  }
+-- 
+

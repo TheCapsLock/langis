@@ -1,17 +1,20 @@
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/registration/fragments/EnterPhoneNumberFragment.java b/app/src/main/java/org/thoughtcrime/securesms/registration/fragments/EnterPhoneNumberFragment.java
-index 21444e4..1c5d2ab 100644
+index 04739b9..01ccd74 100644
 --- a/app/src/main/java/org/thoughtcrime/securesms/registration/fragments/EnterPhoneNumberFragment.java
 +++ b/app/src/main/java/org/thoughtcrime/securesms/registration/fragments/EnterPhoneNumberFragment.java
-@@ -176,17 +176,17 @@ public final class EnterPhoneNumberFragment extends LoggingFragment implements R
+@@ -181,19 +181,19 @@ public final class EnterPhoneNumberFragment extends LoggingFragment implements R
+       return;
+     }
  
-     PlayServicesUtil.PlayServicesStatus fcmStatus = PlayServicesUtil.getPlayServicesStatus(context);
+-    PlayServicesUtil.PlayServicesStatus fcmStatus = PlayServicesUtil.getPlayServicesStatus(context);
++    //PlayServicesUtil.PlayServicesStatus fcmStatus = PlayServicesUtil.getPlayServicesStatus(context);
  
 -    if (fcmStatus == PlayServicesUtil.PlayServicesStatus.SUCCESS) {
--      confirmNumberPrompt(context, e164number, () -> handleRequestVerification(context, true));
+-      confirmNumberPrompt(context, e164number, () -> onE164EnteredSuccessfully(context, true));
 -    } else if (fcmStatus == PlayServicesUtil.PlayServicesStatus.MISSING) {
-+//    if (fcmStatus == PlayServicesUtil.PlayServicesStatus.SUCCESS) {
-+//      confirmNumberPrompt(context, e164number, () -> handleRequestVerification(context, true));
-+//    } else if (fcmStatus == PlayServicesUtil.PlayServicesStatus.MISSING) {
++    //if (fcmStatus == PlayServicesUtil.PlayServicesStatus.SUCCESS) {
++    //  confirmNumberPrompt(context, e164number, () -> onE164EnteredSuccessfully(context, true));
++    //} else if (fcmStatus == PlayServicesUtil.PlayServicesStatus.MISSING) {
        confirmNumberPrompt(context, e164number, () -> handlePromptForNoPlayServices(context));
 -    } else if (fcmStatus == PlayServicesUtil.PlayServicesStatus.NEEDS_UPDATE) {
 -      GoogleApiAvailability.getInstance().getErrorDialog(requireActivity(), ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED, 0).show();
@@ -20,13 +23,15 @@ index 21444e4..1c5d2ab 100644
 -                              getString(R.string.RegistrationActivity_play_services_error),
 -                              getString(R.string.RegistrationActivity_google_play_services_is_updating_or_unavailable));
 -    }
-+//    } else if (fcmStatus == PlayServicesUtil.PlayServicesStatus.NEEDS_UPDATE) {
-+//      GoogleApiAvailability.getInstance().getErrorDialog(requireActivity(), ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED, 0).show();
-+//    } else {
-+//      Dialogs.showAlertDialog(context,
-+//                              getString(R.string.RegistrationActivity_play_services_error),
-+//                              getString(R.string.RegistrationActivity_google_play_services_is_updating_or_unavailable));
-+//    }
++    //} else if (fcmStatus == PlayServicesUtil.PlayServicesStatus.NEEDS_UPDATE) {
++    //  GoogleApiAvailability.getInstance().getErrorDialog(requireActivity(), ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED, 0).show();
++    //} else {
++    //  Dialogs.showAlertDialog(context,
++    //                          getString(R.string.RegistrationActivity_play_services_error),
++    //                          getString(R.string.RegistrationActivity_google_play_services_is_updating_or_unavailable));
++    //}
    }
  
-   private void handleRequestVerification(@NonNull Context context, boolean fcmSupported) {
+   private void onE164EnteredSuccessfully(@NonNull Context context, boolean fcmSupported) {
+-- 
+
