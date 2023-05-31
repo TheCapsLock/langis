@@ -51,7 +51,7 @@ patch_and_build_signal:
 
     # reverts https://github.com/signalapp/Signal-Android/commit/c98fd1a4523a8ef73dd14597206ada38698a46b3#diff-3d103fc7c312a3e136f88e81cef592424b8af2464c468116545c4d22d6edcf19R1
     # We have not enough RAM, sorry
-    - "sed -i 's/org.gradle.jvmargs=-Xmx.*/org.gradle.jvmargs=-Xmx3072m/' gradle.properties"
+    #- "sed -i 's/org.gradle.jvmargs=-Xmx.*/org.gradle.jvmargs=-Xmx3072m/' gradle.properties"
     
     - cd reproducible-builds
     - docker build -t signal-android .
