@@ -1,41 +1,42 @@
 diff --git a/app/src/main/AndroidManifest.xml b/app/src/main/AndroidManifest.xml
-index 424addd..6bfefdb 100644
+index ef24edc9..e62bf000 100644
 --- a/app/src/main/AndroidManifest.xml
 +++ b/app/src/main/AndroidManifest.xml
-@@ -750,15 +750,15 @@
- 
-     <service android:name=".service.GenericForegroundService"/>
- 
--    <service android:name=".gcm.FcmFetchBackgroundService" />
-+    <!--service android:name=".gcm.FcmFetchBackgroundService" /-->
- 
--    <service android:name=".gcm.FcmFetchForegroundService" />
-+    <!--service android:name=".gcm.FcmFetchForegroundService" /-->
- 
--    <service android:name=".gcm.FcmReceiveService" android:exported="true">
-+    <!--service android:name=".gcm.FcmReceiveService" android:exported="true">
-         <intent-filter>
+@@ -1188,7 +1188,7 @@
+     <service
+         android:name=".service.GenericForegroundService"
+         android:exported="false"/>
+-
++    <!--
+     <service
+         android:name=".gcm.FcmFetchBackgroundService"
+         android:exported="false"/>
+@@ -1202,7 +1202,7 @@
              <action android:name="com.google.firebase.MESSAGING_EVENT" />
          </intent-filter>
--    </service>
-+    </service-->
- 
+     </service>
+-
++    -->
      <receiver android:name=".service.SmsListener"
                android:permission="android.permission.BROADCAST_SMS"
-@@ -915,11 +915,11 @@
+               android:enabled="true"
+@@ -1376,14 +1376,14 @@
+             <action android:name="info.guardianproject.panic.action.TRIGGER" />
          </intent-filter>
      </receiver>
- 
--    <service
-+    <!--service
+-
++    <!--
+     <service
          android:name=".gcm.FcmJobService"
          android:permission="android.permission.BIND_JOB_SERVICE"
          android:enabled="@bool/enable_job_service"
--        tools:targetApi="26" />
-+        tools:targetApi="26" /-->
- 
+         android:exported="false"
+         tools:targetApi="26" />
+-
++    -->
      <service
          android:name=".jobmanager.JobSchedulerScheduler$SystemService"
+         android:permission="android.permission.BIND_JOB_SERVICE"
 -- 
-2.30.2
+2.39.2
 
