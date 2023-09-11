@@ -1,22 +1,29 @@
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/ApplicationContext.java b/app/src/main/java/org/thoughtcrime/securesms/ApplicationContext.java
-index 930821c..28e835b 100644
+index 7b69285..a2cf42c 100644
 --- a/app/src/main/java/org/thoughtcrime/securesms/ApplicationContext.java
 +++ b/app/src/main/java/org/thoughtcrime/securesms/ApplicationContext.java
-@@ -374,7 +374,7 @@ public class ApplicationContext extends MultiDexApplication implements AppForegr
-       long nextSetTime = SignalStore.account().getFcmTokenLastSetTime() + TimeUnit.HOURS.toMillis(6);
+@@ -229,7 +229,7 @@ public class ApplicationContext extends MultiDexApplication implements AppForegr
+     ApplicationDependencies.getMegaphoneRepository().onAppForegrounded();
+     ApplicationDependencies.getDeadlockDetector().start();
+     SubscriptionKeepAliveJob.enqueueAndTrackTimeIfNecessary();
+-    FcmFetchManager.onForeground(this);
++    //FcmFetchManager.onForeground(this);
  
-       if (SignalStore.account().getFcmToken() == null || nextSetTime <= System.currentTimeMillis()) {
+     SignalExecutors.BOUNDED.execute(() -> {
+       FeatureFlags.refreshIfNecessary();
+@@ -368,10 +368,10 @@ public class ApplicationContext extends MultiDexApplication implements AppForegr
+ 
+   private void initializeFcmCheck() {
+     if (SignalStore.account().isRegistered()) {
+-      long nextSetTime = SignalStore.account().getFcmTokenLastSetTime() + TimeUnit.HOURS.toMillis(6);
+-
+-      if (SignalStore.account().getFcmToken() == null || nextSetTime <= System.currentTimeMillis()) {
 -        ApplicationDependencies.getJobManager().add(new FcmRefreshJob());
-+        //ApplicationDependencies.getJobManager().add(new FcmRefreshJob());
++//      long nextSetTime = SignalStore.account().getFcmTokenLastSetTime() + TimeUnit.HOURS.toMillis(6);
++//
++//      if (SignalStore.account().getFcmToken() == null || nextSetTime <= System.currentTimeMillis()) {
++//        ApplicationDependencies.getJobManager().add(new FcmRefreshJob());
        }
      }
    }
-@@ -450,7 +450,7 @@ public class ApplicationContext extends MultiDexApplication implements AppForegr
-     if (TextSecurePreferences.getNeedsMessagePull(this)) {
-       Log.i(TAG, "Scheduling a message fetch.");
-       if (Build.VERSION.SDK_INT >= 26) {
--        FcmJobService.schedule(this);
-+        // FcmJobService.schedule(this);
-       } else {
-         ApplicationDependencies.getJobManager().add(new PushNotificationReceiveJob());
-       }
+
