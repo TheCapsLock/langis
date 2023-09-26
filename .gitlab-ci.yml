@@ -42,7 +42,7 @@ patch_and_build_signal:
     - "echo \"Latest git version is $LATEST_SIGNAL_TAG\""
     - 'curl -s -d "{ \"topic\": \"perso-langis-ci-alerts\", \"message\": \"version $LATEST_SIGNAL_TAG\", \"title\": \"Langis build started\"}" $NOTIFY_URL > /dev/null'
     
-    - git clone --depth 1 -b $LATEST_SIGNAL_TAG https://github.com/WhisperSystems/Signal-Android
+    - git clone --depth 1 --recurse-submodules -b $LATEST_SIGNAL_TAG https://github.com/WhisperSystems/Signal-Android
     - cd Signal-Android
     
     - "for f in $CI_PROJECT_DIR/0000-*.patch; do echo \"$f\"; git apply \"$f\"; done" # apply our patchs
