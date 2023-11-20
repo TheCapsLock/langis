@@ -1,23 +1,22 @@
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/keyvalue/AccountValues.kt b/app/src/main/java/org/thoughtcrime/securesms/keyvalue/AccountValues.kt
-index 79ffeca..4749547 100644
+index 4daf08c..2bb445d 100644
 --- a/app/src/main/java/org/thoughtcrime/securesms/keyvalue/AccountValues.kt
 +++ b/app/src/main/java/org/thoughtcrime/securesms/keyvalue/AccountValues.kt
-@@ -268,7 +268,8 @@ internal class AccountValues internal constructor(store: KeyValueStore) : Signal
+@@ -301,7 +301,7 @@ internal class AccountValues internal constructor(store: KeyValueStore) : Signal
  
    /** Indicates whether the user has the ability to receive FCM messages. Largely coupled to whether they have Play Service. */
    @get:JvmName("isFcmEnabled")
 -  var fcmEnabled: Boolean by booleanValue(KEY_FCM_ENABLED, false)
-+  //var fcmEnabled: Boolean by booleanValue(KEY_FCM_ENABLED, false)
 +  var fcmEnabled: Boolean = false
  
    /** The FCM token, which allows the server to send us FCM messages. */
    var fcmToken: String?
-@@ -348,7 +349,8 @@ internal class AccountValues internal constructor(store: KeyValueStore) : Signal
+@@ -428,7 +428,8 @@ internal class AccountValues internal constructor(store: KeyValueStore) : Signal
      putString(KEY_SERVICE_PASSWORD, TextSecurePreferences.getStringPreference(context, "pref_gcm_password", null))
      putBoolean(KEY_IS_REGISTERED, TextSecurePreferences.getBooleanPreference(context, "pref_gcm_registered", false))
      putInteger(KEY_REGISTRATION_ID, TextSecurePreferences.getIntegerPreference(context, "pref_local_registration_id", 0))
 -    putBoolean(KEY_FCM_ENABLED, !TextSecurePreferences.getBooleanPreference(context, "pref_gcm_disabled", false))
-+//    putBoolean(KEY_FCM_ENABLED, !TextSecurePreferences.getBooleanPreference(context, "pref_gcm_disabled", false))
++    // putBoolean(KEY_FCM_ENABLED, !TextSecurePreferences.getBooleanPreference(context, "pref_gcm_disabled", false))
 +    putBoolean(KEY_FCM_ENABLED, false)
      putString(KEY_FCM_TOKEN, TextSecurePreferences.getStringPreference(context, "pref_gcm_registration_id", null))
      putInteger(KEY_FCM_TOKEN_VERSION, TextSecurePreferences.getIntegerPreference(context, "pref_gcm_registration_id_version", 0))

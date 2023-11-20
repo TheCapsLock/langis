@@ -1,34 +1,24 @@
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/ApplicationContext.java b/app/src/main/java/org/thoughtcrime/securesms/ApplicationContext.java
-index f2c550b..4fe778f 100644
+index 9efd93d..9c1fd55 100644
 --- a/app/src/main/java/org/thoughtcrime/securesms/ApplicationContext.java
 +++ b/app/src/main/java/org/thoughtcrime/securesms/ApplicationContext.java
-@@ -229,7 +229,7 @@ public class ApplicationContext extends MultiDexApplication implements AppForegr
-     ApplicationDependencies.getMegaphoneRepository().onAppForegrounded();
-     ApplicationDependencies.getDeadlockDetector().start();
-     SubscriptionKeepAliveJob.enqueueAndTrackTimeIfNecessary();
--    FcmFetchManager.onForeground(this);
-+    //FcmFetchManager.onForeground(this);
- 
-     SignalExecutors.BOUNDED.execute(() -> {
-       FeatureFlags.refreshIfNecessary();
-@@ -368,13 +368,13 @@ public class ApplicationContext extends MultiDexApplication implements AppForegr
+@@ -376,13 +376,13 @@ public class ApplicationContext extends MultiDexApplication implements AppForegr
    }
  
    private void initializeFcmCheck() {
 -    if (SignalStore.account().isRegistered()) {
 -      long nextSetTime = SignalStore.account().getFcmTokenLastSetTime() + TimeUnit.HOURS.toMillis(6);
--
++    // if (SignalStore.account().isRegistered()) {
++    //   long nextSetTime = SignalStore.account().getFcmTokenLastSetTime() + TimeUnit.HOURS.toMillis(6);
+ 
 -      if (SignalStore.account().getFcmToken() == null || nextSetTime <= System.currentTimeMillis()) {
 -        ApplicationDependencies.getJobManager().add(new FcmRefreshJob());
 -      }
 -    }
-+//    if (SignalStore.account().isRegistered()) {
-+//      long nextSetTime = SignalStore.account().getFcmTokenLastSetTime() + TimeUnit.HOURS.toMillis(6);
-+//
-+//      if (SignalStore.account().getFcmToken() == null || nextSetTime <= System.currentTimeMillis()) {
-+//        ApplicationDependencies.getJobManager().add(new FcmRefreshJob());
-+//      }
-+//    }
++    //   if (SignalStore.account().getFcmToken() == null || nextSetTime <= System.currentTimeMillis()) {
++    //     ApplicationDependencies.getJobManager().add(new FcmRefreshJob());
++    //   }
++    // }
    }
  
    private void initializeExpiringMessageManager() {

@@ -1,42 +1,31 @@
 diff --git a/app/src/main/AndroidManifest.xml b/app/src/main/AndroidManifest.xml
-index ef24edc9..e62bf000 100644
+index 1a35897..e15b089 100644
 --- a/app/src/main/AndroidManifest.xml
 +++ b/app/src/main/AndroidManifest.xml
-@@ -1188,7 +1188,7 @@
-     <service
-         android:name=".service.GenericForegroundService"
+@@ -1193,9 +1193,9 @@
+         android:name=".service.AttachmentProgressService"
          android:exported="false"/>
--
-+    <!--
-     <service
+ 
+-    <service
++    <!-- <service
          android:name=".gcm.FcmFetchBackgroundService"
-         android:exported="false"/>
-@@ -1202,7 +1202,7 @@
-             <action android:name="com.google.firebase.MESSAGING_EVENT" />
-         </intent-filter>
-     </service>
--
-+    -->
-     <receiver android:name=".service.SmsListener"
-               android:permission="android.permission.BROADCAST_SMS"
-               android:enabled="true"
-@@ -1376,14 +1376,14 @@
-             <action android:name="info.guardianproject.panic.action.TRIGGER" />
+-        android:exported="false"/>
++        android:exported="false"/> -->
+ 
+     <service
+         android:name=".gcm.FcmFetchForegroundService"
+@@ -1355,12 +1355,12 @@
          </intent-filter>
      </receiver>
--
-+    <!--
-     <service
+ 
+-    <service
++    <!-- <service
          android:name=".gcm.FcmJobService"
          android:permission="android.permission.BIND_JOB_SERVICE"
          android:enabled="@bool/enable_job_service"
          android:exported="false"
-         tools:targetApi="26" />
--
-+    -->
+-        tools:targetApi="26" />
++        tools:targetApi="26" /> -->
+ 
      <service
          android:name=".jobmanager.JobSchedulerScheduler$SystemService"
-         android:permission="android.permission.BIND_JOB_SERVICE"
--- 
-2.39.2
-
