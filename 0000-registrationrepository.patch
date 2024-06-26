@@ -1,0 +1,14 @@
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/registration/v2/data/RegistrationRepository.kt b/app/src/main/java/org/thoughtcrime/securesms/registration/v2/data/RegistrationRepository.kt
+index 7403649..291a1d2 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/registration/v2/data/RegistrationRepository.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/registration/v2/data/RegistrationRepository.kt
+@@ -198,7 +198,8 @@ object RegistrationRepository {
+ 
+       SignalStore.account.setE164(registrationData.e164)
+       SignalStore.account.fcmToken = registrationData.fcmToken
+-      SignalStore.account.fcmEnabled = registrationData.isFcm
++      // SignalStore.account.fcmEnabled = registrationData.isFcm
++      SignalStore.account.fcmEnabled = false
+ 
+       val now = System.currentTimeMillis()
+       saveOwnIdentityKey(selfId, aci, aciProtocolStore, now)
