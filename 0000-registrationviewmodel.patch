@@ -1,0 +1,22 @@
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/registration/viewmodel/RegistrationViewModel.java b/app/src/main/java/org/thoughtcrime/securesms/registration/viewmodel/RegistrationViewModel.java
+index a52ba80..983a70a 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/registration/viewmodel/RegistrationViewModel.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/registration/viewmodel/RegistrationViewModel.java
+@@ -90,11 +90,12 @@ public final class RegistrationViewModel extends BaseRegistrationViewModel {
+   }
+ 
+   public @Nullable String getFcmToken() {
+-    String token = savedState.get(STATE_FCM_TOKEN);
+-    if (token == null || token.isEmpty()) {
+-      return null;
+-    }
+-    return token;
++    return null;
++    // String token = savedState.get(STATE_FCM_TOKEN);
++    // if (token == null || token.isEmpty()) {
++    //   return null;
++    // }
++    // return token;
+   }
+ 
+   @MainThread

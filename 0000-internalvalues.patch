@@ -1,0 +1,22 @@
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/keyvalue/InternalValues.java b/app/src/main/java/org/thoughtcrime/securesms/keyvalue/InternalValues.java
+index fca0bdb..de049ac 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/keyvalue/InternalValues.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/keyvalue/InternalValues.java
+@@ -176,11 +176,12 @@ public final class InternalValues extends SignalStoreValues {
+    * Whether or not the system is forced to be in 'websocket mode', where FCM is ignored and we use a foreground service to keep the app alive.
+    */
+   public boolean isWebsocketModeForced() {
+-    if (FeatureFlags.internalUser()) {
+-      return getBoolean(FORCE_WEBSOCKET_MODE, false);
+-    } else {
+-      return false;
+-    }
++    return true;
++    // if (FeatureFlags.internalUser()) {
++    //   return getBoolean(FORCE_WEBSOCKET_MODE, false);
++    // } else {
++    //   return false;
++    // }
+   }
+ 
+   public void setLastScrollPosition(int position) {

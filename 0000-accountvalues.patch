@@ -1,17 +1,19 @@
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/keyvalue/AccountValues.kt b/app/src/main/java/org/thoughtcrime/securesms/keyvalue/AccountValues.kt
-index 4daf08c..2bb445d 100644
+index 48231d5..0945b5c 100644
 --- a/app/src/main/java/org/thoughtcrime/securesms/keyvalue/AccountValues.kt
 +++ b/app/src/main/java/org/thoughtcrime/securesms/keyvalue/AccountValues.kt
-@@ -301,7 +301,7 @@ internal class AccountValues internal constructor(store: KeyValueStore) : Signal
+@@ -324,8 +324,8 @@ internal class AccountValues internal constructor(store: KeyValueStore) : Signal
+   }
  
    /** Indicates whether the user has the ability to receive FCM messages. Largely coupled to whether they have Play Service. */
-   @get:JvmName("isFcmEnabled")
+-  @get:JvmName("isFcmEnabled")
 -  var fcmEnabled: Boolean by booleanValue(KEY_FCM_ENABLED, false)
++  // @get:JvmName("isFcmEnabled")
 +  var fcmEnabled: Boolean = false
  
    /** The FCM token, which allows the server to send us FCM messages. */
    var fcmToken: String?
-@@ -428,7 +428,8 @@ internal class AccountValues internal constructor(store: KeyValueStore) : Signal
+@@ -461,7 +461,8 @@ internal class AccountValues internal constructor(store: KeyValueStore) : Signal
      putString(KEY_SERVICE_PASSWORD, TextSecurePreferences.getStringPreference(context, "pref_gcm_password", null))
      putBoolean(KEY_IS_REGISTERED, TextSecurePreferences.getBooleanPreference(context, "pref_gcm_registered", false))
      putInteger(KEY_REGISTRATION_ID, TextSecurePreferences.getIntegerPreference(context, "pref_local_registration_id", 0))

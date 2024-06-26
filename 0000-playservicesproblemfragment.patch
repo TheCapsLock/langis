@@ -1,5 +1,5 @@
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/PlayServicesProblemFragment.java b/app/src/main/java/org/thoughtcrime/securesms/PlayServicesProblemFragment.java
-index bffa76f3..135a229e 100644
+index bffa76f..135a229 100644
 --- a/app/src/main/java/org/thoughtcrime/securesms/PlayServicesProblemFragment.java
 +++ b/app/src/main/java/org/thoughtcrime/securesms/PlayServicesProblemFragment.java
 @@ -34,17 +34,17 @@ public class PlayServicesProblemFragment extends DialogFragment {

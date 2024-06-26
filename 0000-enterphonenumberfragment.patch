@@ -1,5 +1,5 @@
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/registration/fragments/EnterPhoneNumberFragment.java b/app/src/main/java/org/thoughtcrime/securesms/registration/fragments/EnterPhoneNumberFragment.java
-index 04739b9..01ccd74 100644
+index aa5c9a0..b309754 100644
 --- a/app/src/main/java/org/thoughtcrime/securesms/registration/fragments/EnterPhoneNumberFragment.java
 +++ b/app/src/main/java/org/thoughtcrime/securesms/registration/fragments/EnterPhoneNumberFragment.java
 @@ -181,19 +181,19 @@ public final class EnterPhoneNumberFragment extends LoggingFragment implements R
@@ -33,5 +33,3 @@ index 04739b9..01ccd74 100644
    }
  
    private void onE164EnteredSuccessfully(@NonNull Context context, boolean fcmSupported) {
--- 
-

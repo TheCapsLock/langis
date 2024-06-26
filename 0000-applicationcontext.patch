@@ -1,24 +1,24 @@
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/ApplicationContext.java b/app/src/main/java/org/thoughtcrime/securesms/ApplicationContext.java
-index 9efd93d..9c1fd55 100644
+index 9046546..c719092 100644
 --- a/app/src/main/java/org/thoughtcrime/securesms/ApplicationContext.java
 +++ b/app/src/main/java/org/thoughtcrime/securesms/ApplicationContext.java
-@@ -376,13 +376,13 @@ public class ApplicationContext extends MultiDexApplication implements AppForegr
-   }
+@@ -386,13 +386,13 @@ public class ApplicationContext extends MultiDexApplication implements AppForegr
  
    private void initializeFcmCheck() {
--    if (SignalStore.account().isRegistered()) {
--      long nextSetTime = SignalStore.account().getFcmTokenLastSetTime() + TimeUnit.HOURS.toMillis(6);
-+    // if (SignalStore.account().isRegistered()) {
-+    //   long nextSetTime = SignalStore.account().getFcmTokenLastSetTime() + TimeUnit.HOURS.toMillis(6);
+     if (SignalStore.account().isRegistered()) {
+-      long lastSetTime = SignalStore.account().getFcmTokenLastSetTime();
+-      long nextSetTime = lastSetTime + TimeUnit.HOURS.toMillis(6);
+-      long now         = System.currentTimeMillis();
++      // long lastSetTime = SignalStore.account().getFcmTokenLastSetTime();
++      // long nextSetTime = lastSetTime + TimeUnit.HOURS.toMillis(6);
++      // long now         = System.currentTimeMillis();
  
--      if (SignalStore.account().getFcmToken() == null || nextSetTime <= System.currentTimeMillis()) {
--        ApplicationDependencies.getJobManager().add(new FcmRefreshJob());
+-      if (SignalStore.account().getFcmToken() == null || nextSetTime <= now || lastSetTime > now) {
+-        AppDependencies.getJobManager().add(new FcmRefreshJob());
 -      }
--    }
-+    //   if (SignalStore.account().getFcmToken() == null || nextSetTime <= System.currentTimeMillis()) {
-+    //     ApplicationDependencies.getJobManager().add(new FcmRefreshJob());
-+    //   }
-+    // }
++      // if (SignalStore.account().getFcmToken() == null || nextSetTime <= now || lastSetTime > now) {
++      //   AppDependencies.getJobManager().add(new FcmRefreshJob());
++      // }
+     }
    }
  
-   private void initializeExpiringMessageManager() {
