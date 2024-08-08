@@ -1,17 +1,17 @@
 diff --git a/app/src/main/AndroidManifest.xml b/app/src/main/AndroidManifest.xml
-index 06ec3e4..81bec31 100644
+index 640a273..d22c1ee 100644
 --- a/app/src/main/AndroidManifest.xml
 +++ b/app/src/main/AndroidManifest.xml
-@@ -1197,7 +1197,7 @@
-     <service
+@@ -1187,7 +1187,7 @@
          android:name=".service.BackupProgressService"
+         android:foregroundServiceType="dataSync"
          android:exported="false"/>
 -
 +    <!--
      <service
          android:name=".gcm.FcmFetchBackgroundService"
          android:exported="false"/>
-@@ -1211,7 +1211,7 @@
+@@ -1202,7 +1202,7 @@
              <action android:name="com.google.firebase.MESSAGING_EVENT" />
          </intent-filter>
      </service>
@@ -20,7 +20,7 @@ index 06ec3e4..81bec31 100644
      <receiver android:name=".notifications.MarkReadReceiver"
                android:enabled="true"
                android:exported="false">
-@@ -1353,14 +1353,14 @@
+@@ -1344,14 +1344,14 @@
              <action android:name="info.guardianproject.panic.action.TRIGGER" />
          </intent-filter>
      </receiver>
