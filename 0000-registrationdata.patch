@@ -1,7 +1,7 @@
-diff --git a/app/src/main/java/org/thoughtcrime/securesms/registration/RegistrationData.kt b/app/src/main/java/org/thoughtcrime/securesms/registration/RegistrationData.kt
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/registration/data/RegistrationData.kt b/app/src/main/java/org/thoughtcrime/securesms/registration/data/RegistrationData.kt
 index a1f6ede..410dbb7 100644
---- a/app/src/main/java/org/thoughtcrime/securesms/registration/RegistrationData.kt
-+++ b/app/src/main/java/org/thoughtcrime/securesms/registration/RegistrationData.kt
+--- a/app/src/main/java/org/thoughtcrime/securesms/registration/data/RegistrationData.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/registration/data/RegistrationData.kt
 @@ -13,6 +13,6 @@ data class RegistrationData(
    val pniRegistrationId: Int,
    val recoveryPassword: String?
