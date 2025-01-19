@@ -3,7 +3,7 @@
 set -u
 set -e
 
-WORKDIR="/apks"
+WORKDIR="$1"
 APKSIGNER_PATH="$(find / ~+ -type f -name apksigner|head -n1)"
 
 function handle_error {

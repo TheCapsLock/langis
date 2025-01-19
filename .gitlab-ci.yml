@@ -1,71 +1,92 @@
-image: docker:20
-
-services:
-  - name: docker:20-dind
-    alias: docker
-    #command: [ "--tls=false" ]
-    entrypoint: ["dockerd-entrypoint.sh", "--tls=false"]
-
-variables:
-  DOCKER_TLS_CERTDIR: ""
-  DOCKER_DRIVER: overlay2
-  DOCKER_HOST: tcp://docker:2375
-
 stages:
+  - prepare
   - build
-  - checks
-  - failure
+  - sign
+  - check
 
-patch_and_build_signal:
-  stage: build
-  tags:
-    - ssd
-  timeout: 4 hours
-  before_script:
-    - "apk add curl"
+# publish langis sources (creates an archive with all patches used to produce Langis)
+prepare_langis_sources:
+  stage: prepare
+  image:
+    name: alpine:latest
   script:
-    - docker ps > /dev/null
-    - apk add git curl jq
-
-    # publish langis sources
     - "mkdir $CI_PROJECT_DIR/sources/"
     - ls $CI_PROJECT_DIR/
     - cp $CI_PROJECT_DIR/.gitlab-ci.yml $CI_PROJECT_DIR/sources/
     - cp $CI_PROJECT_DIR/*.patch $CI_PROJECT_DIR/sources/
     - cp $CI_PROJECT_DIR/*.sh $CI_PROJECT_DIR/sources/
     - tar cfz $CI_PROJECT_DIR/sources/archive.tar.gz $CI_PROJECT_DIR/sources/
+  artifacts:
+    expire_in: 1 mos
+    paths:
+      - "$CI_PROJECT_DIR/sources"
 
-
+# fetchs Signal source code at latest known tag
+prepare_fetch_signal_sources:
+  stage: prepare
+  image:
+    name: alpine:latest
+  script:
+    - apk add git curl jq
+    # Fetch the latest git tag from Signal repository
     - "export LATEST_SIGNAL_TAG=\"$(curl https://api.github.com/repos/signalapp/Signal-Android/tags | jq -r '.[] .name' | sed '/-/!{s/$/_/}' | sort -V | grep -v nightly | sed 's/_$//'|tail -n1)\""
-    #- "export LATEST_SIGNAL_TAG=\"$(git ls-remote --tags https://github.com/signalapp/Signal-Android | sed 's|.*/\\(.*\\)$|\\1|' | grep -v '\\^' | sort -t. -k1,1nr -k2,2nr -k3,3nr|grep -e '^v.*' | head -n 1)\""
+    # If we failed to find out the tag, we stop there
     - "if [[ -z \"$LATEST_SIGNAL_TAG\" ]]; then exit 2; fi"
     - "echo \"Latest git version is $LATEST_SIGNAL_TAG\""
+
+    # TODO à réactiver (notif de lancement de build)
     - 'curl -s -d "{ \"topic\": \"perso-langis-ci-alerts\", \"message\": \"version $LATEST_SIGNAL_TAG\", \"title\": \"Langis build started\"}" $NOTIFY_URL > /dev/null'
-    
-    - git clone --depth 1 --recurse-submodules -b $LATEST_SIGNAL_TAG https://github.com/WhisperSystems/Signal-Android
-    - cd Signal-Android
-    
-    - "for f in $CI_PROJECT_DIR/0000-*.patch; do echo \"$f\"; git apply \"$f\"; done" # apply our patchs
-    
-    - "for f in app/src/main/res/values*/strings.xml; do sed -i 's/<string.*name=\"app_name\".*>.*<\\/string>/<string name=\"app_name\">Langis<\\/string>/g' \"$f\"; done" # app rename
+    # Clone Signal sources using the latest tag found earlier
+    - git clone --depth 1 --recurse-submodules -b $LATEST_SIGNAL_TAG https://github.com/WhisperSystems/Signal-Android "$CI_PROJECT_DIR/Signal-Android"
+  artifacts:
+    expire_in: 1 mos
+    paths:
+      - "$CI_PROJECT_DIR/Signal-Android"
 
-    # reverts https://github.com/signalapp/Signal-Android/commit/c98fd1a4523a8ef73dd14597206ada38698a46b3#diff-3d103fc7c312a3e136f88e81cef592424b8af2464c468116545c4d22d6edcf19R1
-    # We have not enough RAM, sorry
-    #- "sed -i 's/org.gradle.jvmargs=-Xmx.*/org.gradle.jvmargs=-Xmx3072m/' gradle.properties"
-    
-    - cd reproducible-builds
-    - docker build -t signal-android .
-    #- docker pull $CI_REGISTRY_IMAGE:latest || true
-    #- docker build --cache-from $CI_REGISTRY_IMAGE:latest --tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA --tag $CI_REGISTRY_IMAGE:latest .
+# Build the container image provided by Signal-Android/reproductible-builds, publish
+# it to the local Container registry
+prepare_signal_reproductible_build_image:
+  stage: prepare
+  image:
+    name: gcr.io/kaniko-project/executor:v1.23.2-debug
+    entrypoint: [""]
+  when: manual # TODO : à virer ou rendre plus intelligent
+  script:
+    - /kaniko/executor
+      --context "${CI_PROJECT_DIR}/Signal-Android/reproducible-builds"
+      --dockerfile "${CI_PROJECT_DIR}/Signal-Android/reproducible-builds/Dockerfile"
+      --destination "${CI_REGISTRY_IMAGE}:${CI_COMMIT_TAG}"
 
-    
+# Build Langis using:
+# - Signal-Android/reproductible-builds image
+# - Latest Signal-Android sources published
+# - Langis patches
+build_langis:
+  stage: build
+  image:
+    name: registry.git.legeox.net/labo-gitlab/test-ci-on-rke2-runner-docker-run:latest
+    entrypoint: [""]
+  script:
+    - ls -lha
     - cd $CI_PROJECT_DIR/Signal-Android
-    #- docker run --rm -v $(pwd):/project -w /project $CI_REGISTRY_IMAGE:latest ./gradlew clean assembleWebsiteProd
-    - docker run --rm -v $(pwd):/project -w /project signal-android ./gradlew clean assembleWebsiteProd
+    - "for f in $CI_PROJECT_DIR/sources/0000-*.patch; do echo \"$f\"; git apply \"$f\"; done" # apply our patchs
+    - "for f in app/src/main/res/values*/strings.xml; do sed -i 's/<string.*name=\"app_name\".*>.*<\\/string>/<string name=\"app_name\">Langis<\\/string>/g' \"$f\"; done" # app rename
+    - ./gradlew clean assembleWebsiteProd
 
     - "mkdir -p $CI_PROJECT_DIR/artifacts"
-    - "mv $(find $CI_PROJECT_DIR/Signal-Android/app/build/outputs/apk/websiteProd/release -name *.apk) $CI_PROJECT_DIR/artifacts"
-    - "ls -lh $CI_PROJECT_DIR/artifacts"
+    - "mv $(find $CI_PROJECT_DIR/Signal-Android/app/build/outputs/apk/websiteProd/release -name *.apk) $CI_PROJECT_DIR/artifacts"   
+  artifacts:
+    expire_in: 1 mos
+    paths:
+      - "$CI_PROJECT_DIR/artifacts/*.apk"
+      - "$CI_PROJECT_DIR/sources/"
+
+sign_langis:
+  stage: sign
+  image:
+    name: registry.git.legeox.net/labo-gitlab/test-ci-on-rke2-runner-docker-run:latest
+    entrypoint: [""]
+  script:
     # To sign packages ; you'll need a keystore with your certificate
     # signing packages is important, it also allows application update without removing previous installed version of the app
     # To build the keystore used here, we use:
@@ -77,41 +98,32 @@ patch_and_build_signal:
     #- "for f in $CI_PROJECT_DIR/artifacts/*unsigned*.apk; do SIGNED_FNAME=\"$(echo $f |sed 's/unsigned/signed/g')\"; echo \"Signing $f\"; /usr/lib/jvm/java-11-openjdk/bin/jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore /keystore.keystore -storepass \"$KEYSTORE_PASSPHR\" $f -signedjar \"$SIGNED_FNAME\" app ;done"
     #- "for f in $CI_PROJECT_DIR/artifacts/*unsigned*.apk; do SIGNED_FNAME=\"$(basename $f |sed 's/unsigned/signed/g').apk\"; docker run --rm -v $CI_PROJECT_DIR/artifacts/:/apks -v /ks:/ks signal-android /usr/local/android-sdk-linux/build-tools/30.0.2/apksigner sign --ks /ks/keystore.keystore --ks-pass pass:$KEYSTORE_PASSPHR --out \"/apks/$SIGNED_FNAME\" \"/apks/$f\" ; done"
     
-    - cp $CI_PROJECT_DIR/sign.sh $CI_PROJECT_DIR/artifacts/
-    - docker run --rm -v $CI_PROJECT_DIR/artifacts/:/apks -e KEYSTORE_PASSPHR="$KEYSTORE_PASSPHR" -e KEYSTORE_CRT="$KEYSTORE_CRT" signal-android /bin/bash -c "chmod +x /apks/sign.sh && /apks/sign.sh"
-
+    - cp $CI_PROJECT_DIR/sources/sign.sh $CI_PROJECT_DIR/artifacts/
+    - chmod +x $CI_PROJECT_DIR/artifacts/sign.sh
+    - $CI_PROJECT_DIR/artifacts/sign.sh $CI_PROJECT_DIR/artifacts/
     - "rm $CI_PROJECT_DIR/artifacts/*unsigned*.apk"
     - "cd $CI_PROJECT_DIR/artifacts/ && for f in $(find . -iname \"*signal*.apk\"); do mv \"$f\" \"$(echo $f|sed \"s/[Ss][Ii][Gg][Nn][Aa][Ll]/langis/\")\"; done"
     - "ls -lh $CI_PROJECT_DIR/artifacts"
-    # - "curl $NOTIFICATION_URL/?pipeline_id=$CI_PIPELINE_ID&job_id=$CI_JOB_ID"
   artifacts:
     expire_in: 1 mos
     paths:
       - "$CI_PROJECT_DIR/artifacts/*.apk"
       - "$CI_PROJECT_DIR/sources/"
 
-upload_vt:
-  stage: checks
-  tags:
-    - ssd
+check_apks:
+  stage: check
+  image:
+    name: alpine:latest
   timeout: 4 hours
   script:
     - UPLOADS=$(ls -1 $CI_PROJECT_DIR/artifacts/langis*prod*universal*.apk)
     - if [ "$(echo $UPLOADS|wc -l)" != "1" ]; then echo "No or too many files matched."; exit 2 ; fi
     - apk add curl jq bash
-    - "chmod +x $CI_PROJECT_DIR/upload-to-vt.sh"
-    - "$CI_PROJECT_DIR/upload-to-vt.sh $VT_API_KEY $UPLOADS"
+    - "chmod +x $CI_PROJECT_DIR/sources/upload-to-vt.sh"
+    - "$CI_PROJECT_DIR/sources/upload-to-vt.sh $VT_API_KEY $UPLOADS"
     - 'curl -s -d "{ \"topic\": \"perso-langis-ci-alerts\", \"title\": \"Langis build finished\"}" $NOTIFY_URL >/dev/null'
   artifacts:
     expire_in: 1 mos
     paths:
       - "$CI_PROJECT_DIR/artifacts/*.apk"
       - "$CI_PROJECT_DIR/sources/"
-
-failure:
-  stage: failure
-  before_script:
-    - "apk add curl"
-  script:
-    - 'curl -s -d "{ \"topic\": \"perso-langis-ci-alerts\", \"title\": \"Langis build failed\", \"tags\": [\"warning\"]}" $NOTIFY_URL>/dev/null'
-  when: on_failure
