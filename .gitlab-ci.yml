@@ -1,5 +1,6 @@
 stages:
   - prepare
+  - build_tools
   - build
   - sign
   - check
@@ -46,7 +47,7 @@ prepare_fetch_signal_sources:
 # Build the container image provided by Signal-Android/reproductible-builds, publish
 # it to the local Container registry
 prepare_signal_reproductible_build_image:
-  stage: prepare
+  stage: build_tools
   image:
     name: gcr.io/kaniko-project/executor:v1.23.2-debug
     entrypoint: [""]
