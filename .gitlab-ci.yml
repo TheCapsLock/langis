@@ -51,7 +51,7 @@ prepare_signal_reproductible_build_image:
   image:
     name: gcr.io/kaniko-project/executor:v1.23.2-debug
     entrypoint: [""]
-  when: manual # TODO : à virer ou rendre plus intelligent
+  # when: manual # TODO : à virer ou rendre plus intelligent
   script:
     - /kaniko/executor
       --context "${CI_PROJECT_DIR}/Signal-Android/reproducible-builds"
