@@ -75,7 +75,7 @@ build_langis:
     - ./gradlew clean assembleWebsiteProd
 
     - "mkdir -p $CI_PROJECT_DIR/artifacts"
-    - "mv $(find $CI_PROJECT_DIR/Signal-Android/app/build/outputs/apk/websiteProd/release -name *.apk) $CI_PROJECT_DIR/artifacts"   
+    - "mv $(find $CI_PROJECT_DIR/Signal-Android/app/build/outputs/apk/websiteProd/release -name *universal*.apk) $CI_PROJECT_DIR/artifacts"   
   artifacts:
     expire_in: 1 mos
     paths:
