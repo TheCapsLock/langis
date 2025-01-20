@@ -64,7 +64,7 @@ prepare_signal_reproductible_build_image:
 build_langis:
   stage: build
   image:
-    name: registry.git.legeox.net/labo-gitlab/test-ci-on-rke2-runner-docker-run:latest
+    name: "${CI_REGISTRY_IMAGE}:${CI_COMMIT_TAG}"
     entrypoint: [""]
   script:
     - ls -lha
@@ -84,7 +84,7 @@ build_langis:
 sign_langis:
   stage: sign
   image:
-    name: registry.git.legeox.net/labo-gitlab/test-ci-on-rke2-runner-docker-run:latest
+    name: "${CI_REGISTRY_IMAGE}:${CI_COMMIT_TAG}"
     entrypoint: [""]
   script:
     # To sign packages ; you'll need a keystore with your certificate
