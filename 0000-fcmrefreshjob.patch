@@ -1,14 +1,11 @@
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/jobs/FcmRefreshJob.java b/app/src/main/java/org/thoughtcrime/securesms/jobs/FcmRefreshJob.java
-index 5d7e3c1..20bb4d5 100644
+index 8af65ea7..dc2ed835 100644
 --- a/app/src/main/java/org/thoughtcrime/securesms/jobs/FcmRefreshJob.java
 +++ b/app/src/main/java/org/thoughtcrime/securesms/jobs/FcmRefreshJob.java
-@@ -79,33 +79,34 @@ public class FcmRefreshJob extends BaseJob {
+@@ -84,30 +84,30 @@ public class FcmRefreshJob extends BaseJob {
+     if (!SignalStore.account().isFcmEnabled()) return;
  
-   @Override
-   public void onRun() throws Exception {
--    if (!SignalStore.account().isFcmEnabled()) return;
--
--    Log.i(TAG, "Reregistering FCM...");
+     Log.i(TAG, "Reregistering FCM...");
 -
 -    int result = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context);
 -
@@ -27,17 +24,13 @@ index 5d7e3c1..20bb4d5 100644
 -          Log.i(TAG, "Token didn't change.");
 -        }
 -
--        AppDependencies.getSignalServiceAccountManager().setGcmId(token);
+-        NetworkResultUtil.toBasicLegacy(SignalNetwork.account().setFcmToken(token.get()));
 -        SignalStore.account().setFcmToken(token.get());
 -      } else {
 -        throw new RetryLaterException(new IOException("Failed to retrieve a token."));
 -      }
 -    }
 +    return;
-+    // if (!SignalStore.account().isFcmEnabled()) return;
-+
-+    // Log.i(TAG, "Reregistering FCM...");
-+
 +    // int result = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context);
 +
 +    // if (result != ConnectionResult.SUCCESS) {
@@ -55,7 +48,7 @@ index 5d7e3c1..20bb4d5 100644
 +    //       Log.i(TAG, "Token didn't change.");
 +    //     }
 +
-+    //     AppDependencies.getSignalServiceAccountManager().setGcmId(token);
++    //     NetworkResultUtil.toBasicLegacy(SignalNetwork.account().setFcmToken(token.get()));
 +    //     SignalStore.account().setFcmToken(token.get());
 +    //   } else {
 +    //     throw new RetryLaterException(new IOException("Failed to retrieve a token."));
