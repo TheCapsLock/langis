@@ -1,39 +1,56 @@
 diff --git a/app/src/main/AndroidManifest.xml b/app/src/main/AndroidManifest.xml
-index 640a273..d22c1ee 100644
+index 5446ca6..16845ca 100644
 --- a/app/src/main/AndroidManifest.xml
 +++ b/app/src/main/AndroidManifest.xml
-@@ -1187,7 +1187,7 @@
-         android:name=".service.BackupProgressService"
+@@ -1225,20 +1225,20 @@
          android:foregroundServiceType="dataSync"
          android:exported="false"/>
--
-+    <!--
-     <service
-         android:name=".gcm.FcmFetchBackgroundService"
-         android:exported="false"/>
-@@ -1202,7 +1202,7 @@
-             <action android:name="com.google.firebase.MESSAGING_EVENT" />
-         </intent-filter>
-     </service>
--
-+    -->
+ 
+-    <service
+-        android:name=".gcm.FcmFetchBackgroundService"
+-        android:exported="false"/>
++    <!-- <service -->
++        <!-- android:name=".gcm.FcmFetchBackgroundService" -->
++        <!-- android:exported="false"/> -->
+ 
+-    <service
+-        android:name=".gcm.FcmFetchForegroundService"
+-        android:foregroundServiceType="remoteMessaging"
+-        android:exported="false"/>
++    <!-- <service -->
++        <!-- android:name=".gcm.FcmFetchForegroundService" -->
++        <!-- android:foregroundServiceType="remoteMessaging" -->
++        <!-- android:exported="false"/> -->
+ 
+-    <service android:name=".gcm.FcmReceiveService" android:exported="true">
+-        <intent-filter>
+-            <action android:name="com.google.firebase.MESSAGING_EVENT" />
+-        </intent-filter>
+-    </service>
++    <!-- <service android:name=".gcm.FcmReceiveService" android:exported="true"> -->
++        <!-- <intent-filter> -->
++            <!-- <action android:name="com.google.firebase.MESSAGING_EVENT" /> -->
++        <!-- </intent-filter> -->
++    <!-- </service> -->
+ 
      <receiver android:name=".notifications.MarkReadReceiver"
                android:enabled="true"
-               android:exported="false">
-@@ -1344,14 +1344,14 @@
-             <action android:name="info.guardianproject.panic.action.TRIGGER" />
+@@ -1388,12 +1388,12 @@
          </intent-filter>
      </receiver>
--
-+    <!--
-     <service
-         android:name=".gcm.FcmJobService"
-         android:permission="android.permission.BIND_JOB_SERVICE"
-         android:enabled="@bool/enable_job_service"
-         android:exported="false"
-         tools:targetApi="26" />
--
-+    -->
+ 
+-    <service
+-        android:name=".gcm.FcmJobService"
+-        android:permission="android.permission.BIND_JOB_SERVICE"
+-        android:enabled="@bool/enable_job_service"
+-        android:exported="false"
+-        tools:targetApi="26" />
++    <!-- <service -->
++        <!-- android:name=".gcm.FcmJobService" -->
++        <!-- android:permission="android.permission.BIND_JOB_SERVICE" -->
++        <!-- android:enabled="@bool/enable_job_service" -->
++        <!-- android:exported="false" -->
++        <!-- tools:targetApi="26" /> -->
+ 
      <service
          android:name=".jobmanager.JobSchedulerScheduler$SystemService"
-         android:permission="android.permission.BIND_JOB_SERVICE"
