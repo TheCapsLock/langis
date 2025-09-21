@@ -44,31 +44,69 @@ prepare_fetch_signal_sources:
     paths:
       - "$CI_PROJECT_DIR/Signal-Android"
 
+# # Build the container image provided by Signal-Android/reproductible-builds, publish
+# # it to the local Container registry
+# build_signal_reproductible_image:
+#   stage: build_tools
+#   image:
+#     name: gcr.io/kaniko-project/executor:v1.23.2-debug
+#     entrypoint: [""]
+#   # when: manual # TODO : à virer ou rendre plus intelligent
+#   script:
+#     - /kaniko/executor
+#       --context "${CI_PROJECT_DIR}/Signal-Android/reproducible-builds"
+#       --dockerfile "${CI_PROJECT_DIR}/Signal-Android/reproducible-builds/Dockerfile"
+#       --destination "${CI_REGISTRY_IMAGE}/reproductible-builds:${CI_COMMIT_TAG}"
+
+# build_custom_fdroidserver_image:
+#   stage: build_tools
+#   image:
+#     name: gcr.io/kaniko-project/executor:v1.23.2-debug
+#     entrypoint: [""]
+#   when: manual
+#   script:
+#     - /kaniko/executor
+#       --context "${CI_PROJECT_DIR}/custom-fdroidserver"
+#       --dockerfile "${CI_PROJECT_DIR}/custom-fdroidserver/Dockerfile"
+#       --destination "${CI_REGISTRY_IMAGE}/custom-fdroidserver:${CI_COMMIT_TAG}"
+
 # Build the container image provided by Signal-Android/reproductible-builds, publish
 # it to the local Container registry
 build_signal_reproductible_image:
   stage: build_tools
   image:
-    name: gcr.io/kaniko-project/executor:v1.23.2-debug
+    name: moby/buildkit:rootless
     entrypoint: [""]
-  # when: manual # TODO : à virer ou rendre plus intelligent
+  variables:
+    BUILDKITD_FLAGS: --oci-worker-no-process-sandbox
+  before_script:
+    - mkdir -p ~/.docker
+    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > ~/.docker/config.json
   script:
-    - /kaniko/executor
-      --context "${CI_PROJECT_DIR}/Signal-Android/reproducible-builds"
-      --dockerfile "${CI_PROJECT_DIR}/Signal-Android/reproducible-builds/Dockerfile"
-      --destination "${CI_REGISTRY_IMAGE}/reproductible-builds:${CI_COMMIT_TAG}"
+    - |
+      buildctl-daemonless.sh build \
+        --frontend dockerfile.v0 \
+        --local context="${CI_PROJECT_DIR}/Signal-Android/reproducible-builds" \
+        --local dockerfile="${CI_PROJECT_DIR}/custom-fdroidserver/Dockerfile" \
+        --output type=image,name=${CI_REGISTRY_IMAGE}/reproductible-builds:${CI_COMMIT_TAG},push=true
 
 build_custom_fdroidserver_image:
   stage: build_tools
   image:
-    name: gcr.io/kaniko-project/executor:v1.23.2-debug
+    name: moby/buildkit:rootless
     entrypoint: [""]
-  when: manual
+  variables:
+    BUILDKITD_FLAGS: --oci-worker-no-process-sandbox
+  before_script:
+    - mkdir -p ~/.docker
+    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > ~/.docker/config.json
   script:
-    - /kaniko/executor
-      --context "${CI_PROJECT_DIR}/custom-fdroidserver"
-      --dockerfile "${CI_PROJECT_DIR}/custom-fdroidserver/Dockerfile"
-      --destination "${CI_REGISTRY_IMAGE}/custom-fdroidserver:${CI_COMMIT_TAG}"
+    - |
+      buildctl-daemonless.sh build \
+        --frontend dockerfile.v0 \
+        --local context="${CI_PROJECT_DIR}/custom-fdroidserver" \
+        --local dockerfile="${CI_PROJECT_DIR}/custom-fdroidserver/Dockerfile" \
+        --output type=image,name=${CI_REGISTRY_IMAGE}/custom-fdroidserver:${CI_COMMIT_TAG},push=true
 
 # Build Langis using:
 # - Signal-Android/reproductible-builds image
