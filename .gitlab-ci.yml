@@ -117,6 +117,9 @@ build_langis:
   image:
     name: "${CI_REGISTRY_IMAGE}/reproductible-builds:latest"
     entrypoint: [""]
+  variables:
+    # https://docs.gitlab.com/runner/executors/kubernetes/#overwrite-container-resources
+    KUBERNETES_MEMORY_REQUEST: "24Gi"
   script:
     - ls -lha
     - cd $CI_PROJECT_DIR/Signal-Android
