@@ -1,56 +1,57 @@
 diff --git a/app/src/main/AndroidManifest.xml b/app/src/main/AndroidManifest.xml
-index 5446ca6..16845ca 100644
+index 634f39f..24c573c 100644
 --- a/app/src/main/AndroidManifest.xml
 +++ b/app/src/main/AndroidManifest.xml
-@@ -1225,20 +1225,20 @@
-         android:foregroundServiceType="dataSync"
-         android:exported="false"/>
+@@ -1338,29 +1338,29 @@
+             android:exported="false"
+             android:foregroundServiceType="dataSync" />
  
--    <service
--        android:name=".gcm.FcmFetchBackgroundService"
--        android:exported="false"/>
-+    <!-- <service -->
-+        <!-- android:name=".gcm.FcmFetchBackgroundService" -->
-+        <!-- android:exported="false"/> -->
+-        <service
+-            android:name=".gcm.FcmFetchBackgroundService"
+-            android:exported="false" />
+-
+-        <service
+-            android:name=".gcm.FcmFetchForegroundService"
+-            android:exported="false"
+-            android:foregroundServiceType="remoteMessaging" />
+-
+-        <service
+-            android:name=".gcm.FcmReceiveService"
+-            android:exported="true">
+-            <intent-filter>
+-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+-            </intent-filter>
+-        </service>
+-
+-        <service
+-            android:name=".gcm.FcmJobService"
+-            android:enabled="@bool/enable_job_service"
+-            android:exported="false"
+-            android:permission="android.permission.BIND_JOB_SERVICE"
+-            tools:targetApi="26" />
++        <!-- <service -->
++            <!-- android:name=".gcm.FcmFetchBackgroundService" -->
++            <!-- android:exported="false" /> -->
++
++        <!-- <service -->
++            <!-- android:name=".gcm.FcmFetchForegroundService" -->
++            <!-- android:exported="false" -->
++            <!-- android:foregroundServiceType="remoteMessaging" /> -->
++
++        <!-- <service -->
++            <!-- android:name=".gcm.FcmReceiveService" -->
++            <!-- android:exported="true"> -->
++            <!-- <intent-filter> -->
++                <!-- <action android:name="com.google.firebase.MESSAGING_EVENT" /> -->
++            <!-- </intent-filter> -->
++        <!-- </service> -->
++
++        <!-- <service -->
++            <!-- android:name=".gcm.FcmJobService" -->
++            <!-- android:enabled="@bool/enable_job_service" -->
++            <!-- android:exported="false" -->
++            <!-- android:permission="android.permission.BIND_JOB_SERVICE" -->
++            <!-- tools:targetApi="26" /> -->
  
--    <service
--        android:name=".gcm.FcmFetchForegroundService"
--        android:foregroundServiceType="remoteMessaging"
--        android:exported="false"/>
-+    <!-- <service -->
-+        <!-- android:name=".gcm.FcmFetchForegroundService" -->
-+        <!-- android:foregroundServiceType="remoteMessaging" -->
-+        <!-- android:exported="false"/> -->
- 
--    <service android:name=".gcm.FcmReceiveService" android:exported="true">
--        <intent-filter>
--            <action android:name="com.google.firebase.MESSAGING_EVENT" />
--        </intent-filter>
--    </service>
-+    <!-- <service android:name=".gcm.FcmReceiveService" android:exported="true"> -->
-+        <!-- <intent-filter> -->
-+            <!-- <action android:name="com.google.firebase.MESSAGING_EVENT" /> -->
-+        <!-- </intent-filter> -->
-+    <!-- </service> -->
- 
-     <receiver android:name=".notifications.MarkReadReceiver"
-               android:enabled="true"
-@@ -1388,12 +1388,12 @@
-         </intent-filter>
-     </receiver>
- 
--    <service
--        android:name=".gcm.FcmJobService"
--        android:permission="android.permission.BIND_JOB_SERVICE"
--        android:enabled="@bool/enable_job_service"
--        android:exported="false"
--        tools:targetApi="26" />
-+    <!-- <service -->
-+        <!-- android:name=".gcm.FcmJobService" -->
-+        <!-- android:permission="android.permission.BIND_JOB_SERVICE" -->
-+        <!-- android:enabled="@bool/enable_job_service" -->
-+        <!-- android:exported="false" -->
-+        <!-- tools:targetApi="26" /> -->
- 
-     <service
-         android:name=".jobmanager.JobSchedulerScheduler$SystemService"
+         <service
+             android:name=".jobmanager.JobSchedulerScheduler$SystemService"
