@@ -1,95 +1,58 @@
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/jobs/FcmRefreshJob.java b/app/src/main/java/org/thoughtcrime/securesms/jobs/FcmRefreshJob.java
-index c809e22..463e4df 100644
+index 84c712b..06ed1bd 100644
 --- a/app/src/main/java/org/thoughtcrime/securesms/jobs/FcmRefreshJob.java
 +++ b/app/src/main/java/org/thoughtcrime/securesms/jobs/FcmRefreshJob.java
-@@ -72,51 +72,51 @@ public class FcmRefreshJob extends BaseJob {
- 
+@@ -70,33 +70,34 @@ public class FcmRefreshJob extends BaseJob {
    @Override
    public void onRun() throws Exception {
+     if (!SignalStore.account().isFcmEnabled()) return;
++    return;
+ 
 -    Log.i(TAG, "Reregistering FCM...");
 +    // Log.i(TAG, "Reregistering FCM...");
  
--    boolean playServicesMissing = PlayServicesUtil.getPlayServicesStatus(context) == PlayServicesUtil.PlayServicesStatus.MISSING ;
--    if (playServicesMissing) {
--      Log.w(TAG, "Play Services are unavailable.");
+-    int result = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context);
++    // int result = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context);
+ 
+-    if (result != ConnectionResult.SUCCESS) {
+-      Log.w(TAG, "Play Services are unavailable. Skipping FCM refresh.");
+-      return;
 -    }
-+    // boolean playServicesMissing = PlayServicesUtil.getPlayServicesStatus(context) == PlayServicesUtil.PlayServicesStatus.MISSING ;
-+    // if (playServicesMissing) {
-+    //   Log.w(TAG, "Play Services are unavailable.");
++    // if (result != ConnectionResult.SUCCESS) {
++    //   Log.w(TAG, "Play Services are unavailable. Skipping FCM refresh.");
++    //   return;
 +    // }
  
 -    Optional<String> token = FcmUtil.getToken(context);
 +    // Optional<String> token = FcmUtil.getToken(context);
  
 -    if (token.isPresent()) {
--      if (playServicesMissing) {
--        Log.w(TAG, "We were able to get a token despite Play Services being missing!");
--      }
-+    // if (token.isPresent()) {
-+    //   if (playServicesMissing) {
-+    //     Log.w(TAG, "We were able to get a token despite Play Services being missing!");
-+    //   }
-       
 -      String oldToken = SignalStore.account().getFcmToken();
--
++    // if (token.isPresent()) {
++    //   String oldToken = SignalStore.account().getFcmToken();
+ 
 -      if (!token.get().equals(oldToken)) {
 -        int oldLength = oldToken != null ? oldToken.length() : -1;
 -        Log.i(TAG, "Token changed. oldLength: " + oldLength + "  newLength: " + token.get().length());
 -      } else {
 -        Log.i(TAG, "Token didn't change.");
 -      }
--
--      NetworkResultUtil.toBasicLegacy(SignalNetwork.account().setFcmToken(token.get()));
--      SignalStore.account().setFcmToken(token.get());
--
--      if (!SignalStore.account().isFcmEnabled()) {
--        Log.w(TAG, "We had no Play Services, but were still able to get an FCM token! Re-enabling.");
--        SignalStore.account().setFcmEnabled(true);
--        AppDependencies.getJobManager().add(new RefreshAttributesJob());
--        AppDependencies.resetNetwork();
--        AppDependencies.startNetwork();
--        IncomingMessageObserver.stopForegroundService(context);
--      }
--
--      if (SignalStore.settings().getForceWebsocketMode() == ForceWebsocketMode.ENABLED_AUTOMATICALLY) {
--        Log.i(TAG, "FCM succeeded while in auto-enabled websocket mode. Reverting to disabled.");
--        SignalStore.settings().setForceWebsocketMode(ForceWebsocketMode.DISABLED);
--        IncomingMessageObserver.stopForegroundService(context);
--        AppDependencies.resetNetwork();
--        AppDependencies.startNetwork();
--      }
--    } else {
-+    //   String oldToken = SignalStore.account().getFcmToken();
-+
 +    //   if (!token.get().equals(oldToken)) {
 +    //     int oldLength = oldToken != null ? oldToken.length() : -1;
 +    //     Log.i(TAG, "Token changed. oldLength: " + oldLength + "  newLength: " + token.get().length());
 +    //   } else {
 +    //     Log.i(TAG, "Token didn't change.");
 +    //   }
-+
+ 
+-      NetworkResultUtil.toBasicLegacy(SignalNetwork.account().setFcmToken(token.get()));
+-      SignalStore.account().setFcmToken(token.get());
+-    } else {
+-      throw new RetryLaterException(new IOException("Failed to retrieve a token."));
+-    }
 +    //   NetworkResultUtil.toBasicLegacy(SignalNetwork.account().setFcmToken(token.get()));
 +    //   SignalStore.account().setFcmToken(token.get());
-+
-+    //   if (!SignalStore.account().isFcmEnabled()) {
-+    //     Log.w(TAG, "We had no Play Services, but were still able to get an FCM token! Re-enabling.");
-+    //     SignalStore.account().setFcmEnabled(true);
-+    //     AppDependencies.getJobManager().add(new RefreshAttributesJob());
-+    //     AppDependencies.resetNetwork();
-+    //     AppDependencies.startNetwork();
-+    //     IncomingMessageObserver.stopForegroundService(context);
-+    //   }
-+
-+    //   if (SignalStore.settings().getForceWebsocketMode() == ForceWebsocketMode.ENABLED_AUTOMATICALLY) {
-+    //     Log.i(TAG, "FCM succeeded while in auto-enabled websocket mode. Reverting to disabled.");
-+    //     SignalStore.settings().setForceWebsocketMode(ForceWebsocketMode.DISABLED);
-+    //     IncomingMessageObserver.stopForegroundService(context);
-+    //     AppDependencies.resetNetwork();
-+    //     AppDependencies.startNetwork();
-+    //   }
 +    // } else {
-       throw new RetryLaterException(new IOException("Failed to retrieve a token."));
--    }
++    //   throw new RetryLaterException(new IOException("Failed to retrieve a token."));
 +    // }
    }
  

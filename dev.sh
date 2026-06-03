@@ -2,7 +2,7 @@
 set -euo pipefail
 set -xv
 rm -Rf Signal-Android/
-LATEST_TAG="$(curl -s https://api.github.com/repos/signalapp/Signal-Android/tags | jq -r '.[] .name' | sed '/-/!{s/$/_/}' | sort -V | grep -v nightly | sed 's/_$//'|tail -n1)"
+LATEST_TAG="$(curl -s https://api.github.com/repos/signalapp/Signal-Android/releases  |jq -r '[.[]|select(.prerelease==false)][0].tag_name')"
 
 echo "Cloning Signal-Android (latest tag=$LATEST_TAG)"
 
