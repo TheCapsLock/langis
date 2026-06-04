@@ -9,10 +9,11 @@ check_new_version:
   #cache:
   #  paths: ["$FNAME"]
   script: |
-    curl --header "JOB-TOKEN: $CI_JOB_TOKEN" "$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/$CI_PROJECT_NAME/$CI_ENVIRONMENT/latest/$FNAME" --output "$FNAME"
+    curl -s --header "JOB-TOKEN: $CI_JOB_TOKEN" "$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/$CI_PROJECT_NAME/$CI_ENVIRONMENT/latest/$FNAME" --output "$FNAME"
     apk add jq
     touch "$FNAME"
     LATEST_KNOWN_VERSION="$(cat $FNAME)"
+    echo "latest known version -> $LATEST_KNOWN_VERSION"
     LATEST_SIGNAL_TAG="$(curl -s https://api.github.com/repos/signalapp/Signal-Android/releases |jq -r '[.[]|select(.prerelease==false)][0].tag_name')"
     if [ "$LATEST_KNOWN_VERSION" = "$LATEST_SIGNAL_TAG" ]; then
       echo "Pas de nouvelle version, dernière version connue = $LATEST_KNOWN_VERSION"
