@@ -11,14 +11,14 @@ check_new_version:
     apk add jq
     touch "$FNAME"
     LATEST_KNOWN_VERSION="$(cat $FNAME)"
-    LATEST_SIGNAL_TAG="$(curl https://api.github.com/repos/signalapp/Signal-Android/releases |jq -r '[.[]|select(.prerelease==false)][0].tag_name')"
+    LATEST_SIGNAL_TAG="$(curl -s https://api.github.com/repos/signalapp/Signal-Android/releases |jq -r '[.[]|select(.prerelease==false)][0].tag_name')"
     if [ "$LATEST_KNOWN_VERSION" == "$LATEST_SIGNAL_TAG"]; then
       echo "Pas de nouvelle version, dernière version connue = $LATEST_KNOWN_VERSION"
       return 0
     fi
     echo "$LATEST_SIGNAL_TAG" > $FNAME
     echo "Nouvelle version disponible -> $LATEST_SIGNAL_TAG"
-    curl --request POST --form "token=$CI_JOB_TOKEN" --form ref=master $CI_API_V4_URL/projects/$CI_PROJECT_ID/trigger/pipeline
+    curl -s --request POST --form "token=$CI_JOB_TOKEN" --form ref=master $CI_API_V4_URL/projects/$CI_PROJECT_ID/trigger/pipeline
 
 stages:
   - prepare
@@ -57,7 +57,7 @@ prepare_fetch_signal_sources:
     - apk add git curl jq
     # Fetch the latest git tag from Signal repository
     # - "export LATEST_SIGNAL_TAG=\"$(curl https://api.github.com/repos/signalapp/Signal-Android/tags | jq -r '.[] .name' | sed '/-/!{s/$/_/}' | sort -V | grep -v nightly | sed 's/_$//'|tail -n1)\""
-    - "export LATEST_SIGNAL_TAG=\"$(curl https://api.github.com/repos/signalapp/Signal-Android/releases |jq -r '[.[]|select(.prerelease==false)][0].tag_name')\""
+    - "export LATEST_SIGNAL_TAG=\"$(curl -s https://api.github.com/repos/signalapp/Signal-Android/releases |jq -r '[.[]|select(.prerelease==false)][0].tag_name')\""
     # If we failed to find out the tag, we stop there
     - "if [[ -z \"$LATEST_SIGNAL_TAG\" ]]; then exit 2; fi"
     - "echo \"Latest git version is $LATEST_SIGNAL_TAG\""
