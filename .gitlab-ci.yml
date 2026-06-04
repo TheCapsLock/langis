@@ -1,3 +1,10 @@
+check_new_version:
+  stage: prepare
+  script: 
+    - curl --request POST --form "token=$CI_JOB_TOKEN" --form ref=master $CI_API_V4_URL/projects/$CI_PROJECT_ID/trigger/pipeline
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+
 stages:
   - prepare
   - build_tools
