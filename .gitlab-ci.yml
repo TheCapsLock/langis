@@ -1,10 +1,11 @@
 check_new_version:
   stage: prepare
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
   image: "alpine/curl:latest"
   script: 
     - curl --request POST --form "token=$CI_JOB_TOKEN" --form ref=master $CI_API_V4_URL/projects/$CI_PROJECT_ID/trigger/pipeline
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "schedule"
+  
 
 stages:
   - prepare
@@ -16,6 +17,8 @@ stages:
 # publish langis sources (creates an archive with all patches used to produce Langis)
 prepare_langis_sources:
   stage: prepare
+  rules:
+    - if: $CI_PIPELINE_SOURCE != "schedule"
   image:
     name: alpine:latest
   script:
@@ -33,6 +36,8 @@ prepare_langis_sources:
 # fetchs Signal source code at latest known tag
 prepare_fetch_signal_sources:
   stage: prepare
+  rules:
+    - if: $CI_PIPELINE_SOURCE != "schedule"
   image:
     name: alpine:latest
   script:
@@ -57,6 +62,8 @@ prepare_fetch_signal_sources:
 # it to the local Container registry
 build_signal_reproductible_image:
   stage: build_tools
+  rules:
+    - if: $CI_PIPELINE_SOURCE != "schedule"
   image:
     name: gcr.io/kaniko-project/executor:v1.23.2-debug
     entrypoint: [""]
@@ -69,6 +76,8 @@ build_signal_reproductible_image:
 
 build_custom_fdroidserver_image:
   stage: build_tools
+  rules:
+    - if: $CI_PIPELINE_SOURCE != "schedule"
   image:
     name: gcr.io/kaniko-project/executor:v1.23.2-debug
     entrypoint: [""]
@@ -123,6 +132,8 @@ build_custom_fdroidserver_image:
 # - Langis patches
 build_langis:
   stage: build
+  rules:
+    - if: $CI_PIPELINE_SOURCE != "schedule"
   image:
     name: "${CI_REGISTRY_IMAGE}/reproductible-builds:latest"
     entrypoint: [""]
@@ -146,6 +157,8 @@ build_langis:
 
 sign_langis:
   stage: sign
+  rules:
+    - if: $CI_PIPELINE_SOURCE != "schedule"
   image:
     name: "${CI_REGISTRY_IMAGE}/reproductible-builds:latest"
     entrypoint: [""]
@@ -175,6 +188,8 @@ sign_langis:
 
 check_apks:
   stage: check
+  rules:
+    - if: $CI_PIPELINE_SOURCE != "schedule"
   image:
     name: alpine:latest
   timeout: 4 hours
