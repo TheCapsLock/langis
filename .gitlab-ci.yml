@@ -1,5 +1,6 @@
 check_new_version:
   stage: prepare
+  tags: ["small-trusted"]
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
   image: "alpine/curl:latest"
