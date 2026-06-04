@@ -6,9 +6,10 @@ check_new_version:
   image: "alpine/curl:latest"
   variables:
     FNAME: "latest-signal-version.txt"
-  cache:
-    paths: ["$FNAME"]
+  #cache:
+  #  paths: ["$FNAME"]
   script: |
+    curl --header "JOB-TOKEN: $CI_JOB_TOKEN" "$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/$CI_PROJECT_NAME/$CI_ENVIRONMENT/latest/$FNAME" --output "$FNAME"
     apk add jq
     touch "$FNAME"
     LATEST_KNOWN_VERSION="$(cat $FNAME)"
@@ -18,6 +19,7 @@ check_new_version:
       return 0
     fi
     echo "$LATEST_SIGNAL_TAG" > $FNAME
+    curl --header "JOB-TOKEN:$CI_JOB_TOKEN" --upload-file "$FNAME" "$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/$CI_PROJECT_NAME/$CI_ENVIRONMENT/latest/$FNAME"
     echo "Nouvelle version disponible -> $LATEST_SIGNAL_TAG"
     curl -s --request POST --form "token=$CI_JOB_TOKEN" --form ref=master $CI_API_V4_URL/projects/$CI_PROJECT_ID/trigger/pipeline
 
