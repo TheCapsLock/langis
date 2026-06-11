@@ -105,6 +105,7 @@ build_signal_reproductible_image:
   script:
     - |
       if [ "$BUILD_REPRODUCTIBLE_IMAGE" = "YES" ]; then
+        echo "Building $REPRODUCTIBLE_IMAGE_NAME"
         /kaniko/executor
           --context "${CI_PROJECT_DIR}/Signal-Android/reproducible-builds"
           --dockerfile "${CI_PROJECT_DIR}/Signal-Android/reproducible-builds/Dockerfile"
