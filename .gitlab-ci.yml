@@ -90,7 +90,7 @@ prepare_fetch_signal_sources:
     paths:
       - "$CI_PROJECT_DIR/Signal-Android"
     reports:
-      dotenv: buid.env
+      dotenv: build.env
 
 # Build the container image provided by Signal-Android/reproductible-builds, publish
 # it to the local Container registry
