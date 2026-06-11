@@ -106,9 +106,9 @@ build_signal_reproductible_image:
     - |
       if [ "$BUILD_REPRODUCTIBLE_IMAGE" = "YES" ]; then
         echo "Building $REPRODUCTIBLE_IMAGE_NAME"
-        /kaniko/executor
-          --context "${CI_PROJECT_DIR}/Signal-Android/reproducible-builds"
-          --dockerfile "${CI_PROJECT_DIR}/Signal-Android/reproducible-builds/Dockerfile"
+        /kaniko/executor \
+          --context "${CI_PROJECT_DIR}/Signal-Android/reproducible-builds" \
+          --dockerfile "${CI_PROJECT_DIR}/Signal-Android/reproducible-builds/Dockerfile" \
           --destination "${REPRODUCTIBLE_IMAGE_NAME}"
       else
         echo "no need to build reproductible image ${REPRODUCTIBLE_IMAGE_NAME}, it exists in the registry"
