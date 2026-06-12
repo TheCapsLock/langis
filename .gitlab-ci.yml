@@ -45,6 +45,8 @@ prepare_langis_sources:
     - cp $CI_PROJECT_DIR/.gitlab-ci.yml $CI_PROJECT_DIR/sources/
     - cp $CI_PROJECT_DIR/*.patch $CI_PROJECT_DIR/sources/
     - cp $CI_PROJECT_DIR/*.sh $CI_PROJECT_DIR/sources/
+    # gradle properties file... to address java.lang.OutOfMemoryError: GC overhead limit exceeded...
+    - cp $CI_PROJECT_DIR/local.properties $CI_PROJECT_DIR/sources/
     - tar cfz $CI_PROJECT_DIR/sources/archive.tar.gz $CI_PROJECT_DIR/sources/
   artifacts:
     expire_in: 1 mos
