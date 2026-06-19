@@ -1,8 +1,8 @@
 diff --git a/app/src/main/AndroidManifest.xml b/app/src/main/AndroidManifest.xml
-index 634f39f..24c573c 100644
+index 8a27e70..66afebe 100644
 --- a/app/src/main/AndroidManifest.xml
 +++ b/app/src/main/AndroidManifest.xml
-@@ -1338,29 +1338,29 @@
+@@ -1360,29 +1360,29 @@
              android:exported="false"
              android:foregroundServiceType="dataSync" />
  
@@ -17,7 +17,7 @@ index 634f39f..24c573c 100644
 -
 -        <service
 -            android:name=".gcm.FcmReceiveService"
--            android:exported="true">
+-            android:exported="false">
 -            <intent-filter>
 -                <action android:name="com.google.firebase.MESSAGING_EVENT" />
 -            </intent-filter>
@@ -40,7 +40,7 @@ index 634f39f..24c573c 100644
 +
 +        <!-- <service -->
 +            <!-- android:name=".gcm.FcmReceiveService" -->
-+            <!-- android:exported="true"> -->
++            <!-- android:exported="false"> -->
 +            <!-- <intent-filter> -->
 +                <!-- <action android:name="com.google.firebase.MESSAGING_EVENT" /> -->
 +            <!-- </intent-filter> -->
