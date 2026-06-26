@@ -45,8 +45,6 @@ prepare_langis_sources:
     - cp $CI_PROJECT_DIR/.gitlab-ci.yml $CI_PROJECT_DIR/sources/
     - cp $CI_PROJECT_DIR/*.patch $CI_PROJECT_DIR/sources/
     - cp $CI_PROJECT_DIR/*.sh $CI_PROJECT_DIR/sources/
-    # gradle properties file... to address java.lang.OutOfMemoryError: GC overhead limit exceeded...
-    - cp $CI_PROJECT_DIR/local.properties $CI_PROJECT_DIR/sources/
     - tar cfz $CI_PROJECT_DIR/sources/archive.tar.gz $CI_PROJECT_DIR/sources/
   artifacts:
     expire_in: 1 mos
@@ -188,6 +186,9 @@ build_langis:
     - cd $CI_PROJECT_DIR/Signal-Android
     - "for f in $CI_PROJECT_DIR/sources/0000-*.patch; do echo \"$f\"; git apply \"$f\"; done" # apply our patchs
     - "for f in app/src/main/res/values*/strings.xml; do sed -i 's/<string.*name=\"app_name\".*>.*<\\/string>/<string name=\"app_name\">Langis<\\/string>/g' \"$f\"; done" # app rename
+
+    # https://github.com/signalapp/Signal-Android/issues/14834
+    # - cp "$CI_PROJECT_DIR/sources/local.properties" "$CI_PROJECT_DIR/Signal-Android/"
     - ./gradlew clean assembleWebsiteProd
 
     - "mkdir -p $CI_PROJECT_DIR/artifacts"
