@@ -21,6 +21,7 @@ check_new_version:
     fi
     echo "$LATEST_SIGNAL_TAG" > $FNAME
     curl -s -d "{ \"topic\": \"perso-langis-ci-alerts\", \"message\": \"Version $LATEST_SIGNAL_TAG\", \"title\": \"There is a new version of Langis to build\"}" "$NOTIFY_URL"
+    curl -s -d "{ \"topic\": \"perso-langis-ci-alerts\", \"message\": \"start_runner\", \"title\": \"Request to start the runner to build Langis\"}" "$NOTIFY_URL"
     curl --header "JOB-TOKEN:$CI_JOB_TOKEN" --upload-file "$FNAME" "$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/$CI_PROJECT_NAME/$CI_ENVIRONMENT/latest/$FNAME"
     echo "New version of signal is available -> $LATEST_SIGNAL_TAG ; triggering langis build"
     curl -s --request POST --form "token=$CI_JOB_TOKEN" --form ref=master $CI_API_V4_URL/projects/$CI_PROJECT_ID/trigger/pipeline
