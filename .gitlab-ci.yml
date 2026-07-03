@@ -32,6 +32,7 @@ stages:
   - build
   - sign
   - check
+  - cleanup
 
 # publish langis sources (creates an archive with all patches used to produce Langis)
 prepare_langis_sources:
@@ -250,3 +251,13 @@ check_apks:
     paths:
       - "$CI_PROJECT_DIR/artifacts/*.apk"
       - "$CI_PROJECT_DIR/sources/"
+
+shutdown_runner:
+  stage: cleanup
+  tags: ["small-trusted"]
+  rules:
+    - when: always
+  image:
+    name: alpine:latest
+  script:
+    - 'curl -s -d "{ \"topic\": \"perso-langis-ci-alerts\", \"message\": \"stop_runner\", \"title\": \"Request to stop the runner to build Langis\"}" "$NOTIFY_URL" >/dev/null'  
