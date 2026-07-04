@@ -237,7 +237,7 @@ check_apks:
   rules:
     - if: $CI_PIPELINE_SOURCE != "schedule"
   image:
-    name: alpine:latest
+    name: alpine/curl:latest
   timeout: 4 hours
   script:
     - UPLOADS=$(ls -1 $CI_PROJECT_DIR/artifacts/langis*prod*universal*.apk)
