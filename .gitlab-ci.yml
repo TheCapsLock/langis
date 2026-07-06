@@ -242,7 +242,7 @@ check_apks:
   script:
     - UPLOADS=$(ls -1 $CI_PROJECT_DIR/artifacts/langis*prod*universal*.apk)
     - if [ "$(echo $UPLOADS|wc -l)" != "1" ]; then echo "No or too many files matched."; exit 2 ; fi
-    - apk add curl jq bash
+    - apk add jq bash
     - "chmod +x $CI_PROJECT_DIR/sources/upload-to-vt.sh"
     - "$CI_PROJECT_DIR/sources/upload-to-vt.sh $VT_API_KEY $UPLOADS"
     - 'curl -s -d "{ \"topic\": \"perso-langis-ci-alerts\", \"title\": \"Langis build finished\"}" $NOTIFY_URL >/dev/null'
@@ -258,6 +258,6 @@ shutdown_runner:
   rules:
     - when: always
   image:
-    name: alpine:latest
+    name: alpine/curl:latest
   script:
     - 'curl -s -d "{ \"topic\": \"perso-langis-ci-alerts\", \"message\": \"stop_runner\", \"title\": \"Request to stop the runner to build Langis\"}" "$NOTIFY_URL" >/dev/null'  
