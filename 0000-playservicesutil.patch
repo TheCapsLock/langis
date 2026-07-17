@@ -1,7 +1,7 @@
-diff --git a/app/src/main/java/org/thoughtcrime/securesms/util/PlayServicesUtil.java b/app/src/main/java/org/thoughtcrime/securesms/util/PlayServicesUtil.java
+diff --git a/core/util/src/main/java/org/signal/core/util/PlayServicesUtil.java b/core/util/src/main/java/org/signal/core/util/PlayServicesUtil.java
 index 6014335..461b238 100644
---- a/app/src/main/java/org/thoughtcrime/securesms/util/PlayServicesUtil.java
-+++ b/app/src/main/java/org/thoughtcrime/securesms/util/PlayServicesUtil.java
+--- a/core/util/src/main/java/org/signal/core/util/PlayServicesUtil.java
++++ b/core/util/src/main/java/org/signal/core/util/PlayServicesUtil.java
 @@ -22,41 +22,41 @@ public class PlayServicesUtil {
    }
  

@@ -2,7 +2,8 @@ FROM registry.gitlab.com/fdroid/docker-executable-fdroidserver:master
 
 RUN apt-get -y update && \
     apt-get -y dist-upgrade && \
-    apt-get -y install python3-pip
+    apt-get -y install python3-pip && \
+    apt-get -y purge python3-cryptography
 
 # we fetch this specific commit because of this https://github.com/wbond/oscrypto/issues/78
 # RUN git clone https://github.com/wbond/oscrypto.git && \
@@ -13,5 +14,5 @@ RUN apt-get -y update && \
 # we install a recent version of androguard
 RUN git clone --recursive https://github.com/androguard/androguard.git && \
     cd androguard && \
-    git reset --hard v4.1.2 && \
+    git reset --hard v4.1.4 && \
     pip install . --break-system-packages
