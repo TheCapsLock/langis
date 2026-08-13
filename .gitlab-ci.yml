@@ -21,18 +21,27 @@ check_new_version:
     fi
     echo "$LATEST_SIGNAL_TAG" > $FNAME
     curl -s -d "{ \"topic\": \"perso-langis-ci-alerts\", \"message\": \"Version $LATEST_SIGNAL_TAG\", \"title\": \"There is a new version of Langis to build\"}" "$NOTIFY_URL"
-    curl -s -d "{ \"topic\": \"perso-langis-ci-alerts\", \"message\": \"start_runner\", \"title\": \"Request to start the runner to build Langis\"}" "$NOTIFY_URL"
     curl --header "JOB-TOKEN:$CI_JOB_TOKEN" --upload-file "$FNAME" "$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/$CI_PROJECT_NAME/$CI_ENVIRONMENT/latest/$FNAME"
     echo "New version of signal is available -> $LATEST_SIGNAL_TAG ; triggering langis build"
     curl -s --request POST --form "token=$CI_JOB_TOKEN" --form ref=master $CI_API_V4_URL/projects/$CI_PROJECT_ID/trigger/pipeline
 
+start_runner:
+  stage: start_runner
+  tags: ["small-trusted"]
+  rules:
+    - if: $CI_PIPELINE_SOURCE != "schedule"
+  image: "alpine/curl:latest"
+  script: |
+    curl -s -d "{ \"topic\": \"perso-langis-ci-alerts\", \"message\": \"start_runner\", \"title\": \"Request to start the runner to build Langis\"}" "$NOTIFY_URL"
+
 stages:
   - prepare
+  - start_runner
   - build_tools
   - build
   - sign
   - check
-  - cleanup
+  - stop_runner
 
 # publish langis sources (creates an archive with all patches used to produce Langis)
 prepare_langis_sources:
@@ -252,8 +261,8 @@ check_apks:
       - "$CI_PROJECT_DIR/artifacts/*.apk"
       - "$CI_PROJECT_DIR/sources/"
 
-shutdown_runner:
-  stage: cleanup
+stop_runner:
+  stage: stop_runner
   tags: ["small-trusted"]
   rules:
     - when: always
