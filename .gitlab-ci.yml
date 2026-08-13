@@ -188,7 +188,7 @@ build_langis:
   rules:
     - if: $CI_PIPELINE_SOURCE != "schedule"
   image:
-    name: "${CI_REGISTRY_IMAGE}/reproductible-builds:latest"
+    name: "${REPRODUCTIBLE_IMAGE_NAME}" #"${CI_REGISTRY_IMAGE}/reproductible-builds:latest"
     entrypoint: [""]
   variables:
     # https://docs.gitlab.com/runner/executors/kubernetes/#overwrite-container-resources
