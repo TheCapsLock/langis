@@ -1,5 +1,5 @@
 check_new_version:
-  stage: prepare
+  stage: new_version_check
   tags: ["small-trusted"]
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
@@ -35,8 +35,9 @@ start_runner:
     curl -s -d "{ \"topic\": \"perso-langis-ci-alerts\", \"message\": \"start_runner\", \"title\": \"Request to start the runner to build Langis\"}" "$NOTIFY_URL"
 
 stages:
-  - prepare
+  - new_version_check
   - start_runner
+  - prepare
   - build_tools
   - build
   - sign
