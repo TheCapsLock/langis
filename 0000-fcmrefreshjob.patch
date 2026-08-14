@@ -1,10 +1,22 @@
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/jobs/FcmRefreshJob.java b/app/src/main/java/org/thoughtcrime/securesms/jobs/FcmRefreshJob.java
-index c809e22..ef66861 100644
+index a70d633..2a5870c 100644
 --- a/app/src/main/java/org/thoughtcrime/securesms/jobs/FcmRefreshJob.java
 +++ b/app/src/main/java/org/thoughtcrime/securesms/jobs/FcmRefreshJob.java
-@@ -79,44 +79,44 @@ public class FcmRefreshJob extends BaseJob {
-       Log.w(TAG, "Play Services are unavailable.");
+@@ -78,51 +78,51 @@ public class FcmRefreshJob extends BaseJob {
+       return;
      }
+ 
+-    Log.i(TAG, "Reregistering FCM...");
++    // Log.i(TAG, "Reregistering FCM...");
+ 
+-    boolean playServicesMissing = PlayServicesUtil.getPlayServicesStatus(context) == PlayServicesUtil.PlayServicesStatus.MISSING ;
+-    if (playServicesMissing) {
+-      Log.w(TAG, "Play Services are unavailable.");
+-    }
++    // boolean playServicesMissing = PlayServicesUtil.getPlayServicesStatus(context) == PlayServicesUtil.PlayServicesStatus.MISSING ;
++    // if (playServicesMissing) {
++    //   Log.w(TAG, "Play Services are unavailable.");
++    // }
  
 -    Optional<String> token = FcmUtil.getToken(context);
 +    // Optional<String> token = FcmUtil.getToken(context);
@@ -27,7 +39,7 @@ index c809e22..ef66861 100644
 -        Log.i(TAG, "Token didn't change.");
 -      }
 -
--      NetworkResultUtil.toBasicLegacy(SignalNetwork.account().setFcmToken(token.get()));
+-      RequestResultUtil.successOrThrowNoError(SignalNetwork.account().setFcmToken(token.get()));
 -      SignalStore.account().setFcmToken(token.get());
 -
 -      if (!SignalStore.account().isFcmEnabled()) {
@@ -58,7 +70,7 @@ index c809e22..ef66861 100644
 +    //     Log.i(TAG, "Token didn't change.");
 +    //   }
 +
-+    //   NetworkResultUtil.toBasicLegacy(SignalNetwork.account().setFcmToken(token.get()));
++    //   RequestResultUtil.successOrThrowNoError(SignalNetwork.account().setFcmToken(token.get()));
 +    //   SignalStore.account().setFcmToken(token.get());
 +
 +    //   if (!SignalStore.account().isFcmEnabled()) {

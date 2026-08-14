@@ -193,6 +193,7 @@ build_langis:
   variables:
     # https://docs.gitlab.com/runner/executors/kubernetes/#overwrite-container-resources
     KUBERNETES_MEMORY_REQUEST: "24Gi"
+    GRADLE_OPTS: -Dorg.gradle.jvmargs="-XX:MaxMetaspaceSize=1g"
   script:
     - ls -lha
     - cd $CI_PROJECT_DIR/Signal-Android
