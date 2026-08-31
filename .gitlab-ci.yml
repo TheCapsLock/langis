@@ -193,8 +193,6 @@ build_langis:
   variables:
     # https://docs.gitlab.com/runner/executors/kubernetes/#overwrite-container-resources
     KUBERNETES_MEMORY_REQUEST: "24Gi"
-    # GRADLE_OPTS: -Dorg.gradle.jvmargs="-XX:MaxMetaspaceSize=1g -Dorg.gradle.jvmargs=-Xmx1024m"
-    GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xms128m -Xmx1024m"
   script:
   script:
     - ls -lha

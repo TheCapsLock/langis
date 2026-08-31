@@ -1,0 +1,14 @@
+diff --git a/gradle.properties b/gradle.properties
+index 9b62abf..9963aa9 100644
+--- a/gradle.properties
++++ b/gradle.properties
+@@ -6,7 +6,8 @@
+ #     IdentityHashMap iteration-order non-determinism inside R8 (e.g. in
+ #     KotlinClassMetadataReader, which decides whether to keep the Signature attribute
+ #     on Kotlin generic lambda subclasses).
+-org.gradle.jvmargs=-Xmx12g -Xms256m -XX:MaxMetaspaceSize=1g -Dcom.android.tools.r8.deterministicdebugging=true -XX:+UnlockExperimentalVMOptions -XX:hashCode=3
++# org.gradle.jvmargs=-Xmx12g -Xms256m -XX:MaxMetaspaceSize=1g -Dcom.android.tools.r8.deterministicdebugging=true -XX:+UnlockExperimentalVMOptions -XX:hashCode=3
++org.gradle.jvmargs=-Xmx8g -Xms2g -XX:MaxMetaspaceSize=768m -XX:+HeapDumpOnOutOfMemoryError -Dcom.android.tools.r8.deterministicdebugging=true -XX:+UnlockExperimentalVMOptions -XX:hashCode=3
+ 
+ # Without this, the Kotlin compile daemon inherits -Xmx12g from org.gradle.jvmargs.
+ kotlin.daemon.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=512m
