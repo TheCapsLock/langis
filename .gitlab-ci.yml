@@ -263,12 +263,12 @@ check_apks:
       - "$CI_PROJECT_DIR/artifacts/*.apk"
       - "$CI_PROJECT_DIR/sources/"
 
-stop_runner:
-  stage: stop_runner
-  tags: ["small-trusted"]
-  rules:
-    - when: always
-  image:
-    name: alpine/curl:latest
-  script:
-    - 'curl -s -d "{ \"topic\": \"perso-langis-ci-alerts\", \"message\": \"stop_runner\", \"title\": \"Request to stop the runner to build Langis\"}" "$NOTIFY_URL" >/dev/null'  
+# stop_runner:
+#   stage: stop_runner
+#   tags: ["small-trusted"]
+#   rules:
+#     - when: always
+#   image:
+#     name: alpine/curl:latest
+#   script:
+#     - 'curl -s -d "{ \"topic\": \"perso-langis-ci-alerts\", \"message\": \"stop_runner\", \"title\": \"Request to stop the runner to build Langis\"}" "$NOTIFY_URL" >/dev/null'  
