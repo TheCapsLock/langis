@@ -202,7 +202,7 @@ build_langis:
 
     # https://github.com/signalapp/Signal-Android/issues/14834
     # - cp "$CI_PROJECT_DIR/sources/local.properties" "$CI_PROJECT_DIR/Signal-Android/"
-    - ./gradlew --no-daemon clean assembleWebsiteProd
+    - ./gradlew --stacktrace --debug --no-daemon clean assembleWebsiteProd
 
     - "mkdir -p $CI_PROJECT_DIR/artifacts"
     - "mv $(find $CI_PROJECT_DIR/Signal-Android/app/build/outputs/apk/websiteProd/release -name *universal*.apk) $CI_PROJECT_DIR/artifacts"   
