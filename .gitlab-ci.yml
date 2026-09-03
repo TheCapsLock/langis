@@ -218,7 +218,7 @@ sign_langis:
   rules:
     - if: $CI_PIPELINE_SOURCE != "schedule"
   image:
-    name: "${CI_REGISTRY_IMAGE}/reproductible-builds:latest"
+    name: "${CI_REGISTRY_IMAGE}/reproductible-builds:$LATEST_SIGNAL_TAG"
     entrypoint: [""]
   script:
     # To sign packages ; you'll need a keystore with your certificate
