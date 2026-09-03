@@ -12,3 +12,17 @@ index 9b62abf..9963aa9 100644
  
 # Without this, the Kotlin compile daemon inherits -Xmx12g from org.gradle.jvmargs.
 kotlin.daemon.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=512m
+diff --git a/gradle.properties b/gradle.properties
+index 9b62abf..034bafe 100644
+--- a/gradle.properties
++++ b/gradle.properties
+@@ -9,7 +9,8 @@
+ org.gradle.jvmargs=-Xmx12g -Xms256m -XX:MaxMetaspaceSize=1g -Dcom.android.tools.r8.deterministicdebugging=true -XX:+UnlockExperimentalVMOptions -XX:hashCode=3
+ 
+ # Without this, the Kotlin compile daemon inherits -Xmx12g from org.gradle.jvmargs.
+-kotlin.daemon.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=512m
++# kotlin.daemon.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=512m
++kotlin.daemon.jvmargs=-Xmx8g -XX:MaxMetaspaceSize=512m
+ 
+ android.useAndroidX=true
+ org.gradle.caching=true
