@@ -1,9 +1,9 @@
 diff --git a/gradle.properties b/gradle.properties
-index 9b62abf..034bafe 100644
+index 254845d..a5ea40d 100644
 --- a/gradle.properties
 +++ b/gradle.properties
-@@ -9,7 +9,8 @@
- org.gradle.jvmargs=-Xmx12g -Xms256m -XX:MaxMetaspaceSize=1g -Dcom.android.tools.r8.deterministicdebugging=true -XX:+UnlockExperimentalVMOptions -XX:hashCode=3
+@@ -6,7 +6,8 @@ org.gradle.jvmargs=-Xmx12g -Xms256m -XX:MaxMetaspaceSize=1g -Dcom.android.tools.
+ android.r8.threadPoolSize=1
  
  # Without this, the Kotlin compile daemon inherits -Xmx12g from org.gradle.jvmargs.
 -kotlin.daemon.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=512m
