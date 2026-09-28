@@ -1,10 +1,19 @@
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/jobs/FcmRefreshJob.java b/app/src/main/java/org/thoughtcrime/securesms/jobs/FcmRefreshJob.java
-index a70d633..2a5870c 100644
+index e24fc1b..3f7c869 100644
 --- a/app/src/main/java/org/thoughtcrime/securesms/jobs/FcmRefreshJob.java
 +++ b/app/src/main/java/org/thoughtcrime/securesms/jobs/FcmRefreshJob.java
-@@ -78,51 +78,51 @@ public class FcmRefreshJob extends BaseJob {
-       return;
-     }
+@@ -73,56 +73,56 @@ public class FcmRefreshJob extends BaseJob {
+ 
+   @Override
+   public void onRun() throws Exception {
+-    if (TextSecurePreferences.isUnauthorizedReceived(context)) {
+-      Log.i(TAG, "No longer authorized. Ignoring.");
+-      return;
+-    }
++    // if (TextSecurePreferences.isUnauthorizedReceived(context)) {
++    //   Log.i(TAG, "No longer authorized. Ignoring.");
++    //   return;
++    // }
  
 -    Log.i(TAG, "Reregistering FCM...");
 +    // Log.i(TAG, "Reregistering FCM...");
@@ -39,7 +48,7 @@ index a70d633..2a5870c 100644
 -        Log.i(TAG, "Token didn't change.");
 -      }
 -
--      RequestResultUtil.successOrThrowNoError(SignalNetwork.account().setFcmToken(token.get()));
+-      RequestResultUtil.successOrThrowNoError(SignalNetwork.accountApi().setFcmToken(token.get()));
 -      SignalStore.account().setFcmToken(token.get());
 -
 -      if (!SignalStore.account().isFcmEnabled()) {
@@ -70,7 +79,7 @@ index a70d633..2a5870c 100644
 +    //     Log.i(TAG, "Token didn't change.");
 +    //   }
 +
-+    //   RequestResultUtil.successOrThrowNoError(SignalNetwork.account().setFcmToken(token.get()));
++    //   RequestResultUtil.successOrThrowNoError(SignalNetwork.accountApi().setFcmToken(token.get()));
 +    //   SignalStore.account().setFcmToken(token.get());
 +
 +    //   if (!SignalStore.account().isFcmEnabled()) {
