@@ -1,19 +1,10 @@
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/jobs/FcmRefreshJob.java b/app/src/main/java/org/thoughtcrime/securesms/jobs/FcmRefreshJob.java
-index e24fc1b..3f7c869 100644
+index 081575a..c992494 100644
 --- a/app/src/main/java/org/thoughtcrime/securesms/jobs/FcmRefreshJob.java
 +++ b/app/src/main/java/org/thoughtcrime/securesms/jobs/FcmRefreshJob.java
-@@ -73,56 +73,56 @@ public class FcmRefreshJob extends BaseJob {
- 
-   @Override
-   public void onRun() throws Exception {
--    if (TextSecurePreferences.isUnauthorizedReceived(context)) {
--      Log.i(TAG, "No longer authorized. Ignoring.");
--      return;
--    }
-+    // if (TextSecurePreferences.isUnauthorizedReceived(context)) {
-+    //   Log.i(TAG, "No longer authorized. Ignoring.");
-+    //   return;
-+    // }
+@@ -77,80 +77,80 @@ public class FcmRefreshJob extends BaseJob {
+       return;
+     }
  
 -    Log.i(TAG, "Reregistering FCM...");
 +    // Log.i(TAG, "Reregistering FCM...");
@@ -100,6 +91,58 @@ index e24fc1b..3f7c869 100644
 +    //   }
 +    // } else {
 +    //   throw new RetryLaterException(new IOException("Failed to retrieve a token."));
++    // }
+   }
+ 
+   @Override
+   public void onFailure() {
+     Log.w(TAG, "FCM reregistration failed after retry attempt exhaustion!");
+ 
+-    PlayServicesUtil.PlayServicesStatus status = PlayServicesUtil.getPlayServicesStatus(context);
+-
+-    if (status == PlayServicesUtil.PlayServicesStatus.MISSING) {
+-      Log.w(TAG, "This was a check where we tried to get a token despite having no Play Services. We failed. Marking down the time.");
+-      SignalStore.misc().setLastMissingPlayServicesFcmVerificationTime(System.currentTimeMillis());
+-
+-      if (SignalStore.account().isFcmEnabled()) {
+-        Log.w(TAG, "Play Services are no longer available, and we failed to fetch a token. Disabling FCM.");
+-        SignalStore.account().setFcmEnabled(false);
+-        SignalStore.account().setFcmToken(null);
+-        AppDependencies.getJobManager().add(new RefreshAttributesJob());
+-        AppDependencies.resetNetwork();
+-        AppDependencies.startNetwork();
+-      }
+-    } else if (status == PlayServicesUtil.PlayServicesStatus.SUCCESS &&
+-               SignalStore.settings().getForceWebsocketMode() == ForceWebsocketMode.DISABLED &&
+-               System.currentTimeMillis() - SignalStore.account().getFcmTokenLastSetTime() > TimeUnit.DAYS.toMillis(3))
+-    {
+-      Log.w(TAG, "FCM has been failing for over 3 days despite Play Services being available. Auto-enabling forced websocket mode so the user can still get messages.");
+-      SignalStore.settings().setForceWebsocketMode(ForceWebsocketMode.ENABLED_AUTOMATICALLY);
+-      AppDependencies.resetNetwork();
+-      AppDependencies.startNetwork();
+-    }
++    // PlayServicesUtil.PlayServicesStatus status = PlayServicesUtil.getPlayServicesStatus(context);
++
++    // if (status == PlayServicesUtil.PlayServicesStatus.MISSING) {
++    //   Log.w(TAG, "This was a check where we tried to get a token despite having no Play Services. We failed. Marking down the time.");
++    //   SignalStore.misc().setLastMissingPlayServicesFcmVerificationTime(System.currentTimeMillis());
++
++    //   if (SignalStore.account().isFcmEnabled()) {
++    //     Log.w(TAG, "Play Services are no longer available, and we failed to fetch a token. Disabling FCM.");
++    //     SignalStore.account().setFcmEnabled(false);
++    //     SignalStore.account().setFcmToken(null);
++    //     AppDependencies.getJobManager().add(new RefreshAttributesJob());
++    //     AppDependencies.resetNetwork();
++    //     AppDependencies.startNetwork();
++    //   }
++    // } else if (status == PlayServicesUtil.PlayServicesStatus.SUCCESS &&
++    //            SignalStore.settings().getForceWebsocketMode() == ForceWebsocketMode.DISABLED &&
++    //            System.currentTimeMillis() - SignalStore.account().getFcmTokenLastSetTime() > TimeUnit.DAYS.toMillis(3))
++    // {
++    //   Log.w(TAG, "FCM has been failing for over 3 days despite Play Services being available. Auto-enabling forced websocket mode so the user can still get messages.");
++    //   SignalStore.settings().setForceWebsocketMode(ForceWebsocketMode.ENABLED_AUTOMATICALLY);
++    //   AppDependencies.resetNetwork();
++    //   AppDependencies.startNetwork();
 +    // }
    }
  
