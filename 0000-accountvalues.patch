@@ -1,14 +1,14 @@
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/keyvalue/AccountValues.kt b/app/src/main/java/org/thoughtcrime/securesms/keyvalue/AccountValues.kt
-index cb7c7d1..4ec4c3a 100644
+index 88aeec7..f1d3eed 100644
 --- a/app/src/main/java/org/thoughtcrime/securesms/keyvalue/AccountValues.kt
 +++ b/app/src/main/java/org/thoughtcrime/securesms/keyvalue/AccountValues.kt
-@@ -461,7 +461,8 @@ class AccountValues internal constructor(store: KeyValueStore) : SignalStoreValu
-     putString(KEY_SERVICE_PASSWORD, TextSecurePreferences.getStringPreference(context, "pref_gcm_password", null))
-     putBoolean(KEY_IS_REGISTERED, TextSecurePreferences.getBooleanPreference(context, "pref_gcm_registered", false))
-     putInteger(KEY_REGISTRATION_ID, TextSecurePreferences.getIntegerPreference(context, "pref_local_registration_id", 0))
--    putBoolean(KEY_FCM_ENABLED, !TextSecurePreferences.getBooleanPreference(context, "pref_gcm_disabled", false))
-+    // putBoolean(KEY_FCM_ENABLED, !TextSecurePreferences.getBooleanPreference(context, "pref_gcm_disabled", false))
+@@ -673,7 +673,8 @@ class AccountValues internal constructor(store: KeyValueStore, context: Context)
+     putString(KEY_SERVICE_PASSWORD, LegacySharedPrefs.getStringOrNull(context, "pref_gcm_password"))
+     putBoolean(KEY_IS_REGISTERED, LegacySharedPrefs.getBoolean(context, "pref_gcm_registered", false))
+     putInteger(KEY_REGISTRATION_ID, LegacySharedPrefs.getInteger(context, "pref_local_registration_id", 0))
+-    putBoolean(KEY_FCM_ENABLED, !LegacySharedPrefs.getBoolean(context, "pref_gcm_disabled", false))
++    // putBoolean(KEY_FCM_ENABLED, !LegacySharedPrefs.getBoolean(context, "pref_gcm_disabled", false))
 +    putBoolean(KEY_FCM_ENABLED, false)
-     putString(KEY_FCM_TOKEN, TextSecurePreferences.getStringPreference(context, "pref_gcm_registration_id", null))
-     putInteger(KEY_FCM_TOKEN_VERSION, TextSecurePreferences.getIntegerPreference(context, "pref_gcm_registration_id_version", 0))
-     putLong(KEY_FCM_TOKEN_LAST_SET_TIME, TextSecurePreferences.getLongPreference(context, "pref_gcm_registration_id_last_set_time", 0))
+     putString(KEY_FCM_TOKEN, LegacySharedPrefs.getStringOrNull(context, "pref_gcm_registration_id"))
+     putInteger(KEY_FCM_TOKEN_VERSION, LegacySharedPrefs.getInteger(context, "pref_gcm_registration_id_version", 0))
+     putLong(KEY_FCM_TOKEN_LAST_SET_TIME, LegacySharedPrefs.getLong(context, "pref_gcm_registration_id_last_set_time", 0))
