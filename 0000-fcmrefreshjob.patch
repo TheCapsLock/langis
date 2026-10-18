@@ -1,8 +1,8 @@
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/jobs/FcmRefreshJob.java b/app/src/main/java/org/thoughtcrime/securesms/jobs/FcmRefreshJob.java
-index 081575a..c992494 100644
+index 3a88faf..53e5ae0 100644
 --- a/app/src/main/java/org/thoughtcrime/securesms/jobs/FcmRefreshJob.java
 +++ b/app/src/main/java/org/thoughtcrime/securesms/jobs/FcmRefreshJob.java
-@@ -77,80 +77,80 @@ public class FcmRefreshJob extends BaseJob {
+@@ -77,82 +77,82 @@ public class FcmRefreshJob extends BaseJob {
        return;
      }
  
@@ -53,7 +53,7 @@ index 081575a..c992494 100644
 -
 -      if (SignalStore.settings().getForceWebsocketMode() == ForceWebsocketMode.ENABLED_AUTOMATICALLY) {
 -        Log.i(TAG, "FCM succeeded while in auto-enabled websocket mode. Reverting to disabled.");
--        SignalStore.settings().setForceWebsocketMode(ForceWebsocketMode.DISABLED);
+-        SignalStore.settings().setForceWebsocketMode(ForceWebsocketMode.DISABLED_AUTOMATICALLY);
 -        IncomingMessageObserver.stopForegroundService(context);
 -        AppDependencies.resetNetwork();
 -        AppDependencies.startNetwork();
@@ -84,7 +84,7 @@ index 081575a..c992494 100644
 +
 +    //   if (SignalStore.settings().getForceWebsocketMode() == ForceWebsocketMode.ENABLED_AUTOMATICALLY) {
 +    //     Log.i(TAG, "FCM succeeded while in auto-enabled websocket mode. Reverting to disabled.");
-+    //     SignalStore.settings().setForceWebsocketMode(ForceWebsocketMode.DISABLED);
++    //     SignalStore.settings().setForceWebsocketMode(ForceWebsocketMode.DISABLED_AUTOMATICALLY);
 +    //     IncomingMessageObserver.stopForegroundService(context);
 +    //     AppDependencies.resetNetwork();
 +    //     AppDependencies.startNetwork();
@@ -113,13 +113,15 @@ index 081575a..c992494 100644
 -        AppDependencies.startNetwork();
 -      }
 -    } else if (status == PlayServicesUtil.PlayServicesStatus.SUCCESS &&
--               SignalStore.settings().getForceWebsocketMode() == ForceWebsocketMode.DISABLED &&
+-               SignalStore.settings().getForceWebsocketMode() == ForceWebsocketMode.DISABLED_AUTOMATICALLY &&
 -               System.currentTimeMillis() - SignalStore.account().getFcmTokenLastSetTime() > TimeUnit.DAYS.toMillis(3))
 -    {
 -      Log.w(TAG, "FCM has been failing for over 3 days despite Play Services being available. Auto-enabling forced websocket mode so the user can still get messages.");
 -      SignalStore.settings().setForceWebsocketMode(ForceWebsocketMode.ENABLED_AUTOMATICALLY);
 -      AppDependencies.resetNetwork();
 -      AppDependencies.startNetwork();
+-    } else if (SignalStore.settings().getForceWebsocketMode() == ForceWebsocketMode.DISABLED_BY_USER) {
+-      Log.w(TAG, "FCM is failing, but the user has explicitly disabled forced websocket mode. Not auto-enabling.");
 -    }
 +    // PlayServicesUtil.PlayServicesStatus status = PlayServicesUtil.getPlayServicesStatus(context);
 +
@@ -136,13 +138,15 @@ index 081575a..c992494 100644
 +    //     AppDependencies.startNetwork();
 +    //   }
 +    // } else if (status == PlayServicesUtil.PlayServicesStatus.SUCCESS &&
-+    //            SignalStore.settings().getForceWebsocketMode() == ForceWebsocketMode.DISABLED &&
++    //            SignalStore.settings().getForceWebsocketMode() == ForceWebsocketMode.DISABLED_AUTOMATICALLY &&
 +    //            System.currentTimeMillis() - SignalStore.account().getFcmTokenLastSetTime() > TimeUnit.DAYS.toMillis(3))
 +    // {
 +    //   Log.w(TAG, "FCM has been failing for over 3 days despite Play Services being available. Auto-enabling forced websocket mode so the user can still get messages.");
 +    //   SignalStore.settings().setForceWebsocketMode(ForceWebsocketMode.ENABLED_AUTOMATICALLY);
 +    //   AppDependencies.resetNetwork();
 +    //   AppDependencies.startNetwork();
++    // } else if (SignalStore.settings().getForceWebsocketMode() == ForceWebsocketMode.DISABLED_BY_USER) {
++    //   Log.w(TAG, "FCM is failing, but the user has explicitly disabled forced websocket mode. Not auto-enabling.");
 +    // }
    }
  
